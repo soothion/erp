@@ -1,0 +1,124 @@
+<?php
+/**
+ * Created by VIM
+ * Created at 2014-10-09
+ * @author <a href="mailto:chongwish@gmail.com">chongwish</a>
+ * @package Stock
+ * @copyright 2014 
+ */
+
+use Bluebanner\Core\Repo\StockAllocation as RepoAllocation;
+
+use Bluebanner\Core\Form\Stock\Allocation as FormAllocation;
+
+class APIStockAllocationController extends \BaseController {
+  public function __construct(RepoAllocation $repoAllocation, FormAllocation $formAllocation) {
+    $this->repoAllocation = $repoAllocation;
+
+    $this->formAllocation = $formAllocation;
+  }
+
+  /**
+   * invoice
+   **/
+  public function invoice() {
+    // @todo
+    return 'INVOICE1234';
+  } 
+  
+  /**
+   * ask lists
+   **/
+  public function askLists() {
+    $inputGet = Input::get();
+    $inputGen = $this->formAllocation->filterAskLists($inputGet);
+
+    // @todo
+    $inputGen['eq']['to_platform_id'] = 1;
+
+    $page = $this->formAllocation->page($inputGet);
+    $size = $this->formAllocation->size($inputGet);
+
+    return $this->repoAllocation->ask()->findByConds($inputGen, $page, $size)->get();
+  }
+
+  /**
+   * ask list
+   **/
+  public function askList() {
+
+  }
+
+  /**
+   * ask list edit
+   **/
+  public function askListEdit($id) {
+    return $this->repoAllocation->ask()->where('id', $id)->where('to_platform_id', Sentry::getUser()->id)->first();
+  }
+
+  /**
+   * ask list add
+   *
+   * need from_platform_id to_platform_id quantity
+   **/
+  public function askListAdd() {
+    $inputGet = Input::get();
+    $inputGen = $this->formAllocation->filterAskListAdd($inputGet);
+    $this->repoAllocation->ask()->create($inputGen);
+  }
+   
+  /**
+   * ask list delete
+   **/
+  public function askListDel($id) {
+    $this->repoAllocation->ask()->where('id', $id)->where('to_platform_id', Sentry::getUser()->id)->delete();
+  }
+   
+  /**
+   * ask list modify
+   **/
+  public function askListModify($id) {
+    $inputGet = Input::get();
+    $inputGen = $this->formAllocation->filterAskListModify($inputGet);
+    $this->repoAllocation->ask()->where('id', $id)->where('to_platform_id', Sentry::getUser()->id)->update($inputGen);
+  }
+
+  /**
+   * submit ask list 
+   **/
+  public function askListSubmit($id) {
+    $this->repoAllocation->ask()->where('id', $id)->where('to_platform_id', Sentry::getUser()->id)->update(array('status', 'confirmed'));
+  }
+
+  /**
+   * reply lists
+   **/ 
+  public function replyLists() {
+    $inputGet = Input::get();
+    $inputGen = $this->formAllocation->filterReplyLists($inputGet);
+
+    // @todo
+    $inputGen['eq']['from_platform_id'] = 1;
+
+    $page = $this->formAllocation->page($inputGet);
+    $size = $this->formAllocation->size($inputGet);
+    return $this->repoAllocation->reply()->findByConds($inputGen, $page, $size)->get();
+  }
+
+  /**
+   * reply agree
+   **/
+  public function replyAgree($id) {
+    $this->repoAllocation->allowInventoryAllocate($id);
+  }
+
+  /**
+   * fetch unlock inventory
+   **/
+  public function fetch() {
+    $inputGet = Input::get();
+    $inputGen = $this->formAllocation->filterFetch($inputGet);
+    $this->repoAllocation->fetchUnlockInventory($inputGen);
+  } 
+   
+}

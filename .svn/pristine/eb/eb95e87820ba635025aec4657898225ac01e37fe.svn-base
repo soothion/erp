@@ -1,0 +1,295 @@
+<?php
+
+use Bluebanner\Core\Purchase\OrderServiceInterface;
+use Bluebanner\Core\Warehouse\StockIOServiceInterface;
+use Bluebanner\Core\Model\PurchaseOrder;
+
+class APIPOController extends \BaseController {
+
+	public function __construct(OrderServiceInterface $service, StockIOServiceInterface $io) {
+		$this -> service = $service;
+		$this -> io = $io;
+	}
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index() {
+		$condition = array();
+		$i = 0;
+		// findOrderIdByName
+
+		if (($planName = Input::get("planName", false)) !== false) {
+
+			if (!empty($planName) && $planName != "undifined") {
+				$ids = $this -> service -> findOrderIdByName($planName);
+
+				if (!empty($ids) && $ids !== array() && count($ids) !== 0) {
+					$condition[$i]['field'] = "id";
+					$condition[$i]['opera'] = 'in';
+					$condition[$i]['value'] = $ids;
+					$i++;
+				} else {
+					$condition[$i]['field'] = 'id';
+					$condition[$i]['opera'] = '=';
+					$condition[$i]['value'] = 0;
+					$i++;
+				}
+
+			}
+		}
+
+		if (($invoice = Input::get("invoice", false)) !== false) {
+			if (!empty($invoice) && $invoice != "undifined") {
+				$condition[$i]['field'] = "invoice";
+				$condition[$i]['opera'] = 'like';
+				$condition[$i]['value'] = '%' . $invoice . '%';
+				$i++;
+			}
+		}
+
+		if (($sku = Input::get("item_id", false)) !== false) {
+			if (!empty($sku) && is_numeric($sku)) {
+				$ids = $this -> service -> getMasterIdFromDetailByItemId($sku);
+				if (!empty($ids) && $ids !== array() && count($ids) !== 0) {
+					$condition[$i]['field'] = "id";
+					$condition[$i]['opera'] = 'in';
+					$condition[$i]['value'] = $ids;
+					$i++;
+				} else {
+					$condition[$i]['field'] = 'id';
+					$condition[$i]['opera'] = '=';
+					$condition[$i]['value'] = 0;
+					$i++;
+				}
+			}
+		}
+		if (($warehouse = Input::get("warehouse_id", false)) !== false) {
+			if (!empty($warehouse) && is_numeric($warehouse)) {
+				$condition[$i]['field'] = "warehouse_id";
+				$condition[$i]['opera'] = '=';
+				$condition[$i]['value'] = $warehouse;
+				$i++;
+			}
+		}
+
+		if (($status = Input::get("status", false)) !== false) {
+
+			if (!empty($status) && $status != "undifined") {
+				$condition[$i]['field'] = "status";
+				$condition[$i]['opera'] = '=';
+				$condition[$i]['value'] = $status;
+				$i++;
+			}
+		}
+
+		if (($timeFrom = Input::get("created_at", false)) !== false) {
+			if (!empty($timeFrom) && $timeFrom != "undefined") {
+
+				$condition[$i]['field'] = "created_at";
+				$condition[$i]['opera'] = '>=';
+				$condition[$i]['value'] = date("Y-m-d H:i:s", strtotime($timeFrom));
+				$i++;
+			}
+		}
+
+		if (($timeTo = Input::get("updated_at", false)) !== false) {
+			if (!empty($timeTo) && $timeTo != "undefined") {
+				$condition[$i]['field'] = "updated_at";
+				$condition[$i]['opera'] = '<=';
+				$condition[$i]['value'] = date("Y-m-d H:i:s", strtotime($timeTo));
+				$i++;
+			}
+		}
+
+		$list = array();
+		$list = $this -> service -> findOrderByCondition($condition) -> get();
+
+		foreach ($list as $stock) {
+
+			$stock -> agent;
+			$stock -> warehouse;
+			$stock -> planName = $this -> service -> getPlanName($stock -> id);
+
+		}
+		return $list;
+
+	}
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create() {
+
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function store() {
+		$order = Input::get();
+		$order['vendor_id'] = $order['vendor']['id'];
+		$order['warehouse_id'] = $order['warehouse_id'];
+		$details = array();
+		foreach ($order['details'] as $detail) {
+			$detail['item_id'] = $detail['item']['id'];
+			unset($detail['item']);
+			$details[] = $detail;
+		}
+		unset($order['vendor'], $order['warehouse'], $order['details']);
+		$this -> service -> orderCreate($order, $details);
+	}
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id) {
+
+		if (is_numeric($id)) {
+			$order = $this -> service -> orderFind($id);
+			$order -> vendor;
+			$order -> warehouse;
+
+			foreach ($order->details as $detail) {
+				$detail -> item;
+			}
+		} else {
+
+			$order = PurchaseOrder::GenerateInvoice();
+			$order = array('invoice' => $order);
+		}
+
+		return $order;
+	}
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id) {
+		//
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update($id) {
+
+		$order = $this -> service -> orderFind($id);
+		$update = Input::get();
+		if (isset($update['type']) && $update['type'] == "unconfirm") {
+			$order['status'] = "pending";
+			unset($update['type']);
+			$order -> update($update);
+			return 'ok';
+		} else {
+			$update['vendor_id'] = $update['vendor']['id'];
+			$update['warehouse_id'] = $update['warehouse_id'];
+
+			// details
+			$details = $order -> details;
+			$inputs = array_build($update['details'], function($k, $v) {
+				return array(array_key_exists('id', $v) ? $v['id'] : str_random(5), $v);
+			});
+			foreach ($details as $detail) {
+				if (array_key_exists($detail -> id, $inputs)) {
+					$inputs[$detail -> id]['item_id'] = $inputs[$detail -> id]['item']['id'];
+					unset($inputs[$detail -> id]['item']);
+					$detail -> update($inputs[$detail -> id]);
+				} else {
+					$detail -> delete();
+				}
+				unset($inputs[$detail -> id]);
+			}
+
+			foreach ($inputs as $insert) {
+				$insert['order_id'] = $order -> id;
+				$insert['item_id'] = $insert['item']['id'];
+				unset($insert['item']);
+				$this -> service -> orderDetailCreate($insert);
+			}
+
+			//	unset($update['vendor'], $update['warehouse'], $update['details'],$update['type']);
+			unset($update['vendor'], $update['warehouse'], $update['details']);
+			$order -> update($update);
+			return 'ok';
+		}
+
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id) {
+
+		$returnCode = 0;
+		$returnMsg = "";
+		try {
+			$type = Input::get('type', 'master');
+			if ($type == "master") {
+				$this -> service -> deleteOrderMaster($id);
+			} else {
+				$this -> service -> deleteOrderDetail($id);
+			}
+		} catch(Exception $e) {
+			$returnCode = 1;
+			$returnMsg = $e -> getMessage();
+		}
+
+		return array('return' => $returnCode, 'errorMsg' => $returnMsg);
+
+	}
+
+	public function generate($id) {
+		$this -> update($id);
+		$order = $this -> service -> orderFind($id);
+		
+		$master = array('relation_id' => $order -> id, 'relation_invoice' => $order -> invoice, 'warehouse_id' => $order -> warehouse_id, 'type' => Bluebanner\Core\Warehouse\IOType::PURCHASING, 'creat_agent' => Sentry::getUser() -> id, );
+		$details = array();
+		foreach ($order->details as $detail) {
+			$details[] = array('item_id' => $detail -> item_id, 'qty' => $detail -> qty, 'relation_did' => $detail -> id);
+		}
+		//if(!
+			$this -> io -> createStockIN($master, $details);
+		//{
+			//return array('return'=>0,'ErrMsg'=>'生成采购待入库单失败！');
+		//}
+
+		//创建成功以后更改状态
+		$order -> status = 'stocking';
+		$order -> save();
+
+		return array('return'=>1,'ErrMsg'=>'创建成功');
+	}
+
+    public  function orderReturn($id){
+		$returnCode=0;
+		$returnMsg="";
+		$id=intval($id);
+		try{
+			$this->service->returnPendingByMasterId($id,Sentry::getUser()->id);
+		}catch(Exception $e){
+			$returnCode=1;
+			$returnMsg=$e->getMessage();
+		}
+		return array('return'=>$returnCode,'ErrMsg'=>$returnMsg);
+		
+	}
+}

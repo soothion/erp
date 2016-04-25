@@ -1,0 +1,70 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">用户组管理</h3></div>
+
+			<div class="panel-body">
+				<form name="editForm" class="">
+					
+					<div class="container-fluid">
+
+						<div class="row">
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.name.$invalid}">
+									<label class="control-label">name</label>
+									<input type="text" name="name" ng-model="group.name" class="form-control input-sm" required>
+									<span ng-show="editForm.name.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-3">
+								<div class="form-group">
+									<input type="text" name="sku" ng-model="adding.id" class="form-control input-sm" typeahead="permission.id for permission in permissions | filter:{id: $viewValue} | limitTo: 10" placeholder="resources">
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="btn-group">
+									<button type="button" class="btn btn-sm" ng-class="{'btn-success': adding.permission == 1}" ng-model="adding.permission" btn-radio="1">Allow</button>
+									<button type="button" class="btn btn-sm" ng-class="{'btn-danger': adding.permission == 0}" ng-model="adding.permission" btn-radio="0">Deny</button>
+								</div>
+								<button class="btn btn-default btn-sm" ng-click="addPermission()"><span class="glyphicon glyphicon-import"></span> 添加权限</button>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-6">
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th>Source</th>
+											<th>Permission</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="(id, permission) in group.permissions">
+											<td>{{id}}</td>
+											<td>
+												<div class="btn-group">
+													<button type="button" class="btn btn-xs" ng-class="{'btn-success': group.permissions[id] == 1}" ng-model="group.permissions[id]" btn-radio="1">Allow</button>
+													<button type="button" class="btn btn-xs" ng-class="{'btn-danger': group.permissions[id] == 0}" ng-model="group.permissions[id]" btn-radio="0">Deny</button>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								
+							</div>
+						</div>
+	
+						<a class="btn btn-default" href="#/system/groups">Cancel</a>
+						<button type="button" class="btn btn-primary" ng-click="update()" ng-disabled="isClean() || editForm.">Save</button>
+						<button type="button" class="btn btn-danger" ng-click="destroy()" ng-show="group.$id">Delete</button>
+					</div>
+				</form>
+			</div>
+			
+		</div>
+	</div>
+</div>

@@ -1,0 +1,170 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					{{getCNTypeName(IOList.type)}}
+					<strong>
+						<b>出</b>
+					</strong>
+					库单
+				</h3>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col col-lg-12">
+						<div class="row">
+							<span class="col-sm-1">出库编号:</span>
+							<span class="col-sm-3">{{IOList.invoice}}</span>
+							<span class="col-sm-1">相关编号:</span>
+							<span class="col-sm-4">{{IOList.relation_invoice}}</span>
+							<span class="col-sm-3">
+								<div class="row col">
+									<span class="col-sm-4">状态:</span>
+									<span span class="col-sm-4">{{getStatusName()}}</span>
+								</div>
+							</span>
+						</div>
+						<div class="row">
+							<span class="col-sm-1">仓库:</span>
+							<span class="col-sm-3">{{IOList.warehouse.name}}</span>
+							<span class="col-sm-1">出库类别:</span>
+							<span class="col-sm-4">{{IOList.type}}</span>
+						</div>
+						<div class="row">
+							<span class="col-sm-1">创建日期:</span>
+							<span class="col-sm-3">{{IOList.created_at}}</span>
+							<span class="col-sm-1">创建人:</span>
+							<span class="col-sm-4">{{IOList.create_user.email}}</span>
+						</div>
+						<div class="clearfix"></div>
+						<hr>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col col-lg-12">
+						<table class="table table-condensed table-hover">
+							<thead>
+								<tr>
+									<th>SKU</th>
+									<th>数量</th>
+									<th>入库货位</th>
+									<th>描述</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="detail in IOList.details">
+									<td>{{detail.sku}}</td>
+									<td>{{detail.qty}}</td>
+									<td>--</td>
+									<td>{{detail.item.description}}</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="row col-sm-12">
+							<button type="button" class="btn btn-primary"
+								ng-click="showChai()" ng-show="isSplit()">
+								拆分
+								<strong>
+									<b>出</b>
+								</strong>
+								库单
+							</button>
+							<button type="button" class="btn btn-primary" ng-click="book()"
+								ng-show="isBooked()">book库存</button>
+							<button type="button" class="btn btn-primary" ng-click="unbook()"
+								ng-show="isUnBooked()">解book</button>
+							<button type="button" class="btn btn-primary"
+								ng-click="moveOutOfStock()" ng-show="isStocked()">
+								<strong>
+									<b>出</b>
+								</strong>
+								库
+							</button>
+							<div class="btn-group">
+								<button type="button" class="btn btn-danger dropdown-toggle"
+									ng-show="isUnStocked()" data-toggle="dropdown">
+									反
+									<strong>
+										<b>出</b>
+									</strong>
+									库
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu col-sm-1">
+									<li ng-click="unmoveOutOfStockToBook()">
+										<a>Book 状态</a>
+									</li>
+									<li class="divider"></li>
+									<li ng-click="unmoveOutOfStockToNotstock()">
+										<a>Notstock状态</a>
+									</li>
+								</ul>
+							</div>
+							<div class='row col-sm-12'>
+								<div class="btn-group">
+									<button type="button" class="btn btn-primary"
+										ng-click="autoScanCode()" ng-show="isOuted()">条形码扫描出库</button>
+									<button type="button" class="btn btn-primary"
+										ng-click="customScanCode()" ng-show="isOuted()">手动输入条形码</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Model -->
+<div class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">
+					拆分
+					<strong>
+						<b>出</b>
+					</strong>
+					库单 #{{IOList.invoice}}
+				</h4>
+			</div>
+			<div class="modal-body">
+				<table class="table table-condensed table-hover">
+					<thead>
+						<tr>
+							<th>SKU</th>
+							<th>描述</th>
+							<th>数量</th>
+							<th>拆出数量</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="detail in IOList.details">
+							<td>{{detail.sku}}</td>
+							<td>{{detail.item.description}}</td>
+							<td>{{detail.qty}}</td>
+							<td>
+								<input name="newqty" class="form-control"
+									ng-model="detail.newqty">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"
+					ng-click="closeAddDetailsFrom()">Close</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal"
+					ng-click="doChaifen()" ng-disabled="validateChaifenForm()">拆分</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Model End-->

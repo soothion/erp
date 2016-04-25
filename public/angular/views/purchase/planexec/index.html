@@ -1,0 +1,448 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title" id="pop">采购计划执行界面<span style="color:red;font-size:12px">[注意:1.最终需求量 ＝ (需求数量/SPQ)的四舍五入值 * SPQ;&nbsp;&nbsp;2.最终采购量＝最终需求量－期初库存&nbsp;&nbsp;3.期初库存＝该sku实际库存 - (所有之前采购计划的未发量)</span></h3>
+				</div>
+			<div class="panel-body">
+				<div class="container-fluid">
+					<form name="searchForm" class="">
+						<div class="row" >
+							<div class="col col-sm-3">
+								<div class="form-group" >
+									<select name="plan_id" class="form-control" ng-model="seachform.plan_id" ng-options="p.id as p.name for p in plans" ng-change="csearch();">
+									<option value="">--所属计划表--</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="col col-sm-2">
+								<div class="form-group" >
+									<select name="warehouse" ng-model="seachform.warehouse_id" 
+									ng-options="wh.id as wh.name for wh in whs" class="form-control" placeholder="需求仓库">
+									<option value="">--需求仓库--</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="col col-sm-2">
+								<div class="form-group" >
+									<select name="transportation" ng-model="seachform.transportation" class="form-control"  
+									ng-options="t.name as t.name for t in trans">
+									<option value="">--运输方式--</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="col col-sm-2">
+								<div class="form-group" >
+									<select name="price_type" ng-model="seachform.price_type" class="form-control" 
+									ng-options="x.name as x.name for x in taxs">
+										<option value="">--含税与否--</option>
+									</select>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-3">
+								<div class="form-group" >
+									<input type="text" name="vendor" ng-model="seachform.vendor" class="form-control" typeahead="v as v.code+'('+v.name+')' for v in vendors | filter:$viewValue | limitTo: 10" required placeholder="供应商名字或者代码">
+								</div>
+							</div>
+
+							<div class="col col-sm-2">
+								<div class="form-group" >
+									<input type="text" name="sku"  ng-model="seachform.sku" class="form-control"  typeahead="i as i.sku for i in skus | filter:{sku: $viewValue} | limitTo: 10" typeahead-editable='false' placeholder="SKU"/>
+
+								</div>
+							</div>
+
+							<div class="col col-sm-2">
+								<div class="form-group" >
+									<input type="order" name="order"  ng-model="seachform.relation_id" class="form-control"  typeahead-editable='false' placeholder="需求相关的订单号"/>
+								</div>
+							</div>
+							<div class="col col-sm-2">
+								<div class="form-group" >
+									<select name="status" ng-model="seachform.status" class="form-control" 
+									ng-options="x as x for x in statueslist">
+									<option value="">--明细状态--</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="col col-sm-3">
+								<span class="form-group">
+									<div class="control-label">
+									<input type="button" name="search" id="search"  class="btn btn-info" value="Search" ng-click="csearch()"/>
+									<input type="button" name="reset" id="reset"  class="btn btn-info" value="Reset"/>
+									<input type="button" class="btn btn-primary" name="generate" id="generate" ng-click="turnToPurchase()" value="生成采购单">
+									</div>
+								</span>
+							</div>
+						</div>
+						</div>
+				</form>
+
+				<div class="panel panel-default" style="padding:5px;margin-top:10px;text-algin:center">
+				<table width="100%">
+					<tr><td >
+						<label class="control-label">批量操作：</label></td>
+						<td >
+						<select name="baction"  id="baction" ng-model="baction" 
+						ng-change="batch_action()" class="form-control">
+							<option value="" >---择操作方式----</option>
+							<option value="vendor" selected="selected">供应商</option>
+							<option value="tax">含税与否</option>
+							<option value="trans">运输方式</option>
+							<option value="status">修改状态</option>
+						</select>
+						</td>
+						<td class="action_area" >
+							<input type="text" name="vendor_a" ng-show="true" disabled="false" id="vendor_a" ng-model="action.vendor" class="form-control"  typeahead="v as v.abbreviation for v in vendors  | filter:$viewValue | limitTo: 10" required placeholder="Type Name or Code" style="width:330px">
+						</td>
+						<td class="action_area" >
+							<select name="tax_a" id="tax_a" ng-model="action.price_type" ng-options="x.name as x.name for x in taxs" disabled="true" ng-show="false" class="form-control" >
+								<option value=''>--请选择含税与否</option>
+							</select>
+						</td>
+						<td class="action_area" >
+							<select name="trans_a" id="trans_a" ng-model="action.transportation" ng-options="t.name as t.name for t in trans" disabled="true" ng-show="false" class="form-control">
+							<option value=''>--请选择运输方式</option>
+							</select>
+						</td>
+						<td class="action_area" >
+							<select name="status_a" id="status_a" ng-model="action.status" ng-options="t.status as t.status for t in status" disabled="true" ng-show="false" class="form-control">
+							<option value=''>--请选择修改状态</option>
+							</select>
+						</td>
+						<td><input type="button" class="btn btn-success" name="turn_order" id="turn_order" value="批量操作确定" ng-click="dobatch()"/></td>
+
+						<td>
+							<div class="btn-group">
+								<button type="button" class="btn btn-primary" data-toggle="dropdown">调整采购量</button>
+								<button class="btn  btn-primary dropdown-toggle" data-toggle="dropdown">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu col-sm-1">
+									<li ng-click="dobatchQty('middle')">
+										<a>按照装箱数四舍五入</a>
+									</li>
+									<li class="divider"></li>
+									<li ng-click="dobatchQty('up')">
+										<a>按照装箱数向上</a>
+									</li>
+									<li class="divider"></li>
+									<li ng-click="dobatchQty('down')">
+										<a>按照装箱数向下</a>
+									</li>
+									
+								</ul>
+							</div>
+							<div class="btn-group">
+								<input type="button" class="btn btn-primary" name="generate" id="generate" ng-click="turnToPurchaswe()" value="更新默认设置" title="更改内容：1.没有供应商获取供应商，2.获取报价信息">
+							</div>
+							<div class="btn-group">
+								<button type="button" class="btn btn-primary">导出</button>
+								<button class="btn  btn-primary dropdown-toggle" data-toggle="dropdown">
+								   <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+								  	<li ng-click="exports('1')">
+										<a>计划明细表</a>
+									</li>
+									<li class="divider"></li>
+									<li ng-click="exports('2')">
+										<a>计划预算表</a>
+									</li>
+									<li class="divider"></li>
+									<li ng-click="exports('3')">
+										<a>收发货明细表</a>
+									</li>
+								</ul>
+							</div>
+						    <div class="btn-group">
+						    			<span class="btn btn-primary" style="display: block;position:relative;" href="javascript:void(0)" ><font id="col-trigger">显/隐字段</font>
+						<div  class="dropdown-menu" id="col-show-hide">
+							<ul>
+								<li>
+									<input type="checkbox" id="one" checked>
+									<label>供应商</label>
+								</li>
+								<li>
+									<input type="checkbox" id="two" checked>
+									<label>SKU</label>
+								</li>
+								<li>
+									<input type="checkbox" id="three" checked>
+									<label>需求仓库</label>
+								</li>
+								<li>
+									<input type="checkbox" id="four" checked>
+									<label>渠道订单</label>
+								</li>
+								<li>
+									<input type="checkbox" id="five" checked>
+									<label>运输方式</label>
+								</li>
+								<li>
+									<input type="checkbox" id="six" checked>
+									<label>需求数</label>
+								</li>
+								<li>
+									<input type="checkbox" id="seven" checked>
+									<label>最小装箱数</label>
+								</li>
+								 	<li>
+									<input type="checkbox" id="eight" checked>
+									<label>调整后需求数</label>
+								</li>
+								<li>
+									<input type="checkbox" id="nine" checked>
+									<label>期初库存</label>
+								</li>
+								<li>
+									<input type="checkbox" id="ten" checked>
+									<label>最终采购量</label>
+								</li>
+								<li>
+									<input type="checkbox" id="11" checked>
+									<label>含税与否</label>
+								</li>
+								<li>
+									<input type="checkbox" id="12" checked>
+									<label>参考单价</label>
+								</li>
+								<li>
+									<input type="checkbox" id="13" checked>
+									<label>总金额</label>
+								</li>
+								<li>
+									<input type="checkbox" id="14" checked>
+									<label>帐期(天)</label>
+								</li>
+								
+								<li>
+									<input type="checkbox" id="16" checked>
+									<label>OP</label>
+								</li>
+							</ul>
+						</div> </span>
+						    </div>
+
+						</td>
+					</tr>
+				</table>
+				</div>
+
+				 <div name="div_e" class="alert alert-success" style="padding:5px;margin-top:10px;text-align:center;display:none;"  >
+					<a id="export_a" name="export_a" class="export_a" target="_blank"  ng-click="afterfiledown()" href=''></a>
+				</div>
+			</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div>
+	<table class="table table-hover " >
+	<thead>
+		<tr >
+			<th><input type="checkbox" id="all" ng-click="checkall()"/></th>
+			<th name="one">供应商</th>
+			<th name="two">SKU</th>
+			<!--th>描述</th-->
+			<th name="three">需求仓库</th>
+			<th name="four">渠道订单</th>
+			<th name="five">运输方式</th>
+			<th name="six">需求数</th>
+			<th name="seven">最小装箱数</th>
+			<th name="eight">调整后需求数</th>
+			<th name="nine">期初库存</th>
+			<th width="90" name="ten">最终采购量</th>
+			<!--th>采购订单量</th>
+			<th>采购到货量</th-->
+			<th name="11">含税与否</th>
+			<th name="12" width="80">参考单价</th>
+			<th name="13">总金额</th>
+			<th name="14">帐期(天)</th>
+			<th name="16">OP</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="detailx in plandetails | filter: search" id="tr{{detailx.id}}" ng-style="trStyle(detailx.item.line_state,detailx.isParent,detailx.id);">
+			<td class="check-list"><input type="checkbox" name="{{detailx.id}}" id="{{detailx.id}}"  ng-click="addData(detailx,detailx.id)" ng-show="!(detailx.isParent ==1)" ng-style="ckStyle(detailx.parent_id,detailx.id)"/></td>
+			<td name="one" ><input title＝"{{detailx.vendor.name}}" type="text" name="vendor_d" id="vendor_d" ng-model="detailx.vendor" class="form-control vendor_sure" typeahead="v as v.abbreviation for v in vendors  | filter:$viewValue | limitTo: 10" required placeholder="Type Name or Code" ></td>
+			<td name="two" title="{{detailx.item.description}}">{{detailx.item.sku}}</td>
+			<td name="three"><span name="warehouse_idd" class="warehouse_sure">{{detailx.warehouse.name}}</span>
+			<td name="four"><span class="order_sure">{{detailx.relation_id}}</span></td>
+			<td name="five"><select name="transportation_d" id="transportation_d" ng-model="detailx.transportation" ng-options="t.name as t.name for t in trans" class="form-control" style="width:70px" ></select></td>
+			<td name="six">{{detailx.request_qty}}</td>
+			<td name="seven">{{detailx.default.spq}}</td>
+			<td name="eight"><input type="text" name="real_qty" id="real_qty" ng-model="detailx.real_qty" class="form-control" /></td>			
+			<td name="nine">{{detailx.stock_qty}}</td>
+			<td name="ten"><input type="text" name="to_purchase_qty" id="to_purchase_qty" ng-model="detailx.to_purchase_qty" class="form-control" /></td>
+			<!--td>{{detailx.purchase}}</td>
+			<td>{{detailx.purchase_receive}}</td-->
+			<td name="11"><select name="tax_d" id="tax_d" ng-model="detailx.price_type"  style="width:70px"
+							ng-options="x.name as x.name for x in taxs"  class="form-control tax_sure" >
+				<option value=''>--请选择含税与否</option>
+				</select ></td>
+			<td name="12"><input type="text" name="unit_price" id="unit_price" ng-model="detailx.unit_price" class="form-control" />
+			</td>
+			<td name="13">{{detailx.total}}</td>
+			<td name="14">{{detailx.vendor.payment_period}}</td>
+		
+			<td name="16"><input type="button" class="btn btn-default" ng-click="update(detailx)"  value="Save">
+			</td>
+		</tr>
+	</tbody>
+	</table>
+</div>
+<!-- Model -->
+<div class="modal fade"  >
+	<div class="modal-dialog" style="width:1100px;">
+		<div class="modal-content" >
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Purchase Plan Turn To PO</h4>
+			</div>
+			<div class="modal-body">
+				<form name="detailForm" class="">
+				<div class="container-fluid" style="overflow:scroll;">
+					<div class="row">
+						<div class="col col-sm-6">
+							<div class="form-group" >
+								<label class="control-label">供应商</label>
+								<input type="text" ng-disabled = "true" name="vendor" value="{{select.vendor}}" class="form-control">
+							</div>
+						</div>
+						<div class="col col-sm-6">
+							<div class="form-group" >
+								<label class="control-label">需求仓库</label>
+								<input type="text" ng-disabled = "true" name="warehouse" value="{{select.warehouse}}" class="form-control" >
+							</div>
+						</div>
+						<div class="col col-sm-6">
+							<div class="form-group" >
+								<label class="control-label">订需求单</label>
+								<input type="text" ng-disabled = "true" name="order_id" value="{{select.order_id}}" class="form-control" >
+							</div>
+						</div>
+						<div class="col col-sm-6">
+							<div class="form-group" >
+								<label class="control-label">含税与否</label>
+								<input type="text"  value="{{select.price_type}}"  ng-disabled = "true" name="price_type" class="form-control" >
+							</div>
+						</div>
+
+						<div class="col col-sm-6">
+							<div class="form-group" ng-class="{'has-error': detailForm.pur_warehouse.$invalid}">
+								<label class="control-label">采购直接入库仓</label>
+								<select name="pur_warehouse" ng-model="select.pur_warehouse" class="form-control" required ng-options="wh.name for wh in whs"></select>
+								<span ng-show="detailForm.pur_warehouse.$error.required" class="help-inline">Required</span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+					<div class="col">
+					<table class="table table-hover table-striped" >
+					<thead>
+						<tr>
+							<th width="120px">SKU</th>
+							<th>调整后需求量</th>
+							<th>期初库存</th>
+							<th>采购数量</th>
+							<th>参考单价</th>
+							<th>总价</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="detailsel in selectObj | filter: search">
+							<td>{{detailsel.item.sku}}</td>
+							<td>{{detailsel.real_qty}}</td>
+							<td>{{detailsel.stock_qty}}</td>
+							<td>{{detailsel.to_purchase_qty}}</td>
+							<!--td><input type="text" name="{{detailsel.id}}" ng-model="detailsel.real_qty" ng-disabled="detailsel.check_disabled" class="form-control"/></td-->
+							<td>{{detailsel.unit_price}}</td>
+							<td>{{detailsel.total}}</td>
+					</tbody>
+					</table>
+					</div>
+					</div>
+				</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" ng-click="turnToOrder()"  >确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+<style>
+	div#col-show-hide {
+		position: absolute;
+		display: none;
+	}
+	table th{
+		font-size:12px;
+		color:#1A93EF;
+		font-weight:normal;
+		text-align:center;
+	}
+	div#col-show-hide ul li {
+		list-style-type: none;
+		text-align: left;
+		padding-left: 20px;
+	}
+	div#col-show-hide ul {
+		padding-left: 0px;
+	}
+	div#col-show-hide ul li label {
+		margin-left: 5px;
+		font-weight: normal;
+		color: #1A93EF;
+		font-size: 12px;
+		
+	}
+
+</style>
+<script>
+	(function($){
+		
+$('#pop').popover('toggle')		
+$("#col-show-hide ul li input").each(function(i){
+$(this).click(function(){
+   if(this.checked){
+   	 var name=this.id;
+   	 $("th[name='"+name+"']").show();
+   	 $("td[name='"+name+"']").show();
+   }
+   else{
+   	  	 var name=this.id;
+   	 $("th[name='"+name+"']").hide();
+   	 $("td[name='"+name+"']").hide();  
+   }
+})
+});
+
+$("#col-trigger").toggle(
+
+function () {
+$("#col-show-hide").fadeIn("fast");
+},
+function () {
+$("#col-show-hide").fadeOut("fast");
+}
+)
+$(document).bind("click",function(e){
+		var target  = $(e.target);
+		if(target.closest("#col-show-hide").length == 0){
+			$("#col-show-hide").hide();
+		}
+	})	
+})(jQuery);
+</script>
+

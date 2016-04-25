@@ -1,0 +1,153 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">特殊修改--退货单 [{{_returns.invoice}}]</h3>
+			</div>
+
+			<div class="panel-body">
+
+				<div class="container-fluid">
+
+					<div class="panel-group" id="accordion">
+
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a class="accordion-toggle" data-toggle="collapse"
+										data-parent="#accordion" href="#collapseOne">sku替换</a>
+								</h4>
+							</div>
+							<div id="collapseOne" class="panel-collapse collapse in">
+								<div class="panel-body">
+									<form name="editForm" class="col-md-8">
+										<div class="form-group row"
+											ng-class="{'has-error': editForm.oldsku.$invalid || ! skuModel.oldsku }">
+											<div class="col-md-2 ">
+												<label class="control-label">修改前SKU:</label>
+											</div>
+											<div class="col-md-5">
+												<input type="text" name="oldsku" ng-model="skuModel.oldsku"
+													class="form-control" required
+													typeahead="sku for sku in getAllSkus() | filter:$viewValue | limitTo: 10"
+													typeahead-editable="false"
+													required>
+											</div>
+											<div class="col-md-2">
+												<span ng-show="editForm.oldsku.$error.required"
+													class="help-inline">Required</span>
+											</div>
+										</div>
+										<div class="form-group row"
+											ng-class="{'has-error': editForm.newsku.$invalid || ! skuModel.newsku }">
+											<div class="col-md-2 ">
+												<label class="control-label">修改后SKU:</label>
+											</div>
+											<div class="col-md-5">
+												<input type="text" name="newsku" ng-model="skuModel.newsku"
+													class="form-control" required
+													typeahead="sku.sku for sku in skus | filter:{sku: $viewValue} | limitTo: 10"
+													typeahead-editable="false"
+													required>
+											</div>
+											<div class="col-md-2">
+												<span ng-show="editForm.newsku.$error.required"
+													class="help-inline">Required</span>
+											</div>
+										</div>
+
+										<div class="form-group row">
+											<div class="col-md-3">
+												<a class="btn btn-default" href="#/purchase/return">取消</a>
+												<button type="button" class="btn btn-primary"
+													ng-click="updateSku()"
+													ng-disabled=" editForm.$invalid">更改</button>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+
+						<div class="panel panel-default">
+							<div class="panel panel-heading">
+								<h4 class="panel-title">
+									<a class="accordion-toggle" data-toggle="collapse"
+										data-parent="#accordion" href="#collapseTwo">替换数量及其他</a>
+								</h4>
+							</div>
+							<div id="collapseTwo" class="panel-collapse collapse">
+								<div class="panel-body">
+									<form name="otherChange">
+									<div class="row" ng-repeat="detail in _returns.details">
+										
+										<div class="col-md-2">
+											<div class="row">
+												<span class="col-md-12">
+													<span class="col-md-3"><b>sku:</b></span><span class="col-md-3"><b>{{detail.item.sku}}</b></span>
+												</span>
+											</div>
+										</div>
+										
+										<div class="col-md-2">
+											<div class="row">
+												<span class="col-md-5">
+													<label>数量:</label>
+												</span>
+												<ng-form name="nqtyform"> <span class="col-md-7"
+													ng-class="{'has-error': nqtyform.qty.$invalid}">
+													<input type="text" class="form-control" name="qty"
+														ng-pattern="/^[0-9]+$/" ng-model="detail.qty" required>
+												</span> </ng-form>
+											</div>
+										</div>
+
+
+										
+
+										<div class="col-md-6">
+											<div class="row">
+												<span class="col-md-2">
+													<label>原因:</label>
+												</span>
+												<span class="col-md-10">
+													<input type="text" class="form-control col-md-9"
+														name='reason' ng-model="detail.reason" />
+												</span>
+											</div>
+										</div>
+
+									</div>
+									</form>
+
+									<div class="row">
+										<div class="col-md-2">
+											<div class="row">
+												<span class="col-md-12">
+													<button type="button" class="btn btn-primary"
+														ng-click="saveAll(detail.id)" ng-disabled="isClean() || otherChange.$invalid || nqtyform.$invalid">全部保存</button>
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="panel panel-default">
+							<div class="panel panel-heading">
+								<span>
+									<a href="javascript:;" ng-click="returnPending()">return
+										back</a>
+								</span>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+</div>

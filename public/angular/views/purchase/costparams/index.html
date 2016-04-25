@@ -1,0 +1,60 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">运费系数</h3></div>
+
+			<div class="panel-body">
+				<form name="searchForm">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col col-sm-3">
+							<div class="form-group" ng-class="{'has-error': searchForm.warehouse.$invalid}">
+								<select name="warehouse" ng-model="search.warehouse" class="form-control" ng-options="w.id as w.name for w in warehouses"></select>
+							</div>
+						</div>
+						<div class="col col-sm-3">
+							<div class="form-group" ng-class="{'has-error': searchForm.sku.$invalid}">
+								<input type="text" name="sku" ng-model="search.sku" class="form-control" typeahead="i as i.sku for i in items | filter:{sku: $viewValue} | limitTo:10" typeahead-editable='false' placeholder="SKU" >
+							</div>
+						</div>
+						<div class="col col-sm-2">
+							<div class="form-group" >
+								<button type="button" class="btn btn-primary" ng-click="searching()" ng-disabled="searchForm.$invalid">搜索</button>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				</form>
+
+				<table class="table table-condensed table-hover">
+					<thead>
+						<tr>
+							<th>
+								<a href="#/purchase/costparams/edit/new">
+									<i class="glyphicon glyphicon-plus"></i>
+								</a>
+							</th>
+							<th>海运系数</th>
+							<th>空运系数</th>
+							<th>仓库</th>
+							<th>特定SKU</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="ps in cplist">
+							<td>
+								<a href="#/purchase/costparams/edit/{{ps.id}}"><i class="glyphicon glyphicon-pencil"></i></a>
+								<a href="javascript:;" ng-click="remove(ps.id)"><i class="glyphicon glyphicon-remove"></i></a>
+							</td>
+							<td>{{ps.sea_cost | floatNum}} </td>
+							<td>{{ps.air_cost | floatNum}} </td>
+							<td>{{ps.warehouse_id | warehouse}} </td>
+							<td>{{ps.item_id|sku}} </td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

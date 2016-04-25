@@ -1,0 +1,113 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default ng-cloak" >
+			<div class="panel-heading">
+				<h3 class="panel-title">Item  Image Manage
+					<a class="btn btn-default btn-xs pull-right" ng-click="addNewImage()">
+					    <i class="glyphicon glyphicon-plus"></i>
+					</a>
+				</h3>
+			</div>
+			
+			<div class="panel-body" ng-show="isNew">
+				<h4>此产品还未添加图片!</h4>
+				 <button class="btn btn-primary" ng-click="addNewImage()">立即添加</button>
+			</div>
+
+			<div class="panel-body" ng-show="!isNew">
+				<div class="row">
+				  <div class="col-sm-6 col-md-4" ng-repeat="image in images">				  	
+				    <div class="thumbnail">
+				      <img alt="..." ng-src="/images/item/{{image.id}}/thumb" ng-click="showImageModal(image.original);">
+				      <div class="caption">
+				        <h3>{{image.desc}}</h3>				       
+				        <p>
+				        	<a href="javascript:;" class="btn btn-primary" role="button" ng-click="showChangeForm(image.id)">更换图片</a>
+				       </p>
+				      </div>
+				    </div>
+				  </div>
+				</div>			
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<!-- Model -->
+<div class="modal fade" id="showImageModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">图片预览</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="thumbnail">   
+						<img alt="..."
+						ng-src="/images/item/{{image.id}}">
+						<div class="caption">
+							<h3>{{image.desc}}</h3>
+							<p>
+								
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+			
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Model End-->
+
+
+<!-- Modal -->
+<div class="modal fade" id="showImageChangeFormModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">图片添加/修改</h4>
+			</div>
+			<div class="modal-body">
+				<form action="" method="POST" role="form" name="imageForm">
+					<div class="row">
+						<div class="col col-sm-12">
+							<div class="form-group"
+								ng-class="{'has-error': imageForm.image_desc.$invalid}">
+								<label class="control-label">图片描述 </label>
+								<input type="text" name="image_desc" ng-model="image_desc"
+									class="form-control" required>
+								<span ng-show="imageForm.image_desc.$error.required"
+									class="help-inline">Required</span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col col-sm-12">
+							<div class="form-group"
+								ng-class="{'has-error': imageForm.file.$invalid}">
+								<label for="" class="control-label"> 上传图片(此处不支持批量上传) </label>
+								<input type="file" name="file"
+									ng-file-select="onFileSelect($files)" required>
+							</div>
+						</div>
+					</div>
+
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="updateImage()" ng-disabled="validateChaifenForm()">保存</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

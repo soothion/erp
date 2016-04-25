@@ -1,0 +1,121 @@
+
+<div class="row">
+	<div class="col col-lg-3">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">上传压缩文件</h3></div>
+
+			<div class="panel-body">
+				
+				<form action="" method="POST" role="form">
+				
+					<div class="form-group">
+						<label for="">选择上传文件</label>
+						<input type="file" ng-file-select="onFileSelect($files)" >
+					</div>
+
+				</form>
+				
+			</div>
+		</div>
+	</div>
+
+	<div class="col col-lg-9">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">上传日志<a ng-click="refresh()" class="btn btn-default btn-xs pull-right"><i class="glyphicon glyphicon-refresh"></i></a></h3></div>
+
+			<div class="panel-body">
+				
+				<table class="table table-condensed table-hover">
+					<thead>
+						<tr>
+							<th>上传时间</th>
+							<th>文件名</th>
+							<th>total</th>
+							<th>approved</th>
+							<th>pending</th>
+							<th>reject</th>
+							<th>error</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="item in paginator.currentPageItems">
+							<td>{{item.created_at}}</td>
+							<td>{{item.filename}}</td>
+							<td>{{item.total}}</td>
+							<td>{{item.approved}}</td>
+							<td>{{item.pending}}</td>
+							<td>{{item.reject}}</td>
+							<td>{{item.error}}</td>
+							<td><a href="javascript:;" ng-show="item.error" ng-click="showError(item)" >Fix Errors</a></td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="8">
+								<ul class="pager">
+									<li class="previous" ng-show="paginator.hasPrevious()"><a href="javascript:;" ng-click="paginator.previous()">&laquo; 上一页</a></li>
+									<li class="next" ng-show="paginator.hasNext()"><a href="javascript:;" ng-click="paginator.next();">下一页 &raquo;</a></li>
+								</ul>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+				
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="error_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">{{error_display.filename}}</h4>
+      </div>
+      <div class="modal-body">
+        <!-- <p>One fine body&hellip;</p> -->
+        <table class="table table-condensed table-hover">
+        	<thead>
+        		<tr>
+        			<th>SKU</th>
+        			<th>描述</th>
+        		</tr>
+        	</thead>
+        	<tbody>
+        		<tr ng-repeat="error in error_display.errors">
+        			<td class="warning">{{error.content.split(';')[0]}}</td>
+        			<td class="danger">{{error.desc}}</td>
+        		</tr>
+        	</tbody>
+        </table>
+
+        <span class="label label-warning">reject</span>
+        <span class="label label-danger">error</span>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="normal_error">
+  <div class="modal-dialog">
+     <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">错误提示</h4>
+      </div>
+      <div class="modal-body">
+        <!-- <p>One fine body&hellip;</p> -->
+         {{normal_error}}
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+

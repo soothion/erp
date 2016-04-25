@@ -1,0 +1,264 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">采购单</h3>
+			</div>
+
+			<div class="panel-body">
+
+				<div class="row" ng-show="liugang">
+					<span class="col-md-7 form-group"> <label
+							class="col-lg-2">计划编号:</label> <span class="col-lg-4">
+							<input class="form-control" type="text"
+							       ng-model="orderSearch.planName">
+						</span> <label class="col-lg-2">PO编号:</label> <span
+							class="col-lg-4">
+							<input class="form-control" type="text"
+							       ng-model="orderSearch.invoice">
+						</span> </span>
+					<span class="col-md-5 form-group"> <label
+							class="col-lg-2">SKU:</label> <span class="col-lg-6">
+							<input class="form-control" type="text"
+							       ng-model="orderSearch.item"
+							       typeahead="sku as  sku.sku for sku in skus | filter:{sku: $viewValue} | limitTo: 10"
+							       typeahead-editable="false">
+						</span> </span>
+				</div>
+				<div class="row">
+					<span class="col-md-7 form-group"> <label class="col-lg-2">状态:</label> <span
+							class="col-lg-4">
+							<select name="status" class="form-control"
+							        ng-model="orderSearch.status"
+							        ng-options="w.id as w.name for w in status" required>
+								<option value="">--请选择--</option>
+							</select> </span> <label class="col-lg-2">创建人:</label> <span
+							class="col-lg-4">
+							<input type="text" name="agent" ng-model="orderSearch.agent"
+							       class="form-control"
+							       typeahead="v as v.code+'('+v.name+')' for v in users | filter:$viewValue | limitTo: 10"
+							       required placeholder="Type Name or Code">
+						</span> </span>
+					<span class="col-md-5 form-group"> <label class="col-lg-2">仓库:</label> <span
+							class="col-lg-6">
+							<select name="warehouse_id" class="form-control"
+							        ng-model="orderSearch.warehouse_id"
+							        ng-options="w.id as w.name for w in warehouses" required>
+								<option value="">--请选择--</option>
+							</select> </span> </span>
+				</div>
+				<div class="row">
+					<span class="col-md-7 form-group"> <label
+							class="col-lg-2">创建时间:</label> <span class="col-lg-4">
+							<input class="form-control" type="text"
+							       ng-model="orderSearch.created_at" placeholder=""
+							       datepicker-popup="yyyy-MM-dd">
+						</span> <label class="col-lg-2">to</label> <span class="col-lg-4">
+							<input class="form-control" type="text"
+							       ng-model="orderSearch.updated_at" placeholder=""
+							       datepicker-popup="yyyy-MM-dd">
+						</span>  </span>
+					<span class="col-md-5 form-group">
+						<label class="col-lg-2">SKU:</label>
+						<span class="col-lg-6">
+							<input class="form-control" type="text"
+							       ng-model="orderSearch.item"
+							       typeahead="s as s.sku for s in skus | filter:{sku: $viewValue} | limitTo: 10"
+							       typeahead-editable="false">
+						</span>
+					</span>
+				</div>
+
+				<div class="row">
+					<span class="col-md-7 form-group">
+						<label class="col-lg-2">PO编号:</label>
+						<span class="col-lg-4">
+							<input class="form-control"
+							       type="text" ng-model="orderSearch.invoice">
+						</span>
+					</span>
+				</div>
+
+				<div class="row">
+					<div class="col col-sm-4">
+						<div class="form-group">
+							<button type="button" class="btn btn-primary"
+							        ng-click="FilterSearch()">搜索
+							</button>
+							<button type="button" class="btn btn-primary" ng-click="Export()">
+								导出
+							</button>
+							<button type="button" class="btn btn-default"
+							        ng-click="cleanSearch()">重置
+							</button>
+							<div class="btn-group">
+							  <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+							    选择项 <span class="caret"></span>
+							  </button>
+							  <ul class="dropdown-menu" role="menu">
+							    <li><a ng-click="mergeChecked()">合并</a></li>
+							  </ul>
+							</div>
+						</div>
+					</div>
+					<div class="col col-sm-offset-6 col-sm-2">
+						<div class="form-group">
+							<button type="button" class="btn btn-defaul"
+							        ng-init="showColLabel=false;"
+							        ng-click="showColLabel=!showColLabel;">
+								显/隐 列
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="row" ng-show="showColLabel">
+					<div class="btn-group col-md-12"
+					     ng-init="showCols={};showCols.planName=true;showCols.po=true;showCols.warehouse=true;showCols.vender=true;showCols.currency=true;showCols.total=true;showCols.payment_dates=true;showCols.tax_rate=true;showCols.price_type=true;showCols.invoice_rate=true;showCols.status=true;showCols.agent=true;showCols.created_at=true;showCols.updated_at=true;showCols.print=true;">
+
+						<button type="button" class="btn btn-default"
+						        ng-class="{'btn-success': showCols.planName}"
+						        ng-model="showCols.planName" btn-checkbox>
+							计划编号
+						</button>
+						<button type="button" class="btn btn-default"
+						        ng-class="{'btn-success': showCols.po}"
+						        ng-model="showCols.po" btn-checkbox>
+							PO编号
+						</button>
+						<button type="button" class="btn btn-default"
+						        ng-class="{'btn-success': showCols.warehouse}"
+						        ng-model="showCols.warehouse" btn-checkbox>
+							仓库
+						</button>
+						<button type="button" class="btn btn-default"
+						        ng-class="{'btn-success': showCols.vender}"
+						        ng-model="showCols.vender" btn-checkbox>
+							供应商
+						</button>
+						<button type="button" class="btn btn-default"
+						        ng-class="{'btn-success': showCols.currency}"
+						        ng-model="showCols.currency" btn-checkbox>
+							币种
+						</button>
+						<button type="button" class="btn btn-default"
+						        ng-class="{'btn-success': showCols.total}"
+						        ng-model="showCols.total" btn-checkbox>
+							金额
+						</button>
+
+						<button type="button" class="btn btn-default"
+						        ng-class="{'btn-success': showCols.payment_dates}"
+						        ng-model="showCols.payment_dates" btn-checkbox>
+							付款日期
+						</button>
+						<button type="button" class="btn btn-default"
+						        ng-class="{'btn-success': showCols.tax_rate}"
+						        ng-model="showCols.tax_rate" btn-checkbox>
+							税点
+						</button>
+						<button type="button" class="btn btn-default"
+						        ng-class="{'btn-success': showCols.price_type}"
+						        ng-model="showCols.price_type" btn-checkbox>
+							含税方式
+						</button>
+						<button type="button" class="btn btn-default"
+						        ng-class="{'btn-success': showCols.invoice_rate}"
+						        ng-model="showCols.invoice_rate" btn-checkbox>
+							票点
+						</button>
+						<button type="button" class="btn btn-default"
+						        ng-class="{'btn-success': showCols.status}"
+						        ng-model="showCols.status" btn-checkbox>
+							状态
+						</button>
+						<button type="button" class="btn btn-default"
+						        ng-class="{'btn-success': showCols.agent}"
+						        ng-model="showCols.agent" btn-checkbox>
+							创建人
+						</button>
+						<button type="button" class="btn btn-default"
+						        ng-class="{'btn-success': showCols.created_at}"
+						        ng-model="showCols.created_at" btn-checkbox>
+							创建日期
+						</button>
+						<button type="button" class="btn btn-default"
+						        ng-class="{'btn-success': showCols.updated_at}"
+						        ng-model="showCols.updated_at" btn-checkbox>
+							最后更改日期
+						</button>
+						<button type="button" class="btn btn-default"
+						        ng-class="{'btn-success': showCols.print}"
+						        ng-model="showCols.print" btn-checkbox>
+							打印
+						</button>
+					</div>
+				</div>
+
+				<table class="table table-condensed table-hover">
+					<thead>
+						<tr>
+							<th>
+								<a href="#/purchase/order/edit/new"><i class="glyphicon glyphicon-plus"></i></a>
+								<input type="checkbox" name="checkAllToggleList" ng-click="toggleCheckedAll()"></input>
+							</th>
+							<th ng-show="showCols.planName">计划编号</th>
+							<th ng-show="showCols.po">PO编号</th>
+							<th ng-show="showCols.warehouse">仓库</th>
+							<th ng-show="showCols.vender">供应商</th>
+							<th ng-show="showCols.currency">币种</th>
+							<th ng-show="showCols.total">金额</th>
+							<th ng-show="showCols.payment_dates">付款日期</th>
+							<th ng-show="showCols.tax_rate">税点</th>
+							<th ng-show="showCols.price_type">含税方式</th>
+							<th ng-show="showCols.invoice_rate">票点</th>
+							<th ng-show="showCols.status">状态</th>
+							<th ng-show="showCols.agent">创建人</th>
+							<th ng-show="showCols.created_at">创建日期</th>
+							<th ng-show="showCols.updated_at">最后更改日期</th>
+							<th ng-show="showCols.print">打印</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="order in orders | filter: search">
+							<td><a href="#/purchase/order/edit/{{order.id}}"><i
+									class="glyphicon glyphicon-pencil"></i></a>
+							<input name="checkIdList" type="checkbox" value="{{order.id}}"></input></td>
+							<td ng-show="showCols.planName">{{order.planName}}</td>
+							<td ng-show="showCols.po">{{order.invoice}}</td>
+							<td ng-show="showCols.warehouse">{{order.warehouseName}}</td>
+							<td ng-show="showCols.vender">{{order.vendorName}}</td>
+							<td ng-show="showCols.currency">{{order.currency}}</td>
+							<td ng-show="showCols.total">{{order.total}}</td>
+							<td ng-show="showCols.payment_dates">{{order.payment_dates}}</td>
+							<td ng-show="showCols.tax_rate">{{order.tax_rate}}</td>
+							<td ng-show="showCols.price_type">{{order.price_type}}</td>
+							<td ng-show="showCols.invoice_rate">{{order.invoice_rate}}</td>
+							<td ng-show="showCols.status">{{order.status}}</td>
+							<td ng-show="showCols.agent">{{order.agent|user}}</td>
+							<td ng-show="showCols.created_at">{{order.created_at}}</td>
+							<td ng-show="showCols.updated_at">{{order.updated_at}}</td>
+							<td ng-show="showCols.print"><a
+									href="#/purchase/order/showPrint/{{order.id}}"><i
+									class="glyphicon glyphicon-print"></i></a></td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="18">
+								<ul class="pager">
+									<li class="previous" ng-show="hasPrePage()"><a
+											href="javascript:;" ng-click="goPrePage()">&laquo; 上一页</a>
+									</li>
+									<li class="next" ng-show="hasNextPage()"><a
+											href="javascript:;"
+											ng-click="goNextPage()">下一页 &raquo;</a></li>
+								</ul>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

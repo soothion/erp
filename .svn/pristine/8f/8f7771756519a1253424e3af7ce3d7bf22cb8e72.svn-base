@@ -1,0 +1,123 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<b ng-show="isNew">新建</b>
+					运费系数
+				</h3>
+			</div>
+			<div class="panel-body">
+				<div class="container-fluid">
+					<form name="editForm" class="">
+						<div class="row">
+
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.warehouse_id.$invalid}">
+									<label class="control-label">仓库</label>
+									<select name="warehouse_id" class="form-control"
+										ng-model="cp.warehouse_id"
+										ng-options="w.id as w.name for w in warehouses" required>
+										<option value="">--请选择--</option>
+										<span ng-show="editForm.warehouse_id.$error.required"
+											class="help-inline">Required</span>
+									</select>
+								</div>
+							</div>
+
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.sku.$invalid}">
+									<label class="control-label">SKU</label>
+									<input type="text" name="sku" ng-model="cp.item"
+										class="form-control"
+										typeahead="i as i.sku for i in items | filter:{sku: $viewValue} | limitTo:10"
+										typeahead-editable='false' placeholder="SKU">
+								</div>
+							</div>
+							
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.air_cost.$invalid}">
+									<label class="control-label">空运系数</label>
+									<input type="text" name="air_cost" ng-model="cp.air_cost" required
+										class="form-control"
+										ng-pattern="/^[0-9]+(\.?)[0-9]*$/" />
+								</div>
+							</div>
+							
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.sea_cost.$invalid}">
+									<label class="control-label">海运系数</label>
+									<input type="text" name="sea_cost" ng-model="cp.sea_cost"
+										class="form-control" ng-pattern="/^[0-9]+(\.?)[0-9]*$/" required/>
+								</div>
+							</div>
+						</div>
+						
+						<a class="btn btn-default" href="#/purchase/costparams/">Cancel</a>
+						<a class="btn btn-info" href="/api/purchase/uploadcostparams" target="_blank" ng-show="isNew">DownTemp</a>
+						
+						<button type="button" class="btn btn-warning" ng-click="update()" 
+							ng-disabled="isClean()||editForm.$invalid"><b ng-show="isNew">Create</b><b ng-show="!isNew">Update</b></button>
+						
+					</form>
+					
+					<div ng-controller="uploadCtrl" style="position:absolute;bottom:5px;right:0px" ng-show="isNew">
+						<form action="/api/purchase/uploadcostparams" method="post" enctype="multipart/form-data" ng-upload >
+							<div class="input-group" style="width:420px;margin-bottom: 10px;">							
+								  <span class="btn btn-success btn-file "> Add files...
+										<input type="file" multiple="" name="file" onchange="changeValue(this.value)" style="border-radius:0px;" ng-file-select="onFileSelect($files)">
+									</span>
+								  <span><input type="text" readonly="" class="form-control" id="fileUpload" ></span>
+							    <input style="margin-left:5px;" type="submit" class="btn btn-primary" value="Upload" upload-submit="uploadComplete(content, completed)"/></span>
+							    
+							</div>
+							
+						</form>
+						
+					</div>
+					
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+
+<style>
+    div.input-group span{
+    	  display:block;
+    	  float: left;
+    }
+	.btn-file {
+		position: relative;
+		overflow: hidden;
+	}
+	.btn-file input[type=file] {
+		position: absolute;
+		top: 0;
+		right: 0;
+		min-width: 100%;
+		min-height: 100%;
+		font-size: 999px;
+		text-align: right;
+		filter: alpha(opacity=0);
+		opacity: 0;
+		background: red;
+		cursor: inherit;
+		display: block;
+	}
+
+</style>
+<script>
+	function changeValue(value) {
+		var uploadFile = document.getElementById('fileUpload');
+		uploadFile.value = value;
+	}
+</script>
+

@@ -1,0 +1,201 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">调度单列表</h3>
+			</div>
+			<div class="panel-body">
+				
+					<div class="container-fluid">
+
+						<form name="searchForm">
+							<div class="container-fluid">
+								<div class="row">
+									<div class="col col-sm-2">
+										<div class="form-group"
+											ng-class="{'has-error': searchModel.invoice.$invalid}">
+											<input type="text" ng-model="searchModel.invoice"
+												class="form-control" placeholder="编号">
+										</div>
+									</div>
+
+									<div class="col col-sm-2">
+										<div class="form-group"
+											ng-class="{'has-error': searchModel.sku.$invalid}">
+											<input type="text" name="sku" ng-model="searchModel.sku" id="sku"
+												class="form-control"
+												typeahead="i as i.sku for i in skus | filter:{sku: $viewValue} | limitTo:10"
+												placeholder="SKU">
+										</div>
+									</div>
+
+									
+									
+									<div class="col col-sm-2">
+										<div class="form-group"
+											ng-class="{'has-error': searchModel.status.$invalid}">
+											<select name="status" class="form-control"
+												ng-model="searchModel.status"
+												ng-options="w as w.name for w in statuses" required>
+												<option value="">--状态--</option>
+											</select>
+										</div>
+									</div>
+									
+									
+									<div class="col col-sm-2">
+										<div class="form-group"
+											ng-class="{'has-error': searchModel.fromwarehouse.$invalid || ( searchModel.fromwarehouse.id && searchModel.fromwarehouse.id==searchModel.towarehouse.id )}">											<select name="fromwarehouse" class="form-control"
+												ng-model="searchModel.fromwarehouse"
+												ng-options="w as w.name for w in warehouses" required>
+												<option value="">--调入仓--</option>
+											</select>
+										</div>
+									</div>
+									
+									<div class="col col-sm-2">
+										<div class="form-group"
+											ng-class="{'has-error': searchModel.towarehouse.$invalid || ( searchModel.towarehouse.id && searchModel.fromwarehouse.id==searchModel.towarehouse.id )}">
+											<select name="towarehouse" class="form-control"
+												ng-model="searchModel.towarehouse"
+												ng-options="w as w.name for w in warehouses" required>
+												<option value="">--调出仓--</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								
+								<div class="row">
+
+									<div class="col col-sm-2">
+										<div class="form-group"
+											ng-class="{'has-error': searchModel.timeStart.$invalid}">
+											<abbr title="创建时间">
+												<input type="text" ng-model="searchModel.timeStart"
+												class="form-control" placeholder="创建时间"
+												datepicker-popup="yyyy-MM-dd">
+											</abbr>
+										</div>
+									</div>
+
+									<div class="col col-sm-2">
+										<div class="form-group"
+											ng-class="{'has-error': searchModel.timeEnd.$invalid}">
+											<abbr title="创建时间:to">
+												<input type="text" ng-model="searchModel.timeEnd"
+												class="form-control" placeholder="to"
+												datepicker-popup="yyyy-MM-dd">
+											</abbr>
+										</div>
+									</div>
+									
+									<div class="col col-sm-2">
+										<div class="form-group"
+											ng-class="{'has-error': searchModel.dateOutTimeStart.$invalid}">
+											<abbr title="出库时间">
+												<input type="text" ng-model="searchModel.dateOutTimeStart"
+												class="form-control" placeholder="出库时间"
+												datepicker-popup="yyyy-MM-dd">
+											</abbr>
+										</div>
+									</div>
+
+									<div class="col col-sm-2">
+										<div class="form-group"
+											ng-class="{'has-error': searchModel.dateOutTimeEnd.$invalid}">
+											<abbr title="出库时间:to">
+												<input type="text" ng-model="searchModel.dateOutTimeEnd"
+												class="form-control" placeholder="to"
+												datepicker-popup="yyyy-MM-dd">
+											</abbr>
+										</div>
+									</div>
+									
+									<div class="col col-sm-2">
+										<div class="form-group"
+											ng-class="{'has-error': searchModel.dateReceiveTimeStart.$invalid}">
+											<abbr title="接收时间">
+												<input type="text" ng-model="searchModel.dateReceiveTimeStart"
+												class="form-control" placeholder="接收时间"
+												datepicker-popup="yyyy-MM-dd">
+											</abbr>
+										</div>
+									</div>
+									
+									<div class="col col-sm-2">
+										<div class="form-group"
+											ng-class="{'has-error': searchModel.dateReceiveTimeEnd.$invalid}">
+											<abbr title="接收时间:to">
+												<input type="text" ng-model="searchModel.dateReceiveTimeEnd"
+												class="form-control" placeholder="to"
+												datepicker-popup="yyyy-MM-dd">
+											</abbr>
+										</div>
+									</div>
+									
+
+								</div>
+								<div class="row">
+									<div class="col col-sm-4">
+										<div class="form-group">
+											<button type="button" class="btn btn-primary"
+												ng-click="toFilter()" ng-disabled="searchModel.towarehouse.id && searchModel.fromwarehouse.id && searchModel.fromwarehouse.id==searchModel.towarehouse.id ">搜索</button>
+											<button type="button" class="btn btn-primary"
+												ng-click="toExport()">导出</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				<hr>
+				
+				<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th>
+							<a href="#/warehouse/dispatch/create">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</th>
+						<th>OP</th>
+						<th>调度单编号</th>
+						<th>From仓库</th>
+						<th>To仓库</th>
+						<th>创建人</th>
+						<th>创建日期</th>
+						<th>预计到货日期</th>
+						<th>出库日期</th>
+						<th>入库日期</th>
+						<th>状态</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="sm in dispatchList | filter: search">
+						<td>
+							<input type="checkbox" name="return-list" value="{{sm.id}}" />
+						</td>
+						<td>							
+							<a href="#/warehouse/dispatch/update/{{sm.id}}">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>							
+							<a href="javascript:;" ng-click="deleteDispatch(sm.id)" ng-show="sm.status =='pending'">
+								<i class="glyphicon glyphicon-remove"></i>
+							</a>
+						</td>
+						<td>{{sm.invoice}}</td>
+						<td>{{sm.from_warehouse.name}}</td>
+						<td>{{sm.to_warehouse.name}}</td>
+						<td>{{sm.user.email}}</td>
+						<td>{{sm.created_at}}</td>
+						<td>{{sm.date_eta}}</td>
+						<td>{{sm.date_out}}</td>
+						<td>{{sm.date_receive}}</td>
+						<td>{{sm.status}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+	</div>
+</div>

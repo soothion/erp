@@ -1,0 +1,16 @@
+{
+    "name": "soothion/amazon-mws-sdk",
+    "description": "Amazon MarketplaceWebService",
+    "authors": [
+        {
+            "name": "soothion",
+            "email": "soothion@sina.com"
+        }
+    ],
+    "require": {
+
+    },
+    "autoload": {
+        "classmap": ["src/MarketplaceWebService/"]
+    }
+}

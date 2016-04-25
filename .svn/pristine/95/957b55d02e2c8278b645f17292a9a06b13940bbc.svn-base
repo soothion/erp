@@ -1,0 +1,45 @@
+{
+  "repositories": [
+    {
+    "type": "composer",
+    "url": "http://packages.test.hisgadget.com"
+    }
+  ],
+	"require": {
+		"laravel/framework": "4.1.*",
+		"cartalyst/sentry": "dev-master",
+		"dinesh/barcode": "dev-master",
+		"maatwebsite/excel": "~1.2.1",
+		"bluebanner/core": "*",
+		"bluebanner/ui": "*"
+		
+	},
+	"autoload": {
+		"classmap": [
+			"app/commands",
+			"app/controllers",
+			"app/controllers/api",
+			"app/controllers/item",
+			"app/models",
+			"app/database/migrations",
+			"app/database/seeds",
+			"app/tests/TestCase.php",
+			"app/forms"
+		]
+	},
+	"scripts": {
+		"pre-update-cmd": [
+			"php artisan clear-compiled"
+		],
+		"post-install-cmd": [
+			"php artisan optimize"
+		],
+		"post-update-cmd": [
+			"php artisan optimize"
+		]
+	},
+	"config": {
+		"preferred-install": "dist"
+	},
+	"minimum-stability": "dev"
+}

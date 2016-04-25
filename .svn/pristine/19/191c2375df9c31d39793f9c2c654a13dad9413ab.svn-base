@@ -1,0 +1,82 @@
+<?php
+
+use Bluebanner\Core\Order\FileUploadQueueImpl;
+
+class APIBatchUploadController extends \BaseController {
+
+	public function index()
+	{
+		$action = Input::get('action');
+		return Bluebanner\Core\Model\Queue::with('errors')
+			->where('action', Input::get('action'))
+			->where('agent', Sentry::getUser()->id)
+			->orderBy('updated_at', 'desc')->get();
+	}
+
+	public function template($action)
+	{
+		switch ($action) {
+			case 'item':
+				$file = 'item.upload.template.xlsx';
+				break;
+			case 'purchase-request':
+				$file = 'request.upload.template.xlsx';
+				break;
+			
+			default:
+				# code...
+				break;
+		}
+
+		return Response::download(storage_path() . '/templates/' . $file);
+	}
+
+	public function handler($action)
+	{
+
+		$file = Input::file('file');
+
+		$path = storage_path() . '/upload/queues/batch-upload/' . $action . '/' . Sentry::getUser()->id . '/' . date('Ymdhis');
+		$file->move($path, $file->getClientOriginalName());
+
+		$service = new FileUploadQueueImpl();
+		$service->setUploadFilePath($path . '/' . $file->getClientOriginalName());
+
+		try {
+
+			$service->validate();
+
+		} catch (Exception $e) {
+
+			return $e->getMessage();
+
+		}
+
+		$queue = Bluebanner\Core\Model\Queue::create(array(
+			'filename' => $file->getClientOriginalName(),
+			'agent'	=> Sentry::getUser()->id,
+			'params' => json_encode(Input::get()),
+			'action' => $action,
+     ));
+
+		$service->setQueueId($queue->id);
+		$service->setParams(json_encode(Input::get()));
+
+		switch ($action) {
+			case 'purchase-request':
+				$impl = 'Bluebanner\Core\Purchase\FileUploadQueueImpl';
+				break;
+			case 'order-import':
+				$impl = 'Bluebanner\Core\Order\FileUploadQueueImpl';
+				break;
+			default:
+				# code...
+				break;
+		}
+		
+		Queue::push($impl, serialize($service));
+
+
+	}
+
+}

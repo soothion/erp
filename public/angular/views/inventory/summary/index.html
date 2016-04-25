@@ -1,0 +1,117 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">库存报表(财务)</h3></div>
+
+			<div class="panel-body">
+				<form name="searchForm">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col col-sm-2">
+							<div class="form-group" ng-class="{'has-error': searchForm.warehouse.$invalid}">
+								<select name="warehouse" ng-model="search.warehouse" class="form-control" ng-options="w.id as w.name for w in warehouse"></select>
+							</div>
+						</div>
+						<div class="col col-sm-2">
+							<div class="form-group" ng-class="{'has-error': searchForm.sku.$invalid}">
+								<input type="text" name="sku" ng-model="search.sku" class="form-control" typeahead="i as i.sku for i in items | filter:{sku: $viewValue} | limitTo:10" placeholder="SKU">
+							</div>
+						</div>
+						<div class="col col-sm-8">
+							<div class="form-group" ng-class="{'has-error': searchForm.status.$invalid}">
+								<div class="btn-group ">
+									<button type="button" class="btn btn-default" ng-model="search.status.stocked" btn-checkbox>Stocked</button>
+									<button type="button" class="btn btn-default" ng-model="search.status.onroad" btn-checkbox>Onroad</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col col-sm-2">
+							<div class="form-group" ng-class="{'has-error': searchForm.date.$invalid}">
+								<input type="text" name="date" ng-model="search.date" class="form-control" datepicker-popup="yyyy-MM-dd" >
+							</div>
+						</div>
+						<div class="col col-sm-4">
+							<div class="form-group" ng-class="{'has-error': searchForm.condition.$invalid}">
+								<div class="btn-group ">
+									<button type="button" class="btn btn-default" ng-model="search.condition.normal" btn-checkbox>Normal</button>
+									<button type="button" class="btn btn-default" ng-model="search.condition.likenew" btn-checkbox>Like New</button>
+									<button type="button" class="btn btn-default" ng-model="search.condition.used" btn-checkbox>Used</button>
+									<button type="button" class="btn btn-default" ng-model="search.condition.defective" btn-checkbox>Defective</button>
+								</div>
+							</div>
+						</div>
+						<div class="col col-sm-4">
+							<div class="form-group" >
+								<button type="button" class="btn btn-primary" ng-click="searching()" ng-disabled="searchForm.$invalid">搜索</button>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				</form>
+
+				<table class="table table-condensed table-hover">
+					<thead>
+						<tr>
+							<th>SKU</th>
+							<th>数量</th>
+							<th>采购价(RMB)</th>
+							<th>市场成本价(USD)</th>
+							<th>PI价</th>
+							<th>批次号</th>
+							<th>相关编号</th>
+							<th>库存类型</th>
+							<th>库存状态</th>
+							<th>库存时刻</th>
+							<th>仓库</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="change in list">
+							<td>{{change.item_id | sku}}</td>
+							<td>{{change.qty}}</td>
+							<td>{{change.inventory.rmbprice}}</td>
+							<td>{{change.inventory.localprice}}</td>
+							<td>{{change.inventory.pi_price}}</td>
+							<td>{{change.inventory.restock_id}}</td>
+							<td>{{change.relation_id}}</td>
+							<td>{{change.condition}}</td>
+							<td>{{change.inventory.status | stock_status}}</td>
+							<td>{{change.created_at}}</td>
+							<td>{{change.warehouse_id | warehouse}}</td>
+						</tr>
+					
+					</tbody>
+				</table>
+				
+				<h4>明细</h4>
+				<table class="table table-condensed table-hover" ng-show="logItems && logItems.length>0">
+					<thead>
+						<tr>
+							<th>SKU</th>
+							<th>数量</th>
+							<th>采购价(RMB)</th>
+							<th>市场成本价(USD)</th>
+							<th>PI价</th>
+							<th>仓库</th>
+						</tr>
+					</thead>
+					<tbody>					
+						<tr ng-repeat="change in logItems" ng-show="logItems && logItems.length>0">
+							<td>{{change.item_id | sku}}</td>
+							<td>{{change.qty}}</td>
+							<td>{{change.rmbprice}}</td>
+							<td>{{change.localprice}}</td>
+							<td>{{change.pi_price}}</td>
+							<td>{{change.warehouse_id | warehouse}}</td>
+						</tr>
+					
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

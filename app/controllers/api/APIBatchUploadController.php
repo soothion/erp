@@ -1,0 +1,96 @@
+<?php
+
+class APIBatchUploadController extends \BaseController {
+
+	public function index()
+	{
+		$action = Input::get('action');
+		return Bluebanner\Core\Model\Queue::with('errors')
+			->where('action', Input::get('action'))
+			->where('agent', Sentry::getUser()->id)
+			->orderBy('updated_at', 'desc')
+			->limit(10)
+			->get();
+	}
+
+	public function template($action)
+	{
+		switch ($action) {
+			case 'item':
+				$file = 'item.upload.template.xlsx';
+				break;
+			case 'images':
+				$file = 'images.uplaod.template.zip';
+				break;
+			case 'purchase-request':
+				$file = 'request.upload.template.xlsx';
+				break;
+      case 'stock-shipment':
+        $file = 'shipment.upload.template.xlsx';
+        break;
+			
+			default:
+				# code...
+				break;
+		}
+
+		return Response::download(storage_path() . '/templates/' . $file);
+	}
+
+	public function handler($action)
+	{
+
+		switch ($action) {
+			case 'purchase-request':
+				$impl = 'Bluebanner\Core\Purchase\FileUploadQueueImpl';
+				break;
+			case 'order-import':
+				$impl = 'Bluebanner\Core\Order\FileUploadQueueImpl';
+				break;
+			case 'item':
+				$impl = 'Bluebanner\Core\Item\FileUploadQueueImpl';
+				break;
+			case 'images':
+				$impl = 'Bluebanner\Core\Item\ImageUploadQueueImpl';
+				break;
+      case 'stock-shipment':
+        $impl = 'Bluebanner\Core\Misc\Stock\Shipment\FileUploadQueueImpl';
+        break;
+			default:
+				# code...
+				break;
+		}
+
+		$file = Input::file('file');
+
+		$path = storage_path() . '/upload/queues/batch-upload/' . $action . '/' . Sentry::getUser()->id . '/' . date('Ymdhis');
+		$file->move($path, $file->getClientOriginalName());
+
+		$service = new $impl;
+		$service->setUploadFilePath($path . '/' . $file->getClientOriginalName());
+
+		try {
+
+			$service->validate();
+
+		} catch (Exception $e) {
+
+			return $e->getMessage();
+
+		}
+
+		$queue = Bluebanner\Core\Model\Queue::create(array(
+			'filename' => $file->getClientOriginalName(),
+			'agent'	=> Sentry::getUser()->id,
+			'params' => json_encode(Input::get()),
+			'action' => $action,
+     ));
+
+		$service->setQueueId($queue->id);
+		$service->setParams(json_encode(Input::get()));
+
+		Queue::push($impl, serialize($service));
+
+	}
+
+}

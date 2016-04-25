@@ -1,0 +1,68 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">渠道管理</h3></div>
+
+			<div class="panel-body">
+				<form name="editForm" class="">
+					
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col col-sm-4">
+								<div class="form-group" ng-class="{'has-error': editForm.name.$invalid}">
+									<label class="control-label">渠道名称</label>
+									<input type="text" name="name" ng-model="channel.name" class="form-control" required>
+									<span ng-show="editForm.name.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-4">
+								<div class="form-group" ng-class="{'has-error': editForm.abbreviation.$invalid}">
+									<label class="control-label">简称</label>
+									<input type="text" name="abbreviation" ng-model="channel.abbreviation" class="form-control" placeholder="">
+								</div>
+							</div>
+							<div class="col col-sm-4">
+								<div class="form-group" ng-class="{'has-error': editForm.platform.$invalid}">
+									<label class="control-label">所属平台</label>
+									<select name="platform" ng-model="channel.platform_id" class="form-control" ng-options="platform.id as platform.name for platform in platforms" required></select>
+									<span ng-show="editForm.platform.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-4">
+								<div class="form-group" ng-class="{'has-error': editForm.service_email.$invalid}">
+									<label class="control-label">客服邮箱</label>
+									<input type="email" name="service_email" class="form-control" ng-model="channel.service_email" >
+								</div>
+							</div>
+							<div class="col col-sm-4">
+								<div class="form-group" ng-class="{'has-error': editForm.bill_email.$invalid}">
+									<label class="control-label">付款邮箱</label>
+									<input type="email" name="bill_email" class="form-control" ng-model="channel.bill_email" >
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-12">
+								<div class="form-group" ng-class="{'has-error': editForm.api_configuration.$invalid}">
+									<label class="control-label">API设置信息</label>
+									<textarea rows="3" name="api_configuration" class="form-control" ng-model="channel.api_configuration" ></textarea>
+									<span class="help-inline">非专业人士不要随便更改</span>
+								</div>
+							</div>
+						</div>
+
+						<a class="btn btn-default" href="#/system/channel">Cancel</a>
+						<button type="button" class="btn btn-primary" ng-click="update()" ng-disabled="isClean() || editForm.$invalid">Save</button>
+						<button type="button" class="btn btn-danger" ng-click="destroy()" ng-show="channel.$id">Delete</button>
+					</div>
+
+				</form>
+			</div>
+			
+		</div>
+	</div>
+</div>

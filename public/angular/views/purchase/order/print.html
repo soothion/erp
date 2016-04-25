@@ -1,0 +1,200 @@
+<div class="title" id="title" name="title">
+		<input  type="radio" name="radiobutton" ng-click="changePrice('un_ch')"  checked="true">
+		<label>不含税单价</label></input>
+		<input  type="radio" name="radiobutton" ng-click="changePrice('in_ch')">
+		<label>含税单价</label></input>
+	    <input  type="radio" name="radiobutton" ng-click="changePrice('in_us')" >
+	    <label>美元单价</label></input>
+</div>
+<!--startprint-->
+<div class="div1">
+		<table class="table-total" cellpadding="0" cellspacing="0">
+			<caption >
+				深圳千岸进出口有限公司
+			</caption>
+			<tr>
+				<td width="8%">供应商:</td>
+				<td width="42%">{{order.vendor.name}}</td>
+				<td width="9%" >采购单号:</td>
+				<td colspan="3">{{order.invoice}}</td>
+			</tr>
+			<tr>
+				<td>联系人:</td>
+				<td>{{order.vendor.contact}}</td>
+				<td >下单日期:</td>
+				<td colspan="3">{{order.created_at}}</td>
+			</tr>
+			<tr>
+				<td>传真:</td>
+				<td>{{order.vendor.fax}}</td>
+				<td >送货地址:</td>
+				<td colspan="3">{{order.warehouse.address}}</td>
+			</tr>
+			<tr>
+				<td>电话:</td>
+				<td>{{order.vendor.tel}}</td>
+				<td>办公电话:</td>
+				<td width="18%">0755-82266130</td>
+				<td >办公传真:</td>
+				<td >0755-82265640</td>	
+			</tr>
+			<tr>
+				<td>通信地址:</td>
+				<td>{{order.vendor.contact_addr}}</td>
+				<td>收货联系人:</td>
+				<td>袁先生13113655831</td>	
+				<td>仓库收货:</td>
+				<td>袁先生13113655831</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>雷先生18928476021</td>	
+				<td></td>
+				<td></td>
+			</tr>
+		</table>
+		<table class="table-total" cellpadding="0" cellspacing="0" style="border:2px solid black;"  ng-controler="init">
+			<caption style="height:10px"></caption>
+			<thead>
+				<tr class="tr1">
+					<th>序号</th>
+					<th>产品编码</th>
+					<th>名称/规格描述</th>
+					<th>单位</th>
+					<th>数量</th>
+					<th>单价</th>
+					<th>金额</th>
+					<th>交期</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="tr2" ng-repeat="detail in order.details | filter: search | orderBy: 'name'">
+					<td>{{detail.id}}</td>
+					<td>{{detail.item_id | sku}}</td>
+					<td>{{detail.item.description}}</td>
+					<td>{{detail.um}}</td>
+					<td>{{detail.qty}}</td>
+					<td>{{detail.unit_price_real}}</td>
+					<td>{{detail.qty*detail.unit_price_real|number:2}}</td>
+					<td>{{detail.updated_at}}</td>
+				</tr>
+				<tr class="tr1" >
+					<td colspan="2">总金额</td><td colspan="2" >{{order.total_font}}</td><td>{{order.total_qty}}</td><td colspan="3" ><strong>{{order.total_price}}</strong></td>
+				</tr>
+				<tr>
+					<td colspan="8">备注:</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table-total">
+			<tr><td colspan="8" align="right" style="font-size:12px;font-weight:bold;">
+				周小姐 15019275560 / 谢小姐 13420990812</td>
+			</tr>
+			<tr><td colspan="8" align="left" style="height:40px;font-size:12px;">
+				{{order.vendor.note}}
+				</td>	
+			</tr>
+		</table>
+		
+		<div class="purchase_sign">
+			<ul>
+				<li>
+					供应商回签:
+				</li>
+				<li>
+					批准:
+				</li>
+				<li>
+					审核:
+				</li>
+				<li>
+					采购:
+				</li>
+			</ul>
+		</div>
+</div>
+<style>
+.div1 {
+	width:100%;
+	margin:20px 0px 0px 0px;
+	height:auto;
+}
+
+.div1 table caption{
+	font-size:25px;height:50px;font-weight:bold;
+}
+
+.table-total{
+	border-collapse:collapse;
+	width:100%;
+	height:auto;
+	font:"Times New Roman", Times, serif;
+}
+
+.table-total .tr0 td{
+	font-size:15px;font-weight:normal;
+}
+
+.table-total .tr1 td,.table-total .tr1 th{
+	border:1px solid black;
+	height:25px;
+	font-size:14px;font-weight:bold;
+	text-align: center;
+}
+
+.table-total .tr2 td{
+	border:1px solid black;
+	height:25px;
+	font-size:12px;font-weight:normal;
+	text-align:center;
+}
+
+.title{
+	 border: 1px solid #FFFFFF;
+     color: #FFFFFF;
+     background: none repeat scroll 0 0 #FFA952;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+	font:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	font-weight:bold;
+    text-align: left;
+    padding-left: 20px;
+}
+
+div.purchase_sign {
+	height: 30px;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 10px;
+}
+div.purchase_sign ul li {
+	float: left;
+	display: block;
+	width: 24%;
+}
+.purchase {
+	list-style: none;
+}
+p.unit_price span {
+	display: block;
+	margin-right: 20px;
+	float: left;
+}
+
+</style>
+<!--endprint-->
+<OBJECT id=WebBrowser classid=CLSID:8856F961-340A-11D0-A96B-00C04FD705A2 height=0 width=0></OBJECT>
+<div style="text-align:right">
+	<button   class="btn btn-primary" type="button" ng-click="print('1')">
+		打印
+	</button>
+	<button   class="btn btn-primary" type="button"  ng-click="printPreview()">
+		打印预览
+	</button>
+	<button   class="btn btn-primary" type="button" ng-click="download()">
+		下载
+	</button>
+</div>

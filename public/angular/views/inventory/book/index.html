@@ -1,0 +1,108 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">库存book日志列表</h3>
+			</div>
+			<div class="panel-body">
+
+				<form name="searchForm">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col col-sm-2">
+								<div class="form-group"
+									ng-class="{'has-error': searchModel.invoice.$invalid}">
+									<input type="text" ng-model="searchModel.invoice"
+										class="form-control" placeholder="编号">
+								</div>
+							</div>
+							
+							<div class="col col-sm-2">
+								<div class="form-group"
+									ng-class="{'has-error': searchModel.status.$invalid}">
+									<div class="btn-group ">
+										<button type="button" class="btn btn-default"
+											ng-model="searchModel.type.order" btn-checkbox>order</button>
+										<button type="button" class="btn btn-default"
+											ng-model="searchModel.type.io" btn-checkbox>io</button>
+
+									</div>
+								</div>
+							</div>
+
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error': searchModel.status.$invalid}">
+									<div class="btn-group ">
+										<button type="button" class="btn btn-default"
+											ng-model="searchModel.status.pending" btn-checkbox>Pending</button>
+										<button type="button" class="btn btn-default"
+											ng-model="searchModel.status.done" btn-checkbox>done</button>
+										<button type="button" class="btn btn-default"
+											ng-model="searchModel.status.cancel" btn-checkbox>cancel</button>
+
+									</div>
+								</div>
+							</div>
+							
+							<div class="col col-sm-2">
+										<div class="form-group"
+											ng-class="{'has-error': searchModel.timeStart.$invalid}">
+											<input type="text" ng-model="searchModel.timeStart"
+												class="form-control" placeholder="开始时间"
+												datepicker-popup="yyyy-MM-dd">
+										</div>
+									</div>
+
+									<div class="col col-sm-2">
+										<div class="form-group"
+											ng-class="{'has-error': searchModel.timeEnd.$invalid}">
+											<input type="text" ng-model="searchModel.timeEnd"
+												class="form-control" placeholder="结束时间"
+												datepicker-popup="yyyy-MM-dd">
+										</div>
+									</div>
+						</div>
+						
+						<div class="row">
+							<div class="col col-sm-4">
+								<div class="form-group">
+									<button type="button" class="btn btn-primary"
+										ng-click="toFilter()">搜索</button>
+									<button type="button" class="btn btn-primary"
+										ng-click="toExport()">导出</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				<hr>
+
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th>编号</th>
+							<th>Book数量</th>
+							<th>SKU</th>
+							<th>Detail数量</th>
+							<th>类别</th>
+							<th>状态</th>
+							<th>创建日期</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="io in booklist | filter: search">
+							<td>{{io.relation.invoice}}{{io.relationDetail}}</td>
+							<td>{{io.qty}}</td>
+							<td>{{io.relationDetail_item_id | sku}}</td>
+							<td>{{io.relationDetail_qty}}</td>
+							<td>{{io.type}}</td>
+							<td>{{io.status}}</td>
+							<td>{{io.created_at}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,109 @@
+<div class="alert alert-info fade in" style="display:none" id="alert">
+<button class="close" type="button" ng-click='hidden()'>×</button>
+<i class="glyphicon glyphicon-remove"></i>
+<font color="#f00">{{error}}</font>
+</div>
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">申购单明细</h3></div>
+
+			<div class="panel-body">
+		 		<table class="table table-condensed table-hover" id="detail"  >
+					<tbody>
+						<tr>
+							<td  class="left">Invoice:<span class="content">{{auditList.invoice}}</span></td>
+							<td>类別:<span class="content">{{auditList.type}}</span></td>
+							<td>仓库:<span class="content">{{auditList.warehouse_id | warehouse}}</span></td>
+							<td class='right'>提交人:<span class="content">{{auditList.agent | user}}</span></td>
+						</tr>
+  
+           	</tbody>
+				</table>
+                          
+			    <input type="search" class="form-control" ng-model="searchText" placeholder="Search">		
+				<table class="table table-condensed table-hover">
+					<thead>
+						<tr>
+							<th>状态</th>
+							<th>SKU</th>
+							<th>渠道</th>
+							<th>需求数量</th>
+							<th>ETA</th>
+							<th>运费方式</th>
+							<th>估算运费</th>
+							
+							
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="detail in auditList.details | filter:searchText">
+							 <td>{{detail.status}}</td>
+							<td>{{detail.item.sku}}</td>
+							<td>{{detail.platform.name}}</td>
+							<td>{{detail.qty}}</td>
+							<td>{{detail.end_date}}</td>
+							<td>{{detail.transportation}}</td>
+					        <td><label>
+													<b class="text-info">{{ detail.item.fee.sea_cost | floatNum}}</b>/
+													<b class="text-danger">{{ detail.item.fee.air_cost | floatNum}}</b>
+												</label></td>
+							
+							
+						</tr>
+					</tbody>
+				</table>
+				   <div ng-show ="!(auditList.status='verified')||!(auditList.status='rejected')||(status=='confirmed')">
+				    <label class="control-label">审核备注:
+													</label>
+										<textarea required="" ng-model="auditList.check_note" class="form-control ng-pristine ng-invalid ng-invalid-required" name="note" ></textarea>			
+					<div style="width:100%;text-align: right;margin-top:10px;">
+								<button type="button" class="btn btn-xs btn-success"  ng-click="dobatch(auditList.id,'verified')"><i class="glyphicon glyphicon-ok"></i> 通过</button>
+				                <button type="button" class="btn btn-xs btn-danger" ng-click="dobatch(auditList.id,'rejected')"><i class="glyphicon glyphicon-remove"></i> 拒绝</button>
+			
+							</div>
+					</div>		
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="warning">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="reflushAfterUpload();">&times;</button>
+        <h4 class="modal-title">提示信息</h4>
+      </div>
+      <div class="modal-body">
+        <!-- <p>One fine body&hellip;</p> -->
+        
+   		<p style="color: #f00;text-align: center">
+   		{{warning}}
+   		</p>
+     
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-xs btn-default" data-dismiss="modal" ng-click="reflushAfterUpload();">确定并刷新</button>
+        <!-- <button type="button" class="btn btn-xs btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+	span.content{
+		 margin-left:10px;
+		 font-size:13px;
+		 
+	}
+	td,th{
+		text-align:center;
+	}
+	td.right{
+		text-align:right;
+	}
+	td.left{
+		 text-align:left;
+	}
+</style>
+

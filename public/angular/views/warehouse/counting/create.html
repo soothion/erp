@@ -1,0 +1,67 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">新建盘点单</h3>
+			</div>
+			<div class="panel-body">
+				<div class="container-fluid">
+					<form name="editForm" class="">
+						<div class="row">
+							<div class="col col-sm-6">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.invoice.$invalid}">
+									<label class="control-label">Invoice</label>
+									<input type="text" name="invoice" ng-model="counting.invoice"
+										class="form-control"
+										ng-mouseleave="if(counting.invoice =='') counting.invoice=getDefualtInvoice()"
+										required>
+									<span ng-show="editForm.invoice.$error.required"
+										class="help-inline">Required</span>
+								</div>
+							</div>
+							
+							<div class="col col-sm-6">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.warehouse_id.$invalid}">
+									<label class="control-label">仓库</label>
+									<select name="warehouse_id" class="form-control"
+										ng-model="counting.warehouse_id"
+										ng-options="w.id as w.name for w in warehouses" required>
+										<option value="">--请选择--</option>
+										<span ng-show="editForm.warehouse_id.$error.required" class="help-inline">Required</span>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col col-sm-6">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.created_at.$invalid}">
+									<label class="control-label">创建时间</label>
+									<input name="created_at" class="form-control"
+										ng-model="counting.created_at" ng-disabled="true">
+								</div>
+							</div>
+							<div class="col col-sm-6">
+								<div class="form-group"
+									ng-class="{'has-error':counting.status.$invalid}">
+									<label class="control-label">状态</label>
+									<input name="status" class="form-control"
+										ng-model="counting.status" disabled />
+								</div>
+							</div>
+						</div>
+
+
+						<a class="btn btn-default" href="#/warehouse/counting">取消</a>
+						<button type="button" class="btn btn-primary" ng-click="create()"
+							ng-disabled="isClean() || editForm.$invalid">新建</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+

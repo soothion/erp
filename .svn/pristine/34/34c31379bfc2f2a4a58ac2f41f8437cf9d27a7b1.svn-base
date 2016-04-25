@@ -1,0 +1,219 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">Purchase Request Manage</h3></div>
+
+			<div class="panel-body">
+				<form name="editForm" class="">
+					
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.invoice.$invalid}">
+									<label class="control-label">Invoice</label>
+									<input type="text" name="invoice" ng-model="request.invoice" class="form-control" required>
+									<span ng-show="editForm.invoice.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.relation_id.$invalid}">
+									<label class="control-label">relation_id</label>
+									<input type="text" name="relation_id" ng-model="request.relation_id" class="form-control" required>
+									<span ng-show="editForm.relation_id.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+						</div>
+
+<!-- 
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.created_at.$invalid}">
+									<label class="control-label">created_at</label>
+									<input type="text" name="created_at" ng-model="request.created_at" class="form-control" required>
+									<span ng-show="editForm.created_at.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.updated_at.$invalid}">
+									<label class="control-label">updated_at</label>
+									<input type="text" name="updated_at" ng-model="request.updated_at" class="form-control" required>
+									<span ng-show="editForm.updated_at.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.agent.$invalid}">
+									<label class="control-label">agent</label>
+									<input type="text" name="agent" ng-model="request.agent" class="form-control" required>
+									<span ng-show="editForm.agent.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+-->
+
+						<div class="row">
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.status.$invalid}">
+									<label class="control-label">status</label>
+									<select name="status" ng-model="request.status" class="form-control" ng-options="s.name as s.name for s in status" required></select>
+									<span ng-show="editForm.status.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.type.$invalid}">
+									<label class="control-label">type</label>
+									<select name="type" class="form-control" ng-model="request.type" ng-options="t.name as t.name for t in types" required></select>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': detailForm.warehouse_id.$invalid}">
+									<label class="control-label">warehouse_id</label>
+									<select name="warehouse_id" ng-model="request.warehouse_id" class="form-control" required ng-options="wh.id as wh.name for wh in whs"></select>
+									<span ng-show="detailForm.warehouse_id.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.note.$invalid}">
+									<label class="control-label">note</label>
+									<textarea name="note" class="form-control" ng-model="request.note" required></textarea>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-lg-12">
+								<table class="table table-condensed table-hover">
+									<thead>
+										<tr>
+											<th>
+												<a href="javascript:;" ng-click="details_new()"><i class="glyphicon glyphicon-plus"></i></a>
+											</th>
+											<th>SKU</th>
+											<th>Description</th>
+											<th>Warehouse</th>
+											<th>Account</th>
+											<th>Request</th>
+											<th>End-Date</th>
+											<th>Min-Pack.Qty</th>
+											<th>Transport Modes</th>
+											<th>Ctrated Date</th>
+											<th>Updated Date</th>
+											<th>Creator</th>
+											<th>Remark</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="detail in request.details">
+											<td><input ng-show="fun1()"</td>
+											<td>{{detail.sku.sku}}</td>
+											<td>{{detail.sku.description}}</td>
+											<td>{{detail.warehouse_id}}</td>
+											<td>{{detail.channel.name}}</td>
+											<td>{{detail.qty}}</td>
+											<td>{{detail.end_date | date}}</td>
+											<td>mpq</td>
+											<td>{{detail.transportation}}</td>
+											<td>created</td>
+											<td>updated</td>
+											<td>agent</td>
+											<td>{{detail.note}}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+						<a class="btn btn-default" href="#/purchase/request">Cancel</a>
+						<button type="button" class="btn btn-primary" ng-click="update()" ng-disabled="isClean() || editForm.$invalid">Save</button>
+						<button type="button" class="btn btn-danger" ng-click="destroy()" ng-show="request.$id">Delete</button>
+						
+					</div>
+
+				</form>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<!-- Model -->
+<div class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Add Purchase Request Detail</h4>
+			</div>
+			<div class="modal-body">
+				<form name="detailForm" class="">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col col-sm-6">
+							<div class="form-group" ng-class="{'has-error': detailForm.sku.$invalid}">
+								<label class="control-label">SKU</label>
+								<input type="text" name="sku" ng-model="holder_detail.sku" class="form-control" required typeahead="sku as sku.sku for sku in skus | filter:{sku: $viewValue} | limitTo: 10" typeahead-editable='false'>
+								<span ng-show="detailForm.sku.$error.required" class="help-inline">Required</span>
+							</div>
+						</div>
+						<div class="col col-sm-6">
+							<div class="form-group" ng-class="{'has-error': detailForm.warehouse_id.$invalid}">
+								<label class="control-label">warehouse_id</label>
+								<select name="warehouse_id" ng-model="holder_detail.warehouse_id" class="form-control" required ng-options="wh.id as wh.name for wh in whs"></select>
+								<span ng-show="detailForm.warehouse_id.$error.required" class="help-inline">Required</span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col col-sm-6">
+							<div class="form-group" ng-class="{'has-error': detailForm.qty.$invalid}">
+								<label class="control-label">qty</label>
+								<input type="text" name="qty" ng-model="holder_detail.qty" ng-pattern="/^[0-9]+$/" class="form-control" required>
+								<span ng-show="detailForm.qty.$error.required" class="help-inline">Required</span>
+							</div>
+						</div>
+						<div class="col col-sm-6">
+							<div class="form-group" ng-class="{'has-error': detailForm.channel.$invalid}">
+								<label class="control-label">channel</label>
+								<select type="text" name="channel" ng-model="holder_detail.channel" class="form-control" required ng-options="c.name for c in chanels"></select>
+								<span ng-show="detailForm.channel.$error.required" class="help-inline">Required</span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col col-sm-6">
+							<div class="form-group" ng-class="{'has-error': detailForm.end_date.$invalid}">
+								<label class="control-label">end_date</label>
+								<input type="text" datepicker-popup="dd-MM-yyyy" name="end_date" ng-model="holder_detail.end_date" class="form-control" required>
+								<span ng-show="detailForm.end_date.$error.required" class="help-inline">Required</span>
+							</div>
+						</div>
+						<div class="col col-sm-6">
+							<div class="form-group" ng-class="{'has-error': detailForm.transportation.$invalid}">
+								<label class="control-label">transportation</label>
+								<select type="text" name="transportation" ng-model="holder_detail.transportation" class="form-control" required ng-options="t.name as t.name for t in trans"></select>
+								<span ng-show="detailForm.transportation.$error.required" class="help-inline">Required</span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+					</div>
+					<div class="row">
+						<div class="col col-sm-12">
+							<div class="form-group" ng-class="{'has-error': detailForm.note.$invalid}">
+								<label class="control-label">note</label>
+								<textarea name="note" ng-model="holder_detail.note" class="form-control" required></textarea>
+								<span ng-show="detailForm.note.$error.required" class="help-inline">Required</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="holder_push()" ng-disabled="isClean() || detailForm.$invalid">Add</button>
+			</div>
+		</div>
+	</div>
+</div>

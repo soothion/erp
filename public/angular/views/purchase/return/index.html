@@ -1,0 +1,88 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">采购退货单列表</h3></div>
+			<div class="panel-body">
+				<table class="table-condensed">
+					<tr>						
+						<td><input class="form-control" type="text" name="invoice" ng-model="exportModel.invoice" id="invoice" typeahead="invoice as return.invoice for return in requests | filter:{invoice:$viewValue} |limitTo: 10" placeholder="invoice"></td>
+						
+						<td><input class="form-control" type="text" name="sku" ng-model="exportModel.sku" typeahead="sku as sku.sku for sku in skus | filter:{sku: $viewValue} | limitTo: 10" placeholder="sku"></td>
+						<td>Vendor:</td>
+						<td><input class="form-control" type="text" name="vendor" ng-model="exportModel.vendor"></td>						
+						<td>Status:</td>
+						<td>
+							<select name="status" class="form-control" ng-model="exportModel.status" ng-options="s.id as s.name for s in status">
+								<option value="">请选择</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="text" ng-model="exportModel.timeStart" class="form-control" placeholder="from:创建日期" datepicker-popup="yyyy-MM-dd">
+						</td>	
+						<td>
+							<input type="text" ng-model="exportModel.timeEnd" class="form-control" placeholder="to:创建日期" datepicker-popup="yyyy-MM-dd">
+						</td>					
+					</tr>	
+				</table>
+				<hr>
+				<div class="row">
+					<div class="col col-sm-10">
+						<div class="form-group">
+							<input class="btn btn-primary" type="button" name="search"
+								id="search" value="Search" ng-click="toSearch()" />
+							<input class="btn btn-primary" type="button" name="reset"
+								id="reset" value="Reset" ng-click="resetExport()" />
+							<input class="btn btn-primary" type="button" name="export"
+								id="export" value="Export" ng-click="export()" />
+						</div>
+					</div>
+
+				</div>
+				
+				<table class="table table-condensed table-hover">
+				<input type="search" class="form-control" ng-model="search" placeholder="Search">
+				<thead>
+					<tr>
+						<th>
+							<a href="#/purchase/return/create">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</th>
+						<th>OP</th>
+						<th>编号</th>
+						<th>供应商</th>
+						<th>仓库</th>						
+						<th>Return Day</th>
+						<th>Status</th>
+						<th>User</th>
+						<th>创建日期</th>
+						<th>Last Update Date</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="return in requests | filter: search">
+						<td><input type="checkbox" name="return-list" value="{{return.id}}"/></td>						
+						<td>
+							<a href="#/purchase/return/update/{{return.id}}"><i class="glyphicon glyphicon-pencil"></i></a>
+							<a href="#/purchase/return/update/{{return.id}}" value="delete" ng-show="return.status=='pending'"><i class="glyphicon glyphicon-remove"></i></a>
+						</td>						
+						<td>{{return.invoice}}</td>
+						<td>{{return.vendor}}</td>
+						<td>{{return.warehouse.name}}</td>										
+						<td>{{return.return_at}}</td>
+						<td>{{return.status}}</td>
+						<td>{{return.agent_name}}</td>
+						<td>{{return.created_at}}</td>
+						<td>{{return.updated_at}}</td>
+					</tr>
+				</tbody>
+			</table>
+
+			</div>
+			
+			
+		</div>
+	</div>
+</div>

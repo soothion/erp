@@ -1,0 +1,68 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">关税管理</h3></div>
+
+			<div class="panel-body">
+				<form name="editForm" class="">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col col-sm-4">
+								<div class="form-group" ng-class="{'has-error': editForm.customs_code.$invalid}">
+									<label class="control-label">海关编码</label>
+									<input type="text" name="customs_code" ng-model="custom.customs_code" class="form-control" required>
+									<span ng-show="editForm.customs_code.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-4">
+								<div class="form-group" ng-class="{'has-error': editForm.sku.$invalid}">
+									<label class="control-label">SKU</label>
+									<input type="text" name="sku" ng-model="custom.item" class="form-control" required typeahead="sku as sku.sku for sku in skus | filter:{sku: $viewValue} | limitTo: 10" typeahead-editable='false'>
+									<span ng-show="editForm.sku.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-4">
+								<div class="form-group">
+									<label class="control-label">描述</label>
+									<input class="form-control"  type="text" readonly='true' disabled='true' value="{{custom.item.description}}">
+								</div>
+							</div>
+							
+						</div>
+						
+						<div class="row">							
+							<div class="col col-sm-4">
+								<div class="form-group" ng-class="{'has-error': editForm.country.$invalid}">
+									<label class="control-label">Country</label>
+									<select name="country" ng-model="custom.country" class="form-control" required ng-options="wh.id as wh.name for wh in countries"></select>
+									<span ng-show="editForm.country.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-4">
+								<div class="form-group" ng-class="{'has-error': editForm.tariff_rate.$invalid}">
+									<label class="control-label">关税率</label>
+									<input type="text" name="tariff_rate" ng-model="custom.tariff_rate" class="form-control" required ng-pattern="/^\-?\d{1,4}(\.\d{0,3})?$/">
+									<span ng-show="editForm.tariff_rate.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-4">
+								<div class="form-group" ng-class="{'has-error': editForm.refund_tax_rate.$invalid}">
+									<label class="control-label">退税率</label>
+									<input type="text" name="refund_tax_rate" ng-model="custom.refund_tax_rate" class="form-control" required ng-pattern="/^\-?\d{1,4}(\.\d{0,3})?$/">
+									<span ng-show="editForm.refund_tax_rate.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+						</div>
+						
+						<a class="btn btn-default" href="#/item/customs">Cancel</a>
+						<button type="button" class="btn btn-primary" ng-click="update()">Save</button>
+						<button type="button" class="btn btn-danger" ng-click="destroy()">Delete</button>
+						
+					</div>
+
+				</form>
+			</div>
+			
+		</div>
+	</div>
+</div>

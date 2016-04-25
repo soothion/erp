@@ -1,0 +1,76 @@
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Panel title</h3>
+				</div>
+				<div class="panel-body">
+					Panel content
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">仓库管理</h3>
+				</div>
+				<div class="panel-body">
+
+					<div class="row">
+						<div class="col col-xs-4">
+							<a type="button" class="btn btn-warning btn-lg"><i class="glyphicon glyphicon-barcode"></i> 条码</a>
+						</div>
+						<div class="col col-xs-4">
+							<a href="#/storage" type="button" class="btn btn-warning btn-lg"><i class="glyphicon glyphicon-th"></i> 货位</a>
+						</div>
+						<div class="col col-xs-4">
+							<a type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-move"></i> 移库</a>
+						</div>
+					</div>
+
+					<hr/>
+
+					<div class="row">
+						<div class="col col-xs-4">
+							<a type="button" class="btn btn-info btn-lg" disabled="disabled"><i class="glyphicon glyphicon-download-alt"></i> 装箱</a>
+						</div>
+						<div class="col col-xs-4">
+							<a type="button" class="btn btn-info btn-lg"><i class="glyphicon glyphicon-open"></i> 开箱</a>
+						</div>
+						<div class="col col-xs-4">
+							<a type="button" class="btn btn-info btn-lg"><i class="glyphicon glyphicon-hdd"></i> 盘点</a>
+						</div>
+					</div>
+
+					<hr/>
+
+					<div class="row">
+						<div class="col col-xs-4">
+							<a type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-export"></i> 出库</a>
+						</div>
+						<div class="col col-xs-4">
+							<a type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-import"></i> 收货</a>
+						</div>
+						<div class="col col-xs-4">
+							<a type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-book"></i> 上架</a>
+						</div>
+					</div>
+
+					<hr/>
+
+					<div class="row">
+						<div class="col col-xs-4">
+							<a type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-book"></i> Pallet</a>							
+						</div>
+					</div>
+
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

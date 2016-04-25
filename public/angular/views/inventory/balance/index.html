@@ -1,0 +1,85 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">出\入库单平衡表<span style="font-size:10px">[实际库存(包含book)]</span></h3></div>
+
+			<div class="panel-body">
+				<form name="searchForm">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col col-sm-2">
+							<div class="form-group" ng-class="{'has-error': searchForm.warehouse.$invalid}">
+								<select name="warehouse" ng-model="search.warehouse" class="form-control" ng-options="w.id as w.name for w in warehouse" required></select>
+							</div>
+						</div>
+						<div class="col col-sm-2">
+							<div class="form-group" ng-class="{'has-error': searchForm.sku.$invalid}">
+								<input type="text" name="sku" ng-model="search.sku" class="form-control" typeahead="i as i.sku for i in items | filter:{sku: $viewValue} | limitTo:10" placeholder="SKU" required>
+							</div>
+						</div>
+						<div class="col col-sm-2">
+							<div class="form-group" ng-class="{'has-error': searchForm.from.$invalid}">
+								<input type="text" name="from" ng-model="search.from" class="form-control" datepicker-popup="yyyy-MM-dd" required>
+							</div>
+						</div>
+						<div class="col col-sm-2">
+							<div class="form-group" ng-class="{'has-error': searchForm.to.$invalid}">
+								<input type="text" name="to" ng-model="search.to" class="form-control" datepicker-popup="yyyy-MM-dd" required>
+							</div>
+						</div>
+						<div class="col col-sm-4">
+							<div class="form-group" >
+								<button type="button" class="btn btn-primary" ng-click="searching()" ng-disabled="searchForm.$invalid">搜索</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				</form>
+
+				<table class="table table-condensed table-hover" ng-show="list">
+					<thead>
+						<tr>
+							<th>出入库时间</th>
+							<th>SKU</th>
+							<th>规格描述</th>
+							<th>出入库类别</th>
+							<th>仓库</th>
+							<th>数量</th>
+							<th>结余</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-class="warning">
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>期初</td>
+							<td>{{getStartTotal()}}</td>
+							<td>&nbsp;</td>
+						</tr>
+						<tr ng-repeat="balance in list">
+							<td>{{balance.created_at}}</td>
+							<td>{{balance.item.sku}}</td>
+							<td>{{balance.item.description}}</td>
+							<td>{{balance.type | inv_type}}</td>
+							<td>{{balance.warehouse_id | warehouse}}</td>
+							<td>{{balance.qty}}</td>
+							<td>{{getRemainingAmount($index)}}</td>
+						</tr>
+						<tr ng-class="danger">
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>期末{{balance}}</td>
+							<td class="success" ng-show="getEndTotal() == getEndBalance()">{{getEndBalance()}}</td>
+							<td class="danger" ng-show="getEndTotal() != getEndBalance()">{{getEndBalance()}}</td>
+							<td>{{getEndTotal()}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

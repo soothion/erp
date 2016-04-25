@@ -1,0 +1,101 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">新建退货单</h3>
+			</div>			
+			<div class="panel-body">
+				<div class="container-fluid">
+					<form name="editForm" class="">
+						<div class="row">
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error': editForm.invoice.$invalid}">
+									<label class="control-label">Invoice</label>
+									<input type="text" name="invoice" ng-model="_returns.invoice"
+										class="form-control" required />
+									<span ng-show="editForm.invoice.$error.required"
+										class="help-inline">Required</span>
+								</div>
+							</div>
+							
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.status.$invalid}">
+									<label class="control-label">状态</label>
+									<input name="status" class="form-control"
+										ng-model="_returns.status" disabled ng-required/>
+									<span ng-show="editForm.status.$error.required"
+										class="help-inline">Required</span>
+								</div>
+							</div>
+							
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.warehouse_id.$invalid}">
+									<label class="control-label">出库仓库</label>
+									<select name="warehouse_id" class="form-control"
+										ng-model="_returns.warehouse_id" ng-change="setShipAddr()"
+										ng-options="w.id as w.name for w in warehouses" required>
+										<option value="">--请选择--</option>
+										<span ng-show="editForm.warehouse_id.$error.required" class="help-inline">Required</span>
+									</select>
+								</div>
+							</div>
+							
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.vendor_id.$invalid}">
+									<label class="control-label">供应商</label>
+									<select name="vendor_id" class="form-control"
+										ng-model="_returns.vendor_id"
+										ng-options="v.id as v.name for v in vendors" required>
+										<option value="">--请选择--</option>
+										<span ng-show="editForm.vendor_id.$error.required" class="help-inline">Required</span>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col col-sm-6">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.return_at.$invalid}">
+									<label class="control-label">return at</label>
+									<input name="return_at" class="form-control"
+											ng-model="_returns.return_at" datepicker-popup="yyyy-MM-dd"
+											required>
+									</textarea>
+								</div>
+							</div>
+							<div class="col col-sm-6">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.address.$invalid}">
+									<label class="control-label">address</label>
+									<input name="address" class="form-control"
+											ng-model="_returns.address" type="text" required>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col col-sm-12">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.note.$invalid}">
+									<label class="control-label">备注</label>
+									<textarea name="note" class="form-control"
+									ng-model="_returns.note"></textarea>
+								</div>
+							</div>
+						</div>
+
+
+						<a class="btn btn-default" href="#/purchase/return/create">取消</a>
+						<button type="button" class="btn btn-primary" ng-click="save()"
+								ng-disabled="isClean() || editForm.$invalid">新建</button>
+						
+					</form>					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

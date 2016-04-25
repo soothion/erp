@@ -1,0 +1,30 @@
+[2014-10-16 02:43:26] production.ERROR: exception 'ReflectionException' with message 'Class CronTable does not exist' in /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/container/Illuminate/Container/Container.php:485
+Stack trace:
+#0 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/container/Illuminate/Container/Container.php(485): ReflectionClass->__construct('CronTable')
+#1 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/container/Illuminate/Container/Container.php(425): Illuminate\Container\Container->build('CronTable', Array)
+#2 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(463): Illuminate\Container\Container->make('CronTable', Array)
+#3 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Console/SeedCommand.php(62): Illuminate\Foundation\Application->make('CronTable')
+#4 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Console/SeedCommand.php(52): Illuminate\Database\Console\SeedCommand->getSeeder()
+#5 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(108): Illuminate\Database\Console\SeedCommand->fire()
+#6 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Command/Command.php(241): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#7 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(96): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#8 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(887): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#9 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(191): Symfony\Component\Console\Application->doRunCommand(Object(Illuminate\Database\Console\SeedCommand), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#10 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(121): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#11 /Users/vincent/www/erp/artisan(59): Symfony\Component\Console\Application->run()
+#12 {main} [] []
+[2014-10-16 02:43:35] production.ERROR: exception 'ReflectionException' with message 'Class CronTableSeeder does not exist' in /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/container/Illuminate/Container/Container.php:485
+Stack trace:
+#0 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/container/Illuminate/Container/Container.php(485): ReflectionClass->__construct('CronTableSeeder')
+#1 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/container/Illuminate/Container/Container.php(425): Illuminate\Container\Container->build('CronTableSeeder', Array)
+#2 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(463): Illuminate\Container\Container->make('CronTableSeeder', Array)
+#3 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Console/SeedCommand.php(62): Illuminate\Foundation\Application->make('CronTableSeeder')
+#4 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Console/SeedCommand.php(52): Illuminate\Database\Console\SeedCommand->getSeeder()
+#5 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(108): Illuminate\Database\Console\SeedCommand->fire()
+#6 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Command/Command.php(241): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#7 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(96): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#8 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(887): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#9 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(191): Symfony\Component\Console\Application->doRunCommand(Object(Illuminate\Database\Console\SeedCommand), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#10 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(121): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#11 /Users/vincent/www/erp/artisan(59): Symfony\Component\Console\Application->run()
+#12 {main} [] []

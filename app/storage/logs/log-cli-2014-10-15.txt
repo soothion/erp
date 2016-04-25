@@ -1,0 +1,49 @@
+[2014-10-15 02:01:09] production.ERROR: exception 'PDOException' with message 'SQLSTATE[HY000] [2002] No such file or directory' in /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Connectors/Connector.php:47
+Stack trace:
+#0 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Connectors/Connector.php(47): PDO->__construct('mysql:host=loca...', 'root', '', Array)
+#1 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Connectors/MySqlConnector.php(20): Illuminate\Database\Connectors\Connector->createConnection('mysql:host=loca...', Array, Array)
+#2 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Connectors/ConnectionFactory.php(59): Illuminate\Database\Connectors\MySqlConnector->connect(Array)
+#3 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Connectors/ConnectionFactory.php(47): Illuminate\Database\Connectors\ConnectionFactory->createSingleConnection(Array)
+#4 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/DatabaseManager.php(127): Illuminate\Database\Connectors\ConnectionFactory->make(Array, 'local')
+#5 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/DatabaseManager.php(63): Illuminate\Database\DatabaseManager->makeConnection('local')
+#6 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Eloquent/Model.php(2698): Illuminate\Database\DatabaseManager->connection(NULL)
+#7 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Eloquent/Model.php(2664): Illuminate\Database\Eloquent\Model::resolveConnection(NULL)
+#8 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Eloquent/Model.php(1733): Illuminate\Database\Eloquent\Model->getConnection()
+#9 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Eloquent/Model.php(1656): Illuminate\Database\Eloquent\Model->newBaseQueryBuilder()
+#10 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Eloquent/Model.php(2877): Illuminate\Database\Eloquent\Model->newQuery()
+#11 [internal function]: Illuminate\Database\Eloquent\Model->__call('where', Array)
+#12 [internal function]: Bluebanner\Core\Model\Cron->where('next', '<', 1413363669)
+#13 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Eloquent/Model.php(2893): call_user_func_array(Array, Array)
+#14 /Users/vincent/www/erp/app/commands/ImportOrerCommand.php(62): Illuminate\Database\Eloquent\Model::__callStatic('where', Array)
+#15 /Users/vincent/www/erp/app/commands/ImportOrerCommand.php(62): Bluebanner\Core\Model\Cron::where('next', '<', 1413363669)
+#16 /Users/vincent/www/erp/app/commands/ImportOrerCommand.php(42): ImportOrerCommand->getCronList()
+#17 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(108): ImportOrerCommand->fire()
+#18 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Command/Command.php(241): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#19 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(96): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(887): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#21 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(191): Symfony\Component\Console\Application->doRunCommand(Object(ImportOrerCommand), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#22 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(121): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#23 /Users/vincent/www/erp/artisan(59): Symfony\Component\Console\Application->run()
+#24 {main} [] []
+[2014-10-15 02:04:30] production.ERROR: exception 'ErrorException' with message 'Invalid argument supplied for foreach()' in /Users/vincent/www/erp/app/commands/ImportOrerCommand.php:50
+Stack trace:
+#0 /Users/vincent/www/erp/app/commands/ImportOrerCommand.php(50): Illuminate\Exception\Handler->handleError(2, 'Invalid argumen...', '/Users/vincent/...', 50, Array)
+#1 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(108): ImportOrerCommand->fire()
+#2 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Command/Command.php(241): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#3 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(96): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#4 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(887): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#5 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(191): Symfony\Component\Console\Application->doRunCommand(Object(ImportOrerCommand), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#6 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(121): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#7 /Users/vincent/www/erp/artisan(59): Symfony\Component\Console\Application->run()
+#8 {main} [] []
+[2014-10-15 02:07:08] production.ERROR: exception 'ErrorException' with message 'Invalid argument supplied for foreach()' in /Users/vincent/www/erp/app/commands/ImportOrerCommand.php:50
+Stack trace:
+#0 /Users/vincent/www/erp/app/commands/ImportOrerCommand.php(50): Illuminate\Exception\Handler->handleError(2, 'Invalid argumen...', '/Users/vincent/...', 50, Array)
+#1 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(108): ImportOrerCommand->fire()
+#2 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Command/Command.php(241): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#3 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(96): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#4 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(887): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#5 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(191): Symfony\Component\Console\Application->doRunCommand(Object(ImportOrerCommand), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#6 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(121): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#7 /Users/vincent/www/erp/artisan(59): Symfony\Component\Console\Application->run()
+#8 {main} [] []

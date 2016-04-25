@@ -1,0 +1,21 @@
+[2014-10-13 23:49:54] production.ERROR: exception 'Illuminate\Database\QueryException' with message 'SQLSTATE[HY000]: General error: 1005 Can't create table 'dev_erp_branch3.#sql-72c_5f4' (errno: 150) (SQL: alter table `lv4_core_storage_transfer_ask` add constraint core_storage_transfer_ask_from_platform_id_foreign foreign key (`from_platform_id`) references `lv4_core_platform_master` (`id`))' in /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Connection.php:539
+Stack trace:
+#0 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Connection.php(338): Illuminate\Database\Connection->run('alter table `lv...', Array, Object(Closure))
+#1 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Schema/Blueprint.php(63): Illuminate\Database\Connection->statement('alter table `lv...')
+#2 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Schema/Builder.php(169): Illuminate\Database\Schema\Blueprint->build(Object(Illuminate\Database\MySqlConnection), Object(Illuminate\Database\Schema\Grammars\MySqlGrammar))
+#3 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Schema/Builder.php(112): Illuminate\Database\Schema\Builder->build(Object(Illuminate\Database\Schema\Blueprint))
+#4 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/support/Illuminate/Support/Facades/Facade.php(211): Illuminate\Database\Schema\Builder->create('core_storage_tr...', Object(Closure))
+#5 /Users/vincent/www/erp/app/database/migrations/2014_09_01_015808_storage_transfer.php(31): Illuminate\Support\Facades\Facade::__callStatic('create', Array)
+#6 /Users/vincent/www/erp/app/database/migrations/2014_09_01_015808_storage_transfer.php(31): Illuminate\Support\Facades\Schema::create('core_storage_tr...', Object(Closure))
+#7 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Migrations/Migrator.php(133): StorageTransfer->up()
+#8 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Migrations/Migrator.php(109): Illuminate\Database\Migrations\Migrator->runUp('2014_09_01_0158...', 3, false)
+#9 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Migrations/Migrator.php(80): Illuminate\Database\Migrations\Migrator->runMigrationList(Array, false)
+#10 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Console/Migrations/MigrateCommand.php(65): Illuminate\Database\Migrations\Migrator->run('/Users/vincent/...', false)
+#11 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(108): Illuminate\Database\Console\Migrations\MigrateCommand->fire()
+#12 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Command/Command.php(241): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#13 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(96): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#14 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(887): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#15 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(191): Symfony\Component\Console\Application->doRunCommand(Object(Illuminate\Database\Console\Migrations\MigrateCommand), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#16 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(121): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#17 /Users/vincent/www/erp/artisan(59): Symfony\Component\Console\Application->run()
+#18 {main} [] []

@@ -1,0 +1,164 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">出库单列表</h3>
+			</div>
+			
+				<div class="panel-body">
+					<div class="container-fluid">
+
+						<div class="row">
+							<span class="col-md-7 form-group">
+								<label class="col-lg-2">编号:</label>
+								<span class="col-lg-4">
+									<input class="form-control" type="text"
+										ng-model="OldSearch.invoice">
+								</span>
+								<label class="col-lg-2">相关编号:</label>
+								<span class="col-lg-4">
+									<input class="form-control" type="text"
+										ng-model="OldSearch.relation_invoice">
+								</span>
+							</span>
+							<span class="col-md-5 form-group">
+								<label class="col-lg-2">SKU:</label>
+								<span class="col-lg-6">
+									<input class="form-control" type="text"
+										ng-model="OldSearch.item"
+										typeahead="sku as sku.sku for sku in skus | filter:{sku: $viewValue} | limitTo: 10"
+										typeahead-editable="false">
+								</span>
+							</span>
+						</div>
+
+						<div class="row">
+							<span class="col-md-7 form-group">
+								<label class="col-lg-2">状态:</label>
+								<span class="col-lg-4">
+									<div class="btn-group">
+										<button type="button" class="btn btn-xs btn-default"
+											ng-model="OldSearch.status.Not_Stock" btn-checkbox>Not
+											Stock</button>
+										<button type="button" class="btn btn-xs btn-default"
+											ng-model="OldSearch.status.Stocked" btn-checkbox>Stocked</button>
+										<button type="button" class="btn btn-xs btn-default"
+											ng-model="OldSearch.status.Booked" btn-checkbox>Booked</button>
+									</div>
+								</span>
+								<label class="col-lg-2">类别:</label>
+								<span class="col-lg-4">
+									<select name="type" class="form-control"
+										ng-model="OldSearch.type"
+										ng-options="w.id as w.name for w in types" required>
+										<option value="">--请选择--</option>
+									</select>
+								</span>
+							</span>
+							<span class="col-md-5 form-group">
+								<label class="col-lg-2">仓库:</label>
+								<span class="col-lg-6">
+									<select name="warehouse_id" class="form-control"
+										ng-model="OldSearch.warehouse"
+										ng-options="w.id as w.name for w in warehouses" required>
+										<option value="">--请选择--</option>
+									</select>
+								</span>
+							</span>
+						</div>
+						<div class="row">
+							<span class="col-md-7 form-group">
+								<label class="col-lg-2">出入库时间:</label>
+								<span class="col-lg-4">
+									<input class="form-control" type="text"
+										ng-model="OldSearch.exec_at_from"
+										datepicker-popup="yyyy-MM-dd">
+								</span>
+								<label class="col-lg-2">to</label>
+								<span class="col-lg-4">
+									<input class="form-control" type="text"
+										ng-model="OldSearch.exec_at_to" datepicker-popup="yyyy-MM-dd">
+								</span>
+							</span>
+						</div>
+						<div class="row">
+							<span class="col-md-7 form-group">
+								<label class="col-lg-2">创建时间:</label>
+								<span class="col-lg-4">
+									<input class="form-control" type="text"
+										ng-model="OldSearch.created_at_from"
+										datepicker-popup="yyyy-MM-dd">
+								</span>
+								<label class="col-lg-2">to</label>
+								<span class="col-lg-4">
+									<input class="form-control" type="text"
+										ng-model="OldSearch.created_at_to"
+										datepicker-popup="yyyy-MM-dd">
+								</span>
+							</span>
+						</div>
+						<div class="clear-fix"></div>
+						<div class="row">
+							<span class="col-md-4">
+								<a class="btn btn-info" href="javascript:;" value="delete"
+									ng-click="FilterSearch()"> Search </a>
+								<a class="btn btn-primary" href="javascript:;" value="delete"
+									ng-click="Export()"> Export </a>
+								<a class="btn btn-danger" href="javascript:;" value=""
+									ng-click="cleanSearch()"> Reset </a>
+							</span>
+						</div>
+					</div>
+				
+				<hr>
+
+				<table class="table table-hover table-striped">
+				<thead>
+					<tr>
+						<th>
+							<input type="checkbox" name="all" id="all" />
+						</th>
+						<th>OP</th>
+						<th>编号</th>
+						<th>相关编号</th>
+						<th>仓库</th>
+						<th>类别</th>
+						<th>状态</th>
+						<th>创建人</th>
+						<th>创建日期</th>
+						<th>出入库时间</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="io in iolist | filter: search">
+						<td>
+							<input type="checkbox" name="return-list" value="{{io.id}}" />
+						</td>
+						<td>
+							<a href="#/warehouse/IOListOut/update/{{io.id}}" ng-show="io.type < 0">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+							<a href="#/warehouse/IOListIn/update/{{io.id}}" ng-show="io.type > 0">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+							<a  href="#/warehouse/IOPurchase/showPrint/{{io.id}}" ng-show="io.type == 1 || o.type == -1" >
+							<i class="glyphicon glyphicon-print"></i>
+							</a>
+
+						</td>
+						<td>{{io.invoice}}</td>
+						<td>{{io.relation_invoice}}</td>
+						<td>{{io.warehouse.name}}</td>
+						<td>{{getTypeName($index)}}</td>
+						<td>{{getStatusName($index)}}</td>
+						<td>{{io.create_user.email}}</td>
+						<td>{{io.created_at}}</td>
+						<td>{{io.exec_at}}</td>
+					</tr>
+				</tbody>
+			</table>
+			</div>
+		</div>
+	</div>
+</div>

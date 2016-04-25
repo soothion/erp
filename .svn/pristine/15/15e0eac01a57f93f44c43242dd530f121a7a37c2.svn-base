@@ -1,0 +1,192 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">Vendor Manage</h3></div>
+
+			<div class="panel-body">
+				<div class="container-fluid">
+					<form name="editForm" class="">
+						<div class="row">
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.name.$invalid}">
+									<label class="control-label">name</label>
+									<input type="text" name="name" ng-model="vendor.name" class="form-control" required>
+									<span ng-show="editForm.name.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.abbreviation.$invalid}">
+									<label class="control-label">简称</label>
+									<input type="text" name="abbreviation" ng-model="vendor.abbreviation" class="form-control" required>
+									<span ng-show="editForm.abbreviation.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.categorys_id.$invalid}">
+									<label class="control-label">Category</label>
+									<input type="text" name="categorys_id" ng-model="vendor.categorys_id" class="form-control" token-input input-suggest="categories" token-limit=10 required>
+									<span ng-show="editForm.categorys_id.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.code.$invalid}">
+									<label class="control-label">code</label>
+									<input type="text" name="code" ng-model="vendor.code" class="form-control" required>
+									<span ng-show="editForm.code.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.tax_registration_card.$invalid}">
+									<label class="control-label">税号</label>
+									<input type="text" name="tax_registration_card" ng-model="vendor.tax_registration_card" class="form-control" >
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.business_license.$invalid}">
+									<label class="control-label">营业执照</label>
+									<input type="text" name="business_license" ng-model="vendor.business_license" class="form-control" >
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.registered_capital.$invalid}">
+									<label class="control-label">注册资金</label>
+									<input type="text" name="registered_capital" ng-model="vendor.registered_capital" ng-pattern="/^\d+\.?\d*$/" class="form-control" ngRequired>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.home_page.$invalid}">
+									<label class="control-label">网址</label>
+									<input type="url" name="home_page" ng-model="vendor.home_page" class="form-control" placeholder="http://">
+								</div>
+							</div>
+							
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.location.$invalid}">
+									<label class="control-label">地区</label>
+									<input type="text" name="location" ng-model="vendor.location" class="form-control" >
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.vendor.$invalid}">
+									<label class="control-label">采购员</label>
+									<input type="text" name="developer" ng-model="vendor.developer" class="form-control">
+									<span ng-show="editForm.vendor.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-12">
+								<div class="form-group" ng-class="{'has-error': editForm.note.$invalid}">
+									<label class="control-label">备注</label>
+									<textarea name="note" rows="12" ng-model="vendor.note" class="form-control" ></textarea>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.contact.$invalid}">
+									<label class="control-label">联系人</label>
+									<input type="text" name="contact" ng-model="vendor.contact" class="form-control" >
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.tel.$invalid}">
+									<label class="control-label">电话</label>
+									<input type="text" name="tel" ng-model="vendor.tel" class="form-control" >
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.qq.$invalid}">
+									<label class="control-label">QQ</label>
+									<input type="text" name="qq" ng-model="vendor.qq" class="form-control" >
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.email.$invalid}">
+									<label class="control-label">邮箱</label>
+									<input type="email" name="email" ng-model="vendor.email" class="form-control" >
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.fax.$invalid}">
+									<label class="control-label">传真</label>
+									<input type="text" name="fax" ng-model="vendor.fax" class="form-control" >
+								</div>
+							</div>
+							<div class="col col-sm-9">
+								<div class="form-group" ng-class="{'has-error': editForm.contact_addr.$invalid}">
+									<label class="control-label">联系地址</label>
+									<input type="text" name="contact_addr" ng-model="vendor.contact_addr" class="form-control" >
+								</div>
+							</div>
+
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.delivery_addr.$invalid}">
+									<label class="control-label">送货地址1</label>
+									<textarea name="delivery_addr" ng-model="vendor.delivery_addr" class="form-control" ></textarea>
+								</div>
+							</div>
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.delivery_addr_ext.$invalid}">
+									<label class="control-label">送货地址2</label>
+									<textarea name="delivery_addr_ext" ng-model="vendor.delivery_addr_ext" class="form-control" ></textarea>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.payment_method.$invalid}">
+									<label class="control-label">账期1</label>
+									<input type="text" name="payment_method" ng-model="vendor.payment_method"  class="form-control" >
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.payment_period.$invalid}">
+									<label class="control-label">帐期2</label>
+									<input type="text" name="payment_period" ng-model="vendor.payment_period"  class="form-control" >
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.discount_rate.$invalid}">
+									<label class="control-label">票点(旧折扣率%)</label>
+									<input type="text" name="discount_rate" ng-model="vendor.discount_rate" ng-pattern="/^\d+\.?\d*$/" class="form-control" >
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.payment_credit_limit.$invalid}">
+									<label class="control-label">信用额度</label>
+									<input type="text" name="payment_credit_limit" ng-model="vendor.payment_credit_limit" ng-pattern="/^\d+\.?\d*$/" class="form-control" >
+								</div>
+							</div>
+						</div>
+						
+							
+						<a class="btn btn-default" href="#/purchase/vendor">Cancel</a>
+						<button type="button" class="btn btn-primary" ng-click="update()" ng-disabled="isClean() || editForm.$invalid">Save</button>
+						<button type="button" class="btn btn-danger" ng-click="destroy()" ng-show="vendor.$id">Delete</button>
+						
+					</form>    
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>

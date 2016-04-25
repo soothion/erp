@@ -1,0 +1,72 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel">
+			<div class="panel-heading"><h3 class="panel-title">申购单分配[汇总]至采购计划</h3></div>
+			<div class="panel">
+				<table class="table-condensed">
+					<tr>
+						<td>计划编号:</td>
+						<td><input type="text" name="apply_jihuano" id="apply_jihuano"></td>
+						<td>PO编号:</td>
+						<td><input type="text" name="apply_pono" id="apply_pono"></td>
+						<td>Sku:</td>
+						<td><input type="text" name="apply_sku" id="apply_sku"></td>
+						<td>创建人:</td>
+						<td><input type="text" name="apply_user" id="apply_user"></td>						
+						<td>状态:</td>
+						<td><select name="apply_status" id="apply_status"></select></td>
+						<td>渠道:</td>
+						<td><input type="text" name="apply_channel" id="apply_channel"></td>	
+					</tr>
+					<tr>
+						<td>创建时间：</td>
+						<td><input type="text" name="from_date" id="from_date"> to <input type="text" name="from_date" id="from_date"></td>					
+					</tr>
+				</table>
+				<fieldset>
+				<legend></legend>
+				<input type="button" name="search" id="search" value="Search"/>
+				<input type="button" name="reset" id="reset" value="Reset"/>
+				<input type="button" name="export" id="export" value="Export"/>
+				</fieldset>
+			</div>
+			<!--input type="search" class="form-control" ng-model="search" placeholder="Search"-->
+			<table class="table table-condensed table-hover">
+				<thead>
+					<tr>
+						<th><input type="checkbox" name="all" id="all"/></th>
+						<th>OP</th>
+						<th>计划编号</th>
+						<th>仓库(渠道)</th>
+						<th>供应商</th>
+						<th>币种</th>
+						<th>金额</th>
+						<th>付款日期</th>
+						<th>税点</th>	
+						<th>含税与否</th>
+						<th>票点</th>
+						<th>状态</th>
+						<th>创建人</th>
+						<th>创建日期</th>
+						<th>最后更改日期</th>
+						<th>打印</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="vendor in vendors | filter: search">
+						<td><input type="checkbox" name="1" id="1"/></td>
+						<td><input type="button" name="1" id="1" value="剔出采购计划"/></td>
+						<td><input type="checkbox" name="1" id="1"/></td>
+						<td>
+							<a href="#/purchase/vendor/edit/{{vendor.id}}"><i class="glyphicon glyphicon-pencil"></i></a>
+						</td>
+						<td>{{apply.code}}</td>
+						<td>{{apply.name}}</td>
+						<td>{{apply.created_at}}</td>
+						<td>{{apply.updated_at}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

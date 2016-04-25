@@ -1,0 +1,207 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">新建调度单</h3>
+			</div>
+			<div class="panel-body">
+				<div class="container-fluid">
+					<form name="editForm" class="">
+						<div class="row">
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.invoice.$invalid}">
+									<label class="control-label">Invoice</label>
+									<input type="text" name="invoice" ng-model="dispatch.invoice"
+										class="form-control"
+										required>
+									<span ng-show="editForm.invoice.$error.required"
+										class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error':dispatch.status.$invalid}">
+									<label class="control-label">状态</label>
+									<input name="status" class="form-control"
+										ng-model="dispatch.status" disabled />
+									<span ng-show="editForm.status.$error.required"
+										class="help-inline">Required</span>
+								</div>
+							</div>
+							
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.from_warehouse_id.$invalid || dispatch.fromwarehouse==dispatch.towarehouse }">
+									<label class="control-label">调出仓库</label>
+									<select name="from_warehouse_id" class="form-control"
+										ng-model="dispatch.fromwarehouse"
+										ng-options="w.id as w.name for w in warehouses" required>
+										<option value="">--请选择--</option>
+										</select>									
+									<span ng-show="editForm.from_warehouse_id.$error.required" class="help-inline">Required</span>
+									<span ng-show="dispatch.fromwarehouse==dispatch.towarehouse" class="help-inline">出入库仓库不能一样</span>
+									
+								</div>
+							</div>
+							
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.to_warehouse_id.$invalid || dispatch.fromwarehouse==dispatch.towarehouse}">
+									<label class="control-label">调入仓库</label>
+									<select name="to_warehouse_id" class="form-control"
+										ng-model="dispatch.towarehouse"
+										ng-options="w.id as w.name for w in warehouses" required>
+										<option value="">--请选择--</option>
+										</select>									
+									<span ng-show="editForm.to_warehouse_id.$error.required" class="help-inline">Required</span>
+									<span ng-show="dispatch.fromwarehouse==dispatch.towarehouse" class="help-inline">出入库仓库不能一样</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error': editForm.dateOut.$invalid}">
+									<label class="control-label">出库时间</label>
+									<input type="text" ng-model="dispatch.date_out"
+											class="form-control" placeholder=""
+											datepicker-popup="yyyy-MM-dd">	
+									<span ng-show="editForm.date_out.$error.required"
+										class="help-inline">Required</span>							
+								</div>
+							</div>
+							
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error': editForm..date_eta.$invalid}">
+									<label class="control-label">预计到货时间</label>
+									<input name="date_eta" type="text" ng-model="dispatch.date_eta"
+											class="form-control" placeholder=""
+											datepicker-popup="yyyy-MM-dd">	
+									<span ng-show="editForm.date_eta.$error.required"
+										class="help-inline">Required</span>									
+								</div>
+							</div>
+							
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error': editForm..date_receive.$invalid}">
+									<label class="control-label">接收时间</label>
+									<input name="date_receive" type="text" ng-model="dispatch.date_receive"
+											class="form-control" placeholder=""
+											datepicker-popup="yyyy-MM-dd">	
+									<span ng-show="editForm.date_receive.$error.required"
+										class="help-inline">Required</span>									
+								</div>
+							</div>
+							
+							
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.currency.$invalid}">
+									<label class="control-label">currency</label>
+									<select name="currency" class="form-control"
+										ng-model="dispatch.currency" required>
+										<option value="CNY">CNY</option>
+										<option value="USD">USD</option>
+									</select>	
+									<span ng-show="editForm.currency.$error.required"
+										class="help-inline">Required</span>
+								</div>
+							</div>
+
+						</div>
+						
+						<div class="row">
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.transportation.$invalid}">
+									<label class="control-label">transportation</label>
+									<select name="transportation" class="form-control"
+										ng-model="dispatch.transportation"
+										ng-options="w.id as w.name for w in TsStatus" required>
+										<option value="">--请选择--</option>
+										<span ng-show="editForm.transportation.$error.required" class="help-inline">Required</span>
+									</select>									
+									<span ng-show="editForm.transportation.$error.required"
+										class="help-inline">Required</span>
+								</div>
+							</div>
+							
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.carrier.$invalid}">
+									<label class="control-label">carrier</label>
+									<input type="text" name="carrier" ng-model="dispatch.carrier"
+										class="form-control"
+										required>
+									<span ng-show="editForm.carrier.$error.required"
+										class="help-inline">Required</span>
+								</div>
+							</div>
+							
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.tracking.$invalid}">
+									<label class="control-label">tracking</label>
+									<input type="text" name="tracking" ng-model="dispatch.tracking"
+										class="form-control"
+										required>
+									<span ng-show="editForm.tracking.$error.required"
+										class="help-inline">Required</span>
+								</div>
+							</div>
+							
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.shipping_fee.$invalid}">
+									<label class="control-label">shipping_fee</label>
+									<input type="text" name="shipping_fee" ng-model="dispatch.shipping_fee" ng-pattern="/^\d+\.?\d*$/"
+										class="form-control"
+										required>
+									<span ng-show="editForm.shipping_fee.$error.required"
+										class="help-inline">Required</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.exchange_rate.$invalid}">
+									<label class="control-label">exchange_rate</label>
+									<input type="text" name="exchange_rate"
+										ng-model="dispatch.exchange_rate" class="form-control" ng-pattern="/^\d+\.?\d*$/" required>
+									<span ng-show="editForm.exchange_rate.$error.required"
+										class="help-inline">Required</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-12">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.note.$invalid}">
+									<label class="control-label">备注</label>
+									<textarea name="note" class="form-control"
+										ng-model="dispatch.note">
+									</textarea>
+								</div>
+							</div>
+						</div>
+
+
+						<a class="btn btn-default" href="#/warehouse/dispatch">取消</a>
+						<button type="button" class="btn btn-primary" ng-click="create()"
+							ng-disabled="isClean() || editForm.$invalid">新建</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+

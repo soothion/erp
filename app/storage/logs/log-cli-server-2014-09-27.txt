@@ -1,0 +1,8 @@
+[2014-09-27 18:17:11] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Allowed memory size of 1073741824 bytes exhausted (tried to allocate 65536 bytes)' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AdapterService.php:22
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-27 21:11:15] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Allowed memory size of 1073741824 bytes exhausted (tried to allocate 72 bytes)' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AdapterService.php:22
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []

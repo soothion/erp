@@ -1,0 +1,24 @@
+{
+	"folders":
+	[
+		{
+			"path": "/Users/Vincent/www/erp",
+			"file_exclude_patterns": [
+				"*.xml",
+				"*.md",
+				".*",
+				"*.sh",
+				"tasks.TODO",
+				"tags",
+				"composer.lock"
+			],
+			"folder_exclude_patterns": [
+				"vendor",
+				"node_modules",
+				".sass-cache",
+				"dist",
+				".tmp"
+			]
+		}
+	]
+}

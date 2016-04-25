@@ -1,0 +1,42 @@
+{
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.test.hisgadget.com"
+        }
+    ],
+    "name": "bluebanner/core",
+    "description": "including Auth, Item, Inventory, Storage Services",
+    "keywords": ["bluebanner", "core", "laravel"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mars Zhou",
+            "email": "mars@thousandshores.com"
+        }
+    ],
+    "require": {
+      "php": ">=5.3.0",
+      "illuminate/support": "4.1.*",
+      "Illuminate/database": "4.1.*",
+      "intervention/image": "dev-master",
+      "phpoffice/phpexcel": "1.7.9",
+      "rozklad/laravel-phpexcel": "dev-master",
+      "vipsoft/unzip": "dev-master"
+    },
+    "require-dev": {
+        "mockery/mockery": "0.9.0"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations",
+            "src/seeds",
+            "src/Bluebanner/Core/Exceptions.php",
+            "src/Bluebanner/Core/Purchase/Exception.php"
+        ],
+        "psr-0": {
+            "Bluebanner\\Core": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}

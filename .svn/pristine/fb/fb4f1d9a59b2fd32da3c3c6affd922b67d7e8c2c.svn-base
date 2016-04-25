@@ -1,0 +1,144 @@
+<div class="row">
+	<div class="col col-xs-3">
+		<div class="panel panel-warning">
+			<div class="panel-heading">
+				<h3 class="panel-title"><span class="glyphicon glyphicon-th"></span> 仓库列表</h3>
+			</div>
+			<div class="panel-body">
+
+				<div class="btn-group-vertical">
+					<button type="button" class="btn btn-default" ng-class="{'btn-primary': wh.id == current_wh}" ng-repeat="wh in whList" ng-click="switch_wh(wh.id)"><span class="glyphicon glyphicon-list"></span> {{wh.name}}</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="col col-xs-9" ng-show="current_wh">
+		<div class="panel panel-warning">
+			<div class="panel-heading">
+				<h3 class="panel-title">货位管理</h3>
+			</div>
+			<div class="panel-body">
+
+				<ol class="breadcrumb">
+					<li>
+						<a href="javascript:;" ng-click="show(0)">{{current_wh | warehouse}}</a>
+					</li>
+					<li ng-repeat="path in node_path" ng-show="!$first">
+						<a href="javascript:;" ng-click="show(path)" >{{label(path).desc}}</a>
+					</li>
+				</ol>
+
+				<table class="table table-condensed table-striped table-hover">
+					<thead>
+						<tr>
+							<th></th>
+							<th>条码</th>
+							<th>描述</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr  ng-repeat="c in list">
+							<td><img ng-src="{{c.png}}" class="img-thumbnail" width="200"/></td>
+							<td>
+								<input type="text" name="barcode" id="inputBarcode" class="form-control input-sm"  ng-model="c.barcode" />
+							</td>
+							<td>
+								<input type="text" name="desc" id="inputDesc" class="form-control input-sm" ng-model="c.desc" />
+							</td>
+							<td>
+								<a type="button" class="btn btn-xs btn-info" ng-show="!isClean(c.id)" ng-click="update_container(c.id)">保存</a> 
+								
+								<a type="button" class="btn btn-xs btn-warning" ng-show="!isClean(c.id)" ng-click="reset_container(c.id)">取消</a>
+							</td>
+							<td>
+								<a type="button" class="btn btn-xs btn-default" ng-show="c.has_child" ng-click="show(c.id)">
+									<span class="glyphicon glyphicon-list"></span>
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="row">
+					<div class="col-xs-12">
+						<button type="button" class="btn btn-primary" ng-click="create_container(current_wh)">添加货位</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">货位管理</h4>
+			</div>
+			<div class="modal-body">
+				<form name="containerForm">
+
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': containerForm.warehouse.$invalid}">
+									<label class="control-label">仓库</label>
+									<input type="text" name="warehouse" ng-model="container_new.warehouse_id" class="form-control" disabled>
+									<span ng-show="containerForm.warehouse.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': containerForm.parent_id.$invalid}">
+									<label class="control-label">上级分类</label>
+									<input type="text" name="parent_id" ng-model="container_new.parent_id" class="form-control" required disabled></select>
+									<span ng-show="containerForm.parent_id.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': containerForm.barcode.$invalid}">
+									<label class="control-label">条码</label>
+									<input type="text" name="barcode" ng-model="container_new.barcode" class="form-control" required>
+									<span ng-show="containerForm.barcode.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': containerForm.desc.$invalid}">
+									<label class="control-label">描述</label>
+									<input type="text" name="desc" ng-model="container_new.desc" class="form-control" required>
+									<span ng-show="containerForm.desc.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': containerForm.has_child.$invalid}">
+									<label class="control-label">是否有下级分类</label>
+									<input type="checkbox" name="has_child" ng-model="container_new.has_child" class="form-control">
+									<span ng-show="containerForm.has_child.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				
+
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" ng-disabled="containerForm.$invalid" ng-click="save_container()">确认添加</button>
+			</div>
+		</div>
+	</div>
+</div>

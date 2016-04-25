@@ -1,0 +1,23 @@
+{
+    "name": "bluebanner/ui",
+    "description": "",
+    "authors": [
+        {
+            "name": "Mars",
+            "email": "mars@thousandshores.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.x"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "Bluebanner\\Ui": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}

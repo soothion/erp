@@ -1,0 +1,146 @@
+<?php
+namespace Bluebanner\Core\Order;
+
+class ImportService implements ImportServiceInterface{
+	public $channel;//渠道（Amazon,Ebay）
+	public $config;//配置参数
+    public $report;//执行结果报告
+
+    public function __construct($channel = null, $config = null) {
+    	$this->channel = ucfirst(strtolower($channel));//首字母大写
+    	$this->config = $config;
+    }
+
+    public function run(){
+    	$orderList = $this->getOrderList();
+    	$orderList = $this->filter($orderList);//新订单与老订单分离
+    	$this->import($orderList['import']);
+    	$this->update($orderList['update']);
+    }
+
+    /**
+     * 导入订单
+     * @param  array $orderList 
+     * @return array 更导入处理报告
+     */
+    public function import($orderList){
+        $result = array();
+    	foreach ($orderList as $order) {
+            DB::transaction(function()
+            {
+                $orderCustomer = $order['customer'];
+                $orderCustomer = Customer::create($orderCustomer);
+
+                $orderInfo = $order['info'];
+                $orderInfo['customer_id'] = $orderCustomer->id;
+                $orderInfo = Order::create($orderInfo);
+
+                $orderDetail = $order['detail'];
+                foreach ($orderDetail as $detail) {
+                    $detail['order_id'] = $orderInfo->id;
+                    if(!$detail = OrderDetail::create($detail)){
+                        $orderDetail = false;
+                        break;
+                    } 
+                }
+                $flag = ($orderCustomer&&$orderInfo&&$orderInfo);
+            });
+            $result[] = array(
+                'action'=>'import',
+                'order_id'=>$orderInfo->id,
+                'third_party_order_id'=>$order['third_party_order_id'],
+                'status'=>$flag);
+    	}
+        return $result; 
+    }
+
+    /**
+     * 更新订单
+     * @param  array $orderList 
+     * @return array 更新处理报告
+     */
+    public function update($orderList){
+        $result = array();
+        foreach ($orderList as $order) {
+            DB::transaction(function(){
+                $flag = Order::find($order['id'])->update($order)?true:false;
+            });
+            $result[] = array(
+                'action'=>'update',
+                'order_id'=>$order['id'],
+                'third_party_order_id'=>$order['third_party_order_id'],
+                'status'=>$flag);
+        }
+        return $result;
+    }
+
+    /**
+     * 获取订单列表
+     * @return array 
+     */
+    public function getOrderList(){
+    	$service =  $this->channel.'Service';
+    	$service = new $service($this->config);
+    	$orderList = $service->getOrderList();
+    	return $this->parsetOrder($orderList);
+    }
+
+    /**
+     * 分离新订单与老订单
+     * @param  array $orderList  待分离订单
+     * @return array             分离后订单
+     */
+    public function filter($orderList){
+    	$result=array();
+    	foreach ($orderList as $key => $order) {
+    		$filter=array('third_party_order_id','=',$order['third_party_order_id']);
+    		if($id = $this->checkOrder($filter){
+                $order['info']['id']= $id;
+    			$result['update'][]=$order;//添加到更新列表
+    			array_slice($orderList, $key, 1);//删除已存在的订单
+    		}
+    	}
+    	$result['import'] = $orderList;
+    	return $result;
+    }
+
+    /**
+     * 检测订单是否存在
+     * @param  array $filter 筛选条件
+     * @return int           返回已存在的订单ID         
+     */
+    public function checkOrder($filter){
+        return Order::where($filter[0], $filter[1], $filter[2])->pluck('id');
+    }
+
+    /**
+     * 调用adapter解析订单
+     * @param  array $orderList 待解析的订单
+     * @return array            解析后的订单
+     */
+    public function parseOrder($orderList){
+    	$adapter =  new AdapterService($this->channel);
+    	return $adapter->parse($orderList);
+    }
+
+    /**
+     * 配置函数
+     * @param  mixed $option 参数名，如果是数组，直接赋值给$this->config
+     * @param  mixed $value  参数值
+     * @return mixed         返回$this->config 或者null
+     */
+    public function config($option = null, $value = null){
+    	if($option !== null){
+    		if(!is_array($option)){
+    			if($value !== null){
+    				$this->config[$option] = $value;
+    			}
+    			return array_key_exists($option, $this->config) ? $this->config[$option] : null;
+    		}
+    		$this->config = $option;
+    	}
+    	return $this->config;
+    }
+
+
+}

@@ -1,0 +1,160 @@
+[2014-09-29 01:47:10] production.ERROR: exception 'Illuminate\Database\QueryException' with message 'SQLSTATE[42S02]: Base table or view not found: 1146 Table 'erp.lv4_cron' doesn't exist (SQL: delete from `lv4_cron`)' in /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Connection.php:539
+Stack trace:
+#0 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Connection.php(362): Illuminate\Database\Connection->run('delete from `lv...', Array, Object(Closure))
+#1 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Connection.php(319): Illuminate\Database\Connection->affectingStatement('delete from `lv...', Array)
+#2 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Query/Builder.php(1789): Illuminate\Database\Connection->delete('delete from `lv...', Array)
+#3 /Users/vincent/www/erp/app/database/seeds/CronSeeder.php(12): Illuminate\Database\Query\Builder->delete()
+#4 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Console/SeedCommand.php(52): CronSeeder->run()
+#5 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(108): Illuminate\Database\Console\SeedCommand->fire()
+#6 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Command/Command.php(241): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#7 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(96): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#8 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(887): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#9 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(191): Symfony\Component\Console\Application->doRunCommand(Object(Illuminate\Database\Console\SeedCommand), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#10 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(121): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#11 /Users/vincent/www/erp/artisan(59): Symfony\Component\Console\Application->run()
+#12 {main} [] []
+[2014-09-29 01:48:11] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'Cron' not found' in /Users/vincent/www/erp/app/database/seeds/CronSeeder.php:22
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-29 01:51:03] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'Cron' not found' in /Users/vincent/www/erp/app/database/seeds/CronSeeder.php:22
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-29 02:01:54] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'Cron' not found' in /Users/vincent/www/erp/app/database/seeds/CronSeeder.php:22
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-29 02:02:08] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'Cron' not found' in /Users/vincent/www/erp/app/database/seeds/CronSeeder.php:22
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-29 02:03:57] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'Bluebanner\Core\Order\Cron' not found' in /Users/vincent/www/erp/app/database/seeds/CronSeeder.php:22
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-29 02:07:20] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'Bluebanner\Core\Order\Cron' not found' in /Users/vincent/www/erp/app/database/seeds/CronSeeder.php:21
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-29 02:08:13] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'parse error, expecting `"identifier (T_STRING)"' or `"\\ (T_NS_SEPARATOR)"'' in /Users/vincent/www/erp/app/database/seeds/CronSeeder.php:1
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-29 02:08:36] production.ERROR: exception 'Illuminate\Database\QueryException' with message 'SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column 'config' at row 1 (SQL: insert into `lv4_core_cron` (`channel_id`, `platform`, `config`, `interval`, `last`, `next`, `updated_at`, `created_at`) values (1, amazon, {"access_key_id":"AKIAJZI5EXGOZV22NQJQ","secret_access_key":"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","application_name":"BetterStuff LowerPrice","application_version":"2010-10-01","merchant_id":"A2KV19AYUKS3X0","service_url":"https:\/\/mws.amazonservices.com"}, 60, 1411981716, 1411985316, 2014-09-29 02:08:36, 2014-09-29 02:08:36))' in /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Connection.php:539
+Stack trace:
+#0 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Connection.php(338): Illuminate\Database\Connection->run('insert into `lv...', Array, Object(Closure))
+#1 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Connection.php(295): Illuminate\Database\Connection->statement('insert into `lv...', Array)
+#2 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Query/Processors/Processor.php(30): Illuminate\Database\Connection->insert('insert into `lv...', Array)
+#3 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Query/Builder.php(1722): Illuminate\Database\Query\Processors\Processor->processInsertGetId(Object(Illuminate\Database\Query\Builder), 'insert into `lv...', Array, 'id')
+#4 [internal function]: Illuminate\Database\Query\Builder->insertGetId(Array, 'id')
+#5 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Eloquent/Builder.php(919): call_user_func_array(Array, Array)
+#6 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Eloquent/Model.php(1454): Illuminate\Database\Eloquent\Builder->__call('insertGetId', Array)
+#7 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Eloquent/Model.php(1454): Illuminate\Database\Eloquent\Builder->insertGetId(Array, 'id')
+#8 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Eloquent/Model.php(1424): Illuminate\Database\Eloquent\Model->insertAndSetId(Object(Illuminate\Database\Eloquent\Builder), Array)
+#9 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Eloquent/Model.php(1335): Illuminate\Database\Eloquent\Model->performInsert(Object(Illuminate\Database\Eloquent\Builder))
+#10 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Eloquent/Model.php(411): Illuminate\Database\Eloquent\Model->save()
+#11 /Users/vincent/www/erp/app/database/seeds/CronSeeder.php(27): Illuminate\Database\Eloquent\Model::create(Array)
+#12 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Console/SeedCommand.php(52): CronSeeder->run()
+#13 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(108): Illuminate\Database\Console\SeedCommand->fire()
+#14 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Command/Command.php(241): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#15 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(96): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#16 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(887): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#17 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(191): Symfony\Component\Console\Application->doRunCommand(Object(Illuminate\Database\Console\SeedCommand), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#18 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(121): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#19 /Users/vincent/www/erp/artisan(59): Symfony\Component\Console\Application->run()
+#20 {main} [] []
+[2014-09-29 02:54:23] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'parse error' in /Users/vincent/www/erp/app/commands/ImportOrerCommand.php:48
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-29 02:54:27] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'parse error' in /Users/vincent/www/erp/app/commands/ImportOrerCommand.php:48
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-29 02:55:14] production.ERROR: exception 'RuntimeException' with message 'Not enough arguments.' in /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Input/Input.php:77
+Stack trace:
+#0 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Command/Command.php(236): Symfony\Component\Console\Input\Input->validate()
+#1 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(96): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#2 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(887): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#3 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(191): Symfony\Component\Console\Application->doRunCommand(Object(ImportOrerCommand), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#4 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(121): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#5 /Users/vincent/www/erp/artisan(59): Symfony\Component\Console\Application->run()
+#6 {main} [] []
+[2014-09-29 02:55:40] production.ERROR: exception 'RuntimeException' with message 'Not enough arguments.' in /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Input/Input.php:77
+Stack trace:
+#0 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Command/Command.php(236): Symfony\Component\Console\Input\Input->validate()
+#1 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(96): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#2 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(887): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#3 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(191): Symfony\Component\Console\Application->doRunCommand(Object(ImportOrerCommand), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#4 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(121): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#5 /Users/vincent/www/erp/artisan(59): Symfony\Component\Console\Application->run()
+#6 {main} [] []
+[2014-09-29 02:55:52] production.ERROR: exception 'RuntimeException' with message 'Not enough arguments.' in /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Input/Input.php:77
+Stack trace:
+#0 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Command/Command.php(236): Symfony\Component\Console\Input\Input->validate()
+#1 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(96): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#2 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(887): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#3 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(191): Symfony\Component\Console\Application->doRunCommand(Object(ImportOrerCommand), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#4 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(121): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#5 /Users/vincent/www/erp/artisan(59): Symfony\Component\Console\Application->run()
+#6 {main} [] []
+[2014-09-29 02:56:09] production.ERROR: exception 'RuntimeException' with message 'Not enough arguments.' in /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Input/Input.php:77
+Stack trace:
+#0 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Command/Command.php(236): Symfony\Component\Console\Input\Input->validate()
+#1 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(96): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#2 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(887): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#3 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(191): Symfony\Component\Console\Application->doRunCommand(Object(ImportOrerCommand), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#4 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(121): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#5 /Users/vincent/www/erp/artisan(59): Symfony\Component\Console\Application->run()
+#6 {main} [] []
+[2014-09-29 02:59:37] production.ERROR: exception 'ErrorException' with message 'Invalid argument supplied for foreach()' in /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php:72
+Stack trace:
+#0 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(72): Illuminate\Exception\Handler->handleError(2, 'Invalid argumen...', '/Users/vincent/...', 72, Array)
+#1 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(59): Illuminate\Console\Command->specifyParameters()
+#2 /Users/vincent/www/erp/app/commands/ImportOrerCommand.php(32): Illuminate\Console\Command->__construct()
+#3 /Users/vincent/www/erp/app/start/artisan.php(14): ImportOrerCommand->__construct()
+#4 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Application.php(63): require('/Users/vincent/...')
+#5 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Application.php(33): Illuminate\Console\Application->boot()
+#6 /Users/vincent/www/erp/artisan(46): Illuminate\Console\Application::start(Object(Illuminate\Foundation\Application))
+#7 {main} [] []
+[2014-09-29 03:05:13] production.ERROR: exception 'BadMethodCallException' with message 'Call to undefined method Illuminate\Database\Query\Builder::all()' in /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Query/Builder.php:1951
+Stack trace:
+#0 [internal function]: Illuminate\Database\Query\Builder->__call('all', Array)
+#1 [internal function]: Illuminate\Database\Query\Builder->all()
+#2 /Users/vincent/www/erp/workbench/bluebanner/core/vendor/illuminate/database/Illuminate/Database/Eloquent/Builder.php(919): call_user_func_array(Array, Array)
+#3 /Users/vincent/www/erp/app/commands/ImportOrerCommand.php(48): Illuminate\Database\Eloquent\Builder->__call('all', Array)
+#4 /Users/vincent/www/erp/app/commands/ImportOrerCommand.php(48): Illuminate\Database\Eloquent\Builder->all()
+#5 /Users/vincent/www/erp/app/commands/ImportOrerCommand.php(42): ImportOrerCommand->getCronList()
+#6 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(108): ImportOrerCommand->fire()
+#7 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Command/Command.php(241): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#8 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(96): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#9 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(887): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#10 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(191): Symfony\Component\Console\Application->doRunCommand(Object(ImportOrerCommand), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#11 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(121): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#12 /Users/vincent/www/erp/artisan(59): Symfony\Component\Console\Application->run()
+#13 {main} [] []
+[2014-09-29 18:36:01] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Cannot use object of type stdClass as array' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AmazonService.php:19
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-29 18:49:06] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Cannot use object of type stdClass as array' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AmazonService.php:19
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-29 19:02:24] production.ERROR: exception 'ErrorException' with message 'Undefined variable: wait' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AmazonService.php:109
+Stack trace:
+#0 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AmazonService.php(109): Illuminate\Exception\Handler->handleError(8, 'Undefined varia...', '/Users/vincent/...', 109, Array)
+#1 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AmazonService.php(73): Bluebanner\Core\Order\AmazonService->getReport('19936414073')
+#2 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AmazonService.php(36): Bluebanner\Core\Order\AmazonService->getReportList()
+#3 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/ImportService.php(121): Bluebanner\Core\Order\AmazonService->getOrderList()
+#4 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/ImportService.php(21): Bluebanner\Core\Order\ImportService->getOrderList()
+#5 /Users/vincent/www/erp/app/commands/ImportOrerCommand.php(49): Bluebanner\Core\Order\ImportService->run()
+#6 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(108): ImportOrerCommand->fire()
+#7 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Command/Command.php(241): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#8 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(96): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#9 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(887): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#10 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(191): Symfony\Component\Console\Application->doRunCommand(Object(ImportOrerCommand), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#11 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(121): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#12 /Users/vincent/www/erp/artisan(59): Symfony\Component\Console\Application->run()
+#13 {main} [] []

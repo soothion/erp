@@ -1,0 +1,53 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">Vendor Quotation Manage</h3></div>
+			
+			<div class="panel-body">
+				<input type="search" class="form-control" ng-model="search" placeholder="Search">
+				<table class="table table-condensed table-hover">
+					<thead>
+						<tr>
+							<th><a href="#/purchase/quotation/edit/new"><i class="glyphicon glyphicon-plus"></i></a></th>
+							<th>Code</th>
+							<th>Name</th>
+							<th>Sku</th>
+							<th>Desc</th>
+							<th itle="unit-price">Price</th>
+							<th itle="tax-unit-price">Tax Price</th>
+							<th title="usd-unit-price">USD Price</th>
+							<th>UM</th>
+							<th>Tax Rate</th>
+							<th>SPQ</th>
+							<th>MOQ</th>
+							<th title="lead time(days)">L/T</th>
+							<th>Created</th>
+							<th>Updated</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="quotation in quotations | filter: search | limitTo: 20">
+							<td>
+								<a href="#/purchase/quotation/edit/{{quotation.id}}"><i class="glyphicon glyphicon-pencil"></i></a>
+							</td>
+							<td>{{quotation.vendor.code}}</td>
+							<td>{{quotation.vendor.name}}</td>
+							<td>{{quotation.item.sku}}</td>
+							<td>{{quotation.item.description}}</td>
+							<td>{{quotation.unit_price}}</td>
+							<td>{{quotation.tax_unit_price}}</td>
+							<td>{{quotation.usd_unit_price}}</td>
+							<td>{{quotation.um}}</td>
+							<td>{{quotation.tax_rate}}</td>
+							<td>{{quotation.spq}}</td>
+							<td>{{quotation.moq}}</td>
+							<td title="lead time(days)">{{quotation.lead_time}}</td>
+							<td>{{quotation.created_at}}</td>
+							<td>{{quotation.updated_at}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

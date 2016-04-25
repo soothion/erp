@@ -1,0 +1,214 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">申购单明细审核</h3>
+			</div>	
+			<div class="panel-body">
+				<div class="container-fluid">
+					<form name="editForm" >
+						<div class="container-fluid">
+							<div class="row">								
+								<div class="col col-sm-4">
+									<div class="form-group" ng-class="{'has-error': editForm.sku.$invalid}">
+										<select name="req_wh_id" ng-model="seachform.plan_id" class="form-control"  ng-options="plan.id as plan.name for plan in plans">
+											<option value="">--所属计划--</option>
+										</select>
+									</div>
+								</div>
+								<div class="col col-sm-4">
+									<div class="form-group" ng-class="{'has-error': editForm.req_wh_id.$invalid}">
+										<select name="req_wh_id" ng-model="seachform.warehouse" class="form-control"  ng-options="wh.id as wh.name for wh in whs">
+											<option value="">--申请仓库--</option>
+										</select>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">					
+							
+
+								<div class="col col-sm-4">
+									<div class="form-group" ng-class="{'has-error': editForm.account.$invalid}">
+										<select name="account" ng-model="seachform.platform" class="form-control" ng-options="a.id as a.name for a in platforms" >
+											<option value="">--渠道--</option>
+										</select>
+									</div>
+								</div>
+
+
+								<div class="col col-sm-4">
+									<div class="form-group" ng-class="{'has-error': editForm.transportation.$invalid}">
+										<select name="transportation" ng-model="seachform.transportation" class="form-control" ng-options="t.name as t.name for t in trans">
+											<option value="">--运输方式--</option>
+										</select>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col col-sm-12">	
+									<div class="btn-group">
+										<button type="button" class="btn btn-default dropdown-toggle" ng-show="1" data-toggle="dropdown">
+											选择项(<span class="text text-danger">{{checkedIds.length}}</span>)
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu col-sm-1">
+											<li ><a  ng-click="allowCheckedPlanDetail();" style="color:green">通过</a></li>
+											<li ><a  ng-click="disallowCheckedPlanDetail();"  style="color:red">拒绝</a></li>
+										</ul>
+									</div>
+
+									<div class="btn-group">
+										<button type="button" class="btn btn-default dropdown-toggle" ng-show="1" data-toggle="dropdown">
+											所有项(<span class="text text-danger">{{afterFilterDetails.length}}</span>)
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu col-sm-1">
+											<li ><a  ng-click="allowAllPlanDetail();" style="color:green">通过</a></li>
+											<li ><a  ng-click="disallowAllPlanDetail();"   style="color:red">拒绝</a></li>
+										</ul>
+
+									</div>
+								</div>
+							</div>							
+						</div>
+					</form>
+				</div>
+			</div>
+			</div>
+		</div>
+	</div>
+</div>
+				
+<!--input type="search" class="form-control" ng-model="search" placeholder="Search"-->
+<!--有滚动条-->
+<div>
+	<ul class="nav nav-tabs">
+	  <li ng-class="{'active':showtype=='needCheck'}"><a ng-click="showtype='needCheck';">待审核项</a></li>
+	  <li ng-class="{'active':showtype=='hasChecked'}"><a ng-click="showtype='hasChecked';">已审核项</a></li>
+	</ul>
+	<div class="tab-content container-fluid">
+		<div class="tab-pane" ng-class="{'active':showtype=='needCheck'}">
+			<table class="table table-hover ">
+				<thead>
+					<tr>
+						<th>
+							<input type="checkbox" name="all" id="all" ng-click="checkall()" />
+						</th>
+						<th>OP</th>
+						<th>SKU</th>
+						<th>仓库</th>
+						<th>相关订单</th>
+						<th>需求数量</th>
+						<th>ETA</th>
+						<th>所属渠道</th>
+						<th>对应计划表</th>
+						<th>运输方式</th>
+						<th>创建日期</th>
+						<th>创建者</th>
+						<th>备注</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="assign in afterFilterDetails" id="tr{{assign.id}}"
+						ng-style="trStyle(assign.item.line_state,assign.request_bom,assign.id);">
+						<!--申购单是pending,cancelled或者没有plan_id的时候，显示checkbox-->
+						<td>
+							<input type="checkbox" name="{{assign.id}}" value="{{assign.id}}"
+								ng-click="toggleAddToCheckList(assign.id)" />
+						</td>
+						<td>
+							<div class="btn-group">
+								<a ng-click="allowToPurchase(assign.id)" type="button"
+									class="btn btn-xs btn-success">
+									<i class="glyphicon glyphicon-ok"></i>
+									通过
+								</a>
+								<a ng-click="disallowToPurchase(assign.id)" type="button"
+									class="btn btn-xs btn-danger">
+									<i class="glyphicon glyphicon-remove"></i>
+									拒绝
+								</a>
+							</div>
+						</td>
+						<td>{{assign.item.sku}}</td>
+						<td>{{assign.warehouse.name}}</td>
+						<td>{{assign.request.relation_id}}</td>
+						<td>{{assign.request_qty}}</td>
+						<th>{{assign.end_date}}</th>
+						<th>{{assign.platform.name}}</th>
+						<td>
+							<a target=_blank href="#/purchase/plan/edit/{{assign.plan.id}}">{{assign.plan.name}}</a>
+						</td>
+						<td>{{assign.transportation}}</td>
+						<td>{{assign.created_at}}</td>
+						<td>{{assign.agent}}</td>
+						<td>{{assign.note}}</td>
+					</tr>
+		
+				</tbody>
+			</table>
+		</div>
+		<div class="tab-pane" ng-class="{'active':showtype=='hasChecked'}">
+			<table class="table table-hover">
+				<thead>
+					<th>OP</th>
+					<th>状态</th>
+					<th>SKU</th>
+					<th>仓库</th>
+					<th>相关订单</th>
+					<th>需求数量</th>
+					<th>ETA</th>
+					<th>所属渠道</th>
+					<th>对应计划表</th>
+					<th>运输方式</th>
+					<th>创建日期</th>
+					<th>创建者</th>
+					<th>备注</th>
+				</thead>
+				<tbody>
+					<tr ng-repeat="checkedDetail in hasCheckDetails"
+						id="tr{{checkedDetail.id}}"
+						ng-style="trStyle(checkedDetail.item.line_state,checkedDetail.request_bom,checkedDetail.id);">
+						<!--申购单是pending,cancelled或者没有plan_id的时候，显示checkbox-->
+						<td>
+							<div class="btn-group">
+								<a ng-show="checkedDetail.status=='reject'" ng-click="allowToPurchase(checkedDetail.id)" type="button"
+									class="btn btn-xs btn-success">
+									<i class="glyphicon glyphicon-ok"></i>
+									通过
+								</a>
+								<a ng-show="checkedDetail.status=='approve'" ng-click="disallowToPurchase(checkedDetail.id)" type="button"
+									class="btn btn-xs btn-danger">
+									<i class="glyphicon glyphicon-remove"></i>
+									拒绝
+								</a>
+							</div>
+						</td>
+						<th>
+							<b class="text" ng-class="{'text-success':checkedDetail.status=='approve','text-danger':checkedDetail.status=='reject'}">
+							{{checkedDetail.status}}					
+							</b>
+						</th>
+						<td>{{checkedDetail.item.sku}}</td>
+						<td>{{checkedDetail.warehouse.name}}</td>
+						<td>{{checkedDetail.request.relation_id}}</td>
+						<td>{{checkedDetail.request_qty}}</td>
+						<th>{{checkedDetail.end_date}}</th>
+						<th>{{checkedDetail.platform.name}}</th>
+						<td>
+							<a target=_blank
+								href="#/purchase/plan/edit/{{checkedDetail.plan.id}}">{{checkedDetail.plan.name}}</a>
+						</td>
+						<td>{{checkedDetail.transportation}}</td>
+						<td>{{checkedDetail.created_at}}</td>
+						<td>{{checkedDetail.agent}}</td>
+						<td>{{checkedDetail.note}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+

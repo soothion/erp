@@ -1,0 +1,104 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">库存明细<span style="font-size:10px">[实际在库]</span></h3></div>
+
+			<div class="panel-body">
+				<form name="searchForm">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col col-sm-2">
+							<div class="form-group" ng-class="{'has-error': searchForm.warehouse.$invalid}">
+								<select name="warehouse" ng-model="search.warehouse" class="form-control" ng-options="w.id as w.name for w in warehouse"></select>
+							</div>
+						</div>
+						<div class="col col-sm-2">
+							<div class="form-group" ng-class="{'has-error': searchForm.sku.$invalid}">
+								<input type="text" name="sku" ng-model="search.sku" class="form-control" typeahead="i as i.sku for i in items | filter:{sku: $viewValue} | limitTo:10" placeholder="SKU">
+							</div>
+						</div>
+						<div class="col col-sm-8">
+							<div class="form-group" ng-class="{'has-error': searchForm.status.$invalid}">
+								<div class="btn-group ">
+									<button type="button" class="btn btn-default" ng-model="search.status.stocked" btn-checkbox>Stocked</button>
+									<button type="button" class="btn btn-default" ng-model="search.status.onroad" btn-checkbox>Onroad</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+					<!-- 
+						<div class="col col-sm-2">
+							<div class="form-group" ng-class="{'has-error': searchForm.from.$invalid}">
+								<input type="text" name="from" ng-model="search.from" class="form-control" datepicker-popup="yyyy-MM-dd H:m:s" datepickerPopupConfig="{closeOnDateSelection: false}">
+							</div>
+						</div>
+					 -->
+						<div class="col col-sm-4">
+							<div class="form-group" ng-class="{'has-error': searchForm.to.$invalid}">
+								<input type="text" name="to" ng-model="search.to" class="form-control" datepicker-popup="yyyy-MM-dd">
+							</div>
+						</div>
+						<div class="col col-sm-4">
+							<div class="form-group" ng-class="{'has-error': searchForm.condition.$invalid}">
+								<div class="btn-group ">
+									<button type="button" class="btn btn-default" ng-model="search.condition.normal" btn-checkbox>Normal</button>
+									<button type="button" class="btn btn-default" ng-model="search.condition.likenew" btn-checkbox>Like New</button>
+									<button type="button" class="btn btn-default" ng-model="search.condition.used" btn-checkbox>Used</button>
+									<button type="button" class="btn btn-default" ng-model="search.condition.defective" btn-checkbox>Defective</button>
+								</div>
+							</div>
+						</div>
+						<div class="col col-sm-4">
+							<div class="form-group" >
+								<button type="button" class="btn btn-primary" ng-click="searching()">搜索</button>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				</form>
+
+				<table class="table table-condensed table-hover">
+					<thead>
+						<tr>
+							<th>SKU</th>
+							<th>即时库存</th>
+							<th>本次变化数</th>
+							<th>采购价</th>
+							<th>市场成本价</th>
+							<th>PI价</th>
+							<th>库存相关编号</th>
+							<th>本次批次号</th>
+							<th>本次相关编号</th>
+							<th>库存类型</th>
+							<!--th>库存状态</th-->
+							<th>库存时刻</th>
+							<th>渠道</th>
+							<th>仓库</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="inventory in list | limitTo: 10">
+							<td>{{inventory.item.sku}}</td>
+							<td>{{inventory.balance}}</td>
+							<td>{{inventory.qty}}</td>
+							<td>{{inventory.inventory.rmbprice}}</td>
+							<td>{{inventory.inventory.localprice}}</td>
+							<td>{{inventory.inventory.pi_price}}20.00</td>
+							<td>{{inventory.inventory.restock.relation_invoice}}</td>
+							<td>{{inventory.relation.invoice}}</td>
+							<td>{{inventory.relation.relation_invoice}}</td>
+							<td>{{inventory.inventory.condition}}</td>
+							<!--td>{{inventory.inventory.status | inventory_status}}</td-->
+							<td>{{inventory.updated_at}}</td>
+							<td>{{inventory.inventory.account_id | userChannel}}</td>
+							<td>{{inventory.warehouse_id | warehouse}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

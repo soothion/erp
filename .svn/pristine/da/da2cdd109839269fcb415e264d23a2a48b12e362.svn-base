@@ -1,0 +1,427 @@
+<?php
+
+use Bluebanner\Core\Purchase\PlanServiceInterface;
+use Bluebanner\Core\Model\PurchasePlanDetail;
+
+class APIPurchasePlanController extends \BaseController {
+
+	public function __construct(PlanServiceInterface $plan)
+	{
+		$this->service = $plan;
+	}
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index()
+	{
+		return $this->service->latestPlanList(Input::get('filter'), Input::get('fields'));
+	}
+
+	public function summary($plan_id)
+	{
+		return $this->service->planSummaryByWareHouseAndTransaction($plan_id);
+	}
+
+	public function changeList($plan_id)
+	{
+		$list = array();
+		$changes = $this->service->planChangeList($plan_id)->get();
+		foreach ($changes as $change) {
+			foreach ($change->changes as $val) {
+				$list[] = array(
+				                'sku' => $change->item_id,
+				                'from' => $val->qty_from,
+				                'to' => $val->qty_to,
+				                'note' => $val->note
+				                );
+			}
+		}
+		return $list;
+	}
+
+	public function detail($plan_id, $item_id, $wh_id, $trans)
+	{
+		return PurchasePlanDetail::select()
+			->where('plan_id', $plan_id)
+			->where('item_id', $item_id)
+			->where('warehouse_id', $wh_id)
+			->where('transportation', $trans)
+			->first()
+			->requestdetails()->get();
+	}
+
+	public function freeRequestDetailList()
+	{
+		return $this->service->avaliableRequestList();
+	}
+
+	public function addToPlan()
+	{
+		if ( ! $this->service->addToPlan(Sentry::getUser()->id))
+		 	throw new Exception("添加到采购计划失败", 1);
+	}
+
+	public function createPlan()
+	{
+		if ( ! $this->service->createPlan(Input::get('name'), Sentry::getUser()->id))
+			throw new Exception('创建采购计划失败', 1);
+	}
+
+	public function cwlist()
+	{
+		$plan_id = Input::get('plan_id');
+		return $this->service->planWarehouseAndTransactionList($plan_id);
+	}
+
+	public function confirm($id)
+	{
+		return $this->service->planConfirm($id, Sentry::getUser()->id);
+	}
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create()
+	{
+		//
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function store()
+	{
+		return $this->service->planCreate(array_add(Input::get(), 'agent', Sentry::getUser()->id));
+	}
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		return $this->service->retrievePlan($id);
+
+		return;
+		$list = array();
+		//该plan下所有item的采购订单数量
+		$purchase  = $this->service->getPurchaseOrder($id);
+
+		//该plan下所有item的采购到货数量
+		$purchaseReceive  = $this->service->getPurchaseOrderStockin($id);
+
+		//获取剩余库存。。。。
+		$columns = array_merge($this->service->getColumns($id));
+
+		$list = $this->getPurchaseData($id,$purchase,$purchaseReceive,$columns);
+		$list['purchase_c'] = $list['columns'];
+		$list['purchase'] = $list['details'];
+		unset($list['columns']);
+		unset($list['details']);
+
+		$tmp = $this->getShipmentData($id,$columns);
+		$list['shipment_c'] = $tmp['columns'];
+		$list['shipment'] = $tmp['details'];
+
+		$list['purchasing'] = $this->service->getPurchasingSummary($id);
+
+		return $list;
+	}
+
+	/*获取预算和明细的基础数据*/
+	public function getPurchaseData($plan_id,$purchase,$purchaseReceive,$columns ){
+		$r = array();
+
+		//整理数据
+		foreach ($this->service->planDetailList(array('plan_id' => $plan_id))->get() as $d) {
+			if(count($d->subitems) >0) continue;
+			$r['plan'] = isset($r['plan']) ?  $r['plan'] : $d->plan->toArray();
+
+			$key = $d->vendor->id.'-'.$d->item->id;
+			$key2 = $d->warehouse->name.'-'.$d->transportation;
+			$key3 = 'Order-'.$d->relation_id;
+
+			if(in_array($key,array_keys($r))){
+				$r[$key]['real_qty']	+=$d->real_qty;
+				$r[$key]['stock_qty']	+=$d->stock_qty;
+				$r[$key]['to_purchase_qty']	+=$d->to_purchase_qty;
+				$tmp = ($d->real_qty) ? $d->real_qty : 0;
+				foreach($columns as $k => $v){
+					if(($key2 == $v) && ($d->relation_id <=0)) 	$r[$key][$v] +=$tmp;
+					if(($key3 == $v) && ($d->relation_id >0)) 	$r[$key][$v] +=$tmp;
+				}
+			}else
+			{
+				//$quotation = $this->service->quotationFind($d->quotation_id);
+
+				$r[$key]['vendor'] 		=$d->vendor->abbreviation;
+				$r[$key]['item']		=$d->item->sku;
+				//$r[$key]['desc']		=$d->item->description;
+				$r[$key]['real_qty']	=$d->real_qty;//是应采购的订单数量
+				$r[$key]['stock_qty']	=$d->stock_qty;
+				$r[$key]['to_purchase_qty']	=$d->to_purchase_qty;
+				foreach($columns as $k => $v){
+					$r[$key][$v] = 0;
+
+					if(($key2 == $v) && ($d->relation_id <=0)) 	$r[$key][$v] +=$d->real_qty;
+					if(($key3 == $v) && ($d->relation_id >0)) 	$r[$key][$v] +=$d->real_qty;
+				}
+				//获取采购订单数量，和采购到货数量
+				$r[$key]['order']			=isset($purchase[$d->item_id]) ? $purchase[$d->item_id] : 0 ;
+				$r[$key]['order_receive']	=isset($purchaseReceive[$d->item_id]) ? $purchaseReceive[$d->item_id] :0;
+				$r[$key]['order_waiting']	=0;
+			}
+		}
+
+		$list = array();
+
+		$keys = $this->turnKeyToCN();
+		$list = $r['plan']; unset($r['plan']);
+		$list['columns'] = array();
+		$list['details'] = array();
+
+		$i =0;
+		//转成中文键值
+		foreach($r as $k => $v){
+			$j = 0;
+			foreach ($v as $kk => $vv) {
+				//标题
+				$keyTurn  = isset($keys[$kk]) ? $keys[$kk] : $kk;
+				if(!in_array($keyTurn,$list['columns'])) {
+					$list['columns'][] = $keyTurn;
+				}
+
+				switch($kk)
+				{
+					case 'order_waiting':
+						$list['details'][$i][$j] = ($v['real_qty'] - $v['order_receive']);	
+						break;
+					default:
+						$list['details'][$i][$j] = $vv;
+						break;
+				}
+	
+				$j++;
+			}
+			$i++;
+		}
+
+		return $list;	
+	}
+
+	/*获取预算和明细的基础数据*/
+	public function getShipmentData($plan_id,$columns){
+		$r = array();
+
+		//该plan下所有item的采购订单数量
+		$ship  = $this->service->getShipment($plan_id);
+		if($ship) {$sk = $ship['invoice']; unset($ship['invoice']);}
+
+		//整理数据
+		foreach ($this->service->planDetailList(array('plan_id' => $plan_id))->get() as $d) {
+			if($d->parent_id >0) continue;
+
+			$key = $d->vendor->id.'-'.$d->item->id;
+			$key2 = $d->warehouse->name.'-'.$d->transportation;
+			$key3 = 'Order-'.$d->relation_id;
+
+			if(in_array($key,array_keys($r))){
+				$r[$key]['real_qty']	+=$d->real_qty;
+				$tmp = ($d->real_qty) ? $d->real_qty : 0;
+				foreach($columns as $k => $v){
+					if(($key2 == $v) && ($d->relation_id <=0)) 	$r[$key][$v] +=$tmp;
+					if(($key3 == $v) && ($d->relation_id >0)) 	$r[$key][$v] +=$tmp;
+				}
+			}else
+			{
+				$r[$key]['vendor'] 		=$d->vendor->abbreviation;
+				$r[$key]['item']		=$d->item->sku;
+				$r[$key]['real_qty']	=$d->real_qty;
+				foreach($columns as $k => $v){
+					$r[$key][$v] = 0;
+
+					if(($key2 == $v) && ($d->relation_id <=0)) 	$r[$key][$v] +=$d->real_qty;
+					if(($key3 == $v) && ($d->relation_id >0)) 	$r[$key][$v] +=$d->real_qty;
+				}
+			
+
+				if($ship)
+				{
+					foreach ($sk as $k => $v)
+					{
+						$r[$key][$v] = 0;
+						foreach ($ship as $kk => $vv) 
+						{
+							if($d->item_id == $kk) {
+								$r[$key][$v] = $vv[$v];
+							}
+						}
+					}
+				}
+			}
+		}
+
+		$list = array();
+		$keys = $this->turnKeyToCN();
+		$list['columns'] = array();
+		$list['details'] = array();
+
+		$i =0;
+		//转成中文键值
+		foreach($r as $k => $v){
+			$j = 0;
+			foreach ($v as $kk => $vv) {
+				//标题
+				$keyTurn  = isset($keys[$kk]) ? $keys[$kk] : $kk;
+				if(!in_array($keyTurn,$list['columns'])) {
+					$list['columns'][] = $keyTurn;
+				}
+
+				$list['details'][$i][$j] = $vv;
+			
+				$j++;
+			}
+
+			$i++;
+		}
+
+		return $list;	
+	}
+
+
+	//主键中英文转换
+	protected function turnKeyToCN(){
+		return $array = array(
+			'vendor' 			=> "供应商",
+			'item'				=> "SKU",
+			//'desc'				=> "描述",
+			'request'			=> "原始申请量",
+			'real_qty'			=> "调整后总需求",
+			'stock_qty'			=> "期初库存",
+			'to_purchase_qty'	=> "最终采购量",
+			'spq'				=> "最小包装数",
+			'purchase_qty'		=> "最终采购量",			
+			'unit_price'		=> "单价",
+			'total_price'		=> "金额",
+			'paypment_period1'	=> "账期1",
+			'paypment_period2'	=> "账期2",
+			'price_type'		=> "含税与否",
+			'stock_qty'			=> "库存数量",
+			'order'				=> "订单数量",
+			'order_receive'		=> "实际到货数",
+			'order_waiting'		=> "缺货数"
+		);
+	}
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		//
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update($id)
+	{
+
+		$persistence = $this->service->planSummaryByWareHouseAndTransaction($id);
+
+		$toEdit = Input::get('detail');
+
+    $cwlist = $this->service->planWarehouseAndTransactionList($id);
+
+		// 提交上来的汇总清单对比数据库中的汇总清单，发送调整指令
+		foreach ($persistence as $detail) {
+			foreach ($cwlist as $cw) {
+				$key = $cw['name'] . '-' . $cw['transportation'];
+				if ($delta = ($toEdit[$detail->item_id][$key] - $detail[$key])) {
+					$this->service->planAdjustmentByWarehouseAndTransaction($id, $detail->item_id, $cw['id'], $cw['transportation'], $delta, Sentry::getUser()->id);
+				}
+			}
+		}
+
+		return "";
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+		$plan = $this->service->planFind($id);
+		if(count($plan->details) >0) return array('f' => '0','m' =>'该计划中已经有明细记录了,不能删除！');
+		
+		$plan->delete();
+	}
+	
+	
+	
+	public function specialPlans()
+	{
+	    $type=Input::get('type');
+	    $newList = array();
+	    if($type=="pendToCheck")
+	    {
+	        $i = 0;
+	        foreach($this->service->getPendToCheck()->get() as  $planDetail){
+	            $newList[$i] = $planDetail->toArray();
+	            $newList[$i]['agent'] = $planDetail->plan->user->email;
+	            $i++;
+	        }
+	    }
+	    else if($type=="checked")
+	    {	  
+	        $i = 0;
+	        foreach($this->service->getCheckedDetail()->get() as  $planDetail){
+	            $newList[$i] = $planDetail->toArray();
+	            $newList[$i]['agent'] = $planDetail->plan->user->email;
+	            $i++;
+	        }
+	    }  
+	    else 
+	    {
+	        $i = 0;
+	        foreach($this->service->spePlanList($type)->get() as  $plan){
+	            $newList[$i] = $plan->toArray();
+	            $newList[$i]['agent'] = $plan->user->email;
+	            $i++;
+	        }
+	    } 
+	    return $newList;
+	}
+	
+	public function checkPlans()
+	{
+	    $type=Input::get('type');
+	    $ids=Input::get('idList');
+	    if(!is_array($ids))
+	    {
+	        throw new Exception("传入参数有误!");
+	    }
+	    
+	    $this->service->checkPlanDetail($ids,$type);
+	}
+
+
+}

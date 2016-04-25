@@ -1,0 +1,375 @@
+<?php
+
+
+$uri = Config::get('core::uri');
+
+Route::get('/', function() use ($uri)
+{
+	return Redirect::to($uri);
+});
+
+// Route::group(array(/*'domain' => '{module}.dev', */'prefix' => $uri, 'before' => 'auth_check'), function() use ($uri)
+// {
+  
+// 	Route::get('/', array('as' => 'core', 'uses' => 'HomeController@index'));
+// 	Route::get('profile', array('as' => 'core.profile', 'uses' => 'ProfileController@index'));
+// 	Route::post('profile', array('as' => 'core.profile.post', 'uses' => 'ProfileController@update'));
+	
+// 	Route::group(array('prefix' => 'admin', 'before' => 'admin_check'), function()
+// 	{
+		
+// 		Route::get('/', array('as' => 'core.admin', 'uses' => 'AdminController@index'));
+// 		Route::get('platform', array('as' => 'core.admin.platform', 'uses' => 'AdminController@platform'));
+// 		Route::get('channel', array('as' => 'core.admin.channel', 'uses' => 'AdminController@channel'));
+// 		Route::get('user', array('as' => 'core.admin.user', 'uses' => 'AdminController@user'));
+		
+// 	});
+	
+// 	Route::group(array('prefix' => 'item', 'before' => ''), function()
+// 	{
+// 		Route::resource('info', 'ItemController');
+// 		Route::resource('image', 'ImageController');
+// 		Route::resource('category', 'CategoryController');
+// 		Route::resource('language', 'LanguageController');
+// 		Route::resource('attribute', 'AttributeController');
+// 	});
+
+// });
+
+// BarCode
+Route::group(array('prefix' => 'barcode'), function () {
+	Route::get('show/{code}', 'BarcodeController@show');
+});
+
+// Images
+Route::group(array('prefix' => 'images'), function () {
+	Route::get('item/{image_id}/{type}', 'ImageController@show');
+});
+
+// RESTful call
+Route::group(array('prefix' => 'api', 'before' => 'auth_check'), function(){
+		
+	Route::resource('platforms', 'APIPlatformsController');
+
+  // 批量上传/下载模块
+  Route::group(array('prefix' => 'batch'), function () {
+
+    Route::resource('logs', 'APIBatchUploadController');
+    Route::get('template/{action}', 'APIBatchUploadController@template');
+    Route::post('upload/{action}', 'APIBatchUploadController@handler');
+
+  });
+
+    // ship module
+  Route::group(array('prefix' => 'ship'), function () {
+
+    Route::resource('mapping', 'APIMappingController');
+    Route::resource('cron', 'APICronController');
+    Route::resource('analyzing', 'APIAnalyzingController');
+    Route::resource('query/order', 'APIQueryOrderController');
+    Route::resource('query/detail', 'APIQueryDetailController');
+    Route::resource('query/customer', 'APIQueryCustomerController');
+    Route::post('upload/{action}', 'APIBatchUploadController@handler');
+
+  });
+
+	Route::group(array('prefix' => 'item'), function() {
+      Route::get('childs', 'APIItemController@fetchChildren');
+      Route::get('childs/{id}', 'APIItemController@hasChildren');
+      Route::get('default/spq/{itemId}', 'APIItemController@getSkuDefaultSPQ');
+      Route::post('vendorItem', 'APIItemController@getVendorItem');
+
+	    Route::post('image_detail/{id}', 'APIItemController@upload_detail');
+	    Route::post('instructions_lang_detail/{id}', 'APIItemController@upload_detail_instruction_lang');	    
+		Route::get('template', 'APIItemController@template');
+		Route::post('upload', 'APIItemController@upload');
+		Route::post('imageUpload', 'APIItemImageController@imageUpload');
+		Route::get('queues', 'APIItemController@queues');  
+		Route::get('imageQueues', 'APIItemImageController@imageQueues');
+		Route::resource('simpleItemImages', 'APIItemImageController@DisplaySimpleItemImages');
+		Route::resource('info', 'APIItemController');
+		Route::resource('meta', 'APIMetaController');
+		Route::resource('image', 'APIItemImageController');
+		Route::resource('categories', 'APIItemCategoryController');
+		Route::resource('languages', 'APIItemLanguageController');
+		Route::resource('attributes', 'APIItemAttributeController');
+		Route::resource('customs', 'APIItemCustomsController');
+		
+	});
+
+	Route::group(array('prefix' => 'purchase'), function() {
+    Route::get('po/invoice/new', 'APIPurchaseOrderController@genInvoice');
+    Route::get('po/confirm/{id}', 'APIPurchaseOrderController@confirmToStock');
+    Route::get('po/unconfirm/{id}', 'APIPurchaseOrderController@unconfirm');
+    Route::post('po/merge', 'APIPurchaseOrderController@merge');
+    Route::post('po/generate', 'APIPurchaseOrderController@generate');
+    Route::post('po/assign/inventory', 'APIPurchaseOrderController@assignInventory');
+    Route::resource('po', 'APIPurchaseOrderController');
+    Route::get('exec/confirmed', 'APIPlanExecController@getConfirmed');
+		Route::resource('vendor', 'APIVendorController');
+		Route::resource('quotation', 'APIQuotationController');
+
+    Route::get('quotation/leadtime/{itemId}', 'APIVendorController@getLtFromQuotation');
+
+		Route::resource('returnDetail', 'APIReturnDetailController');	
+		Route::post('return/{id}',array('uses' => 'APIReturnController@generate'));
+		Route::post('returnSpecail/{id}','APIReturnController@specail');
+		Route::resource('return', 'APIReturnController');
+		Route::resource('request', 'APIRequestController');
+    Route::post('request/new', 'APIRequestController@store');
+    Route::get('pr/confirm/{id}', 'APIRequestController@confirm');
+    Route::get('request-confirm/{id}', 'APIRequestController@confirmRequest');
+    Route::get('request-unconfirm/{id}', 'APIRequestController@unconfirmRequest');
+		Route::post('requestImport/{id}', 'APIRequestController@requestImport');
+    Route::resource('requestDetail', 'APIRequestDetailController');
+		Route::post('order/{id}', 'APIPOController@generate');
+		Route::resource('order', 'APIPOController');
+		Route::resource('orderReturn', 'APIPOController@orderReturn');	
+
+		Route::resource('plan', 'APIPurchasePlanController');
+		Route::get('plan-free', 'APIPurchasePlanController@freeRequestDetailList');
+		Route::get('plan-summary/{id}', 'APIPurchasePlanController@summary');
+		Route::get('plan-change/{id}', 'APIPurchasePlanController@changeList');
+    Route::get('plan-detail/{plan_id}/{item_id}/{wh_id}/{trans}', 'APIPurchasePlanController@detail');
+		Route::get('plan-add', 'APIPurchasePlanController@addToPlan');
+		Route::post('plan-create', 'APIPurchasePlanController@createPlan');
+		Route::put('plan-confirm/{id}', 'APIPurchasePlanController@confirm');
+		Route::get('cwlist', 'APIPurchasePlanController@cwlist');
+
+		Route::resource('spePlan', 'APIPurchasePlanController@specialPlans');
+		Route::post('check', 'APIPurchasePlanController@checkPlans');
+		Route::resource('assign', 'APIRequestAssignController');
+		Route::post('revertAssign', 'APIRequestAssignController@revertAssign');
+		Route::resource('exec', 'APIPlanExecController');
+		Route::resource('turnOrder', 'APIPlanExecController@turnorder');
+		Route::resource('turnShip', 'APIPlanShipController@turnship');
+		Route::resource('exec/batchUpdate', 'APIPlanExecController@batchUpdate');
+		Route::resource('exec/batchUpdateQty', 'APIPlanExecController@batchUpdateQty');
+		Route::resource('exec/exports', 'APIPlanExecController@exports');
+		Route::resource('ship', 'APIPlanShipController');
+		Route::resource('shipSplit', 'APIPlanShipController@shipSplit');
+		Route::resource('packing', 'APIPackingController');
+		Route::resource('costparams', 'APICostparamsController');
+
+    Route::get('cost/params/{itemId}', 'APICostparamsController@getCostParams');
+    Route::get('fee/{itemId}/{warehouseId}', 'APICostparamsController@getShippingFee');
+
+		Route::resource('allCostparamsFee/getAll', 'APICostparamsController@getAll');
+		Route::post('uploadcostparams','APICostparamsController@upload');
+		Route::get('uploadcostparams','APICostparamsController@down');
+		Route::resource('requestQueues', 'APIRequestController@uploadRequest');
+		Route::get('template', 'APIRequestController@template');
+		
+		//用于测试 zhunian
+		Route::resource('test', 'APITestController');
+		
+	});
+
+  Route::group(array('prefix' => 'stock'), function () {
+      Route::resource('io', 'APIStockIoController');
+      Route::get('io/details/{id}', 'APIStockIoController@showDetails');
+
+    /* Route::get('io', 'APIStockLogController@orders'); */
+    /* Route::get('io/{id}', 'APIStockLogController@order'); */
+    /* Route::get('io/store/{id}', 'APIStockController@store'); */
+    /* Route::get('io/split/{id}', 'APIStockController@split'); */
+    Route::resource('purchase', 'APIStockPurchaseController');
+
+    Route::group(array('prefix' => 'allocation'), function () {
+      Route::get('invoice', 'APIStockAllocationController@invoice');
+      Route::get('ask/create', 'APIStockAllocationController@askList');
+      Route::get('ask', 'APIStockAllocationController@askLists');
+      Route::post('ask', 'APIStockAllocationController@askListAdd');
+      Route::delete('ask/{id}', 'APIStockAllocationController@askListDel');
+      Route::put('ask/{id}', 'APIStockAllocationController@askListModify');
+      Route::get('ask/{id}', 'APIStockAllocationController@askListEdit');
+      Route::get('ask/confirm/{id}', 'APIStockAllocationController@askListSubmit');
+      Route::get('reply', 'APIStockAllocationController@replyLists');
+      Route::get('reply/confirm/{id}', 'APIStockAllocationController@replyAgree');
+      Route::post('send', 'APIStockAllocationController@send');
+      Route::post('take', 'APIStockAllocationController@take');
+      Route::post('drop', 'APIStockAllocationController@drop');
+    });
+
+    Route::resource('shipment', 'APIStockShipmentController');
+    Route::group(array('prefix' => 'shipment'), function () {
+        Route::post('detail', 'APIStockShipmentController@storeDetail');
+        Route::get('details/{id}', 'APIStockShipmentController@showDetails');
+        Route::put('detail/{id}', 'APIStockShipmentController@updateDetail');
+        Route::delete('detail/{id}', 'APIStockShipmentController@destroyDetail');
+        Route::get('confirm/{id}', 'APIStockShipmentController@confirm');
+        Route::get('unconfirm/{id}', 'APIStockShipmentController@unconfirm');
+        Route::get('generate/{id}', 'APIStockShipmentController@generate');
+        Route::get('sailing/{id}', 'APIStockShipmentController@sailing');
+        Route::get('reach/{id}', 'APIStockShipmentController@reach');
+      });
+
+    Route::group(array('prefix' => 'transfer'), function () {
+      Route::get('invoice', 'APIStockTransferController@invoice');
+      Route::get('ask', 'APIStockTransferController@askIndex');
+      Route::post('ask', 'APIStockTransferController@askStore');
+      Route::put('ask/{id}', 'APIStockTransferController@askUpdate');
+      Route::delete('ask/{id}', 'APIStockTransferController@askDestroy');
+      Route::get('ask/confirm/{id}', 'APIStockTransferController@askConfirm');
+      Route::get('ask/rolling/{id}', 'APIStockTransferController@askRolling');
+    });
+
+    Route::get('transfer', 'APIStockTransferController@index');
+    Route::post('transfer', 'APIStockTransferController@store');
+    Route::get('transfer/reject', 'APIStockTransferController@reject');
+    Route::get('transfer/reply', 'APIStockTransferController@reply');
+  });
+	
+	Route::group(array('prefix' => 'inventory'), function() {
+    Route::get('nowday', 'APIInventoryController@nowday');
+    Route::get('allocations', 'APIInventoryController@allocations');
+    Route::get('books', 'APIInventoryController@books');
+    Route::get('changes', 'APIInventoryController@changes');
+    Route::get('dailies', 'APIInventoryLogController@dailies');
+
+    Route::get('lists', 'APIInventoryController@lists');
+    Route::get('history', 'APIInventoryController@history');
+    Route::get('statement', 'APIInventorySummaryController@statement');
+    Route::get('log', 'APIInventoryLogController@log');
+    Route::get('book', 'APIInventoryBookController@book');
+    Route::get('balance', 'APIInventoryBalanceController@balance');
+
+		Route::resource('inventory', 'APIInventoryController');
+		Route::get('query', 'APIInventoryController@query');
+		Route::resource('summary', 'APIInventorySummaryController');
+		Route::resource('logBkg', 'APIInventoryLogController');
+		Route::resource('output', 'APIInventoryOutputController');
+		Route::resource('balanceBkg', 'APIInventoryBalanceController');
+		Route::resource('bookBkg', 'APIInventoryBookController');
+	});
+
+	Route::group(array('prefix' => 'warehouse'), function() {
+      Route::get('lists', 'APIIOListController@lists');
+      Route::get('others', 'APIOtherIOController@others');
+      Route::get('countings', 'APIWHCountingController@countings');
+      Route::get('dispatches', 'APIDispatchController@dispatches');
+
+		Route::resource('list','APIWarehouseController');
+		Route::resource('IOList', 'APIIOListController@index');
+		Route::resource('IOListIn', 'APIIOListController');
+		Route::resource('IOListOut', 'APIIOListController');
+		Route::resource('WHCounting', 'APIWHCountingController');
+		Route::resource('rmaList', 'APIRMAController');
+		Route::resource('dispatch', 'APIDispatchController');
+		Route::resource('otherIOInventoryStore','APIOtherIOController');
+		Route::post('IOPurchase/{id}', 'APIIOListController@showPrint');
+		Route::post('batchPurchasePrint/{type}', 'APIIOListController@batchPurchasePrint');
+		Route::post('rmaReturn', 'APIRMAController@returnPending');
+		Route::post('rmaGen/{id}', 'APIRMAController@rmaGenerate');
+		Route::post('otherIOGenerate/{id}', 'APIOtherIOController@generate');
+		Route::post('otherIOSpecailStore/{id}','APIOtherIOController@specail');
+		Route::put('dispatchSpecail/{id}', 'APIDispatchController@specail');
+		Route::post('rmaImport', 'APIRMAController@rmaImport');
+	});
+	Route::group(array('prefix' => 'storage'), function() {
+		Route::resource('container', 'APIContainerController');
+	});
+
+	Route::group(array('prefix' => 'system'), function() {
+		Route::resource('channel', 'APIChannelController');
+		Route::resource('user', 'APIUserController');
+		Route::get('permissions', 'APIUserController@permissions');
+		Route::get('grouplist', 'APIUserController@grouplist');
+       
+		Route::resource('group', 'APIGroupController');
+	});
+
+	Route::group(array('prefix' => 'audit'), function() {
+		Route::resource('pr', 'APIAuditController');
+	   Route::resource('pr/batchUpdate', 'APIAuditController@batchUpdate');
+	});
+});
+
+
+Route::get('img/{type}/{id}', function($type, $id)
+{
+	$img = Item::itemImageFind($id);
+	if ($type == 's') {
+		$file = storage_path() . '/upload/' . $img->item_id . '/' . $img->thumb;
+	} else {
+		$file = storage_path() . '/upload/' . $img->item_id . '/' . $img->original;
+	}
+	
+
+	$response = Response::make(file_get_contents($file), 200);
+	$response->header('Content-Type', $img->mime);
+	return $response;
+});
+
+
+Route::get('login', function()
+{
+  return View::make('login');
+});
+
+Route::post('login', function() use ($uri)
+{
+  $credentials = array(
+		'login' => Input::get('username'),
+		'password' => Input::get('password'),
+	);
+	
+	try {
+		
+		$user = Sentry::authenticate($credentials, Input::get('remember'));
+		
+		return Redirect::to($uri);
+		
+	} catch (Exception $e) {
+		return Redirect::to('login')
+			->withInput(Input::except('password'))
+			->with('login_errors', $e->getMessage());
+	}
+
+});
+
+// angular
+Route::get('/spa', function() {
+	Blade::setContentTags('[[', ']]');
+	return View::make('angular');
+});
+
+Route::post('apilogin', array('before' => 'csrf', function()
+{
+	$credentials = array('login' => Input::get('username'), 'password' => Input::get('password'));
+	$user = Sentry::authenticate($credentials, Input::get('remember'));
+	return $user;
+
+}));
+
+Route::get('apilogin', function() {
+	Sentry::logout();
+	return "ok";
+});
+
+Route::get('logout', function() {
+	Sentry::logout();
+	//return Redirect::to('login');
+});
+
+Form::macro('fselect', function($name, $list, $default, $options = array()) {
+	$html = '<div id="' . $name . '" class="select btn-group " >';
+	$html .= '<button data-toggle="dropdown" class="btn dropdown-toggle"><span class="dropdown-label"></span>';
+	$html .= '<span class="caret"></span></button><ul class="dropdown-menu">';
+	foreach ($list as $key => $value) {
+		$html .= '<li data-value="' . $key . '"';
+		if ($key == $default) {
+			$html .= ' data-selected="true"';
+		}
+		$html .= '><a href="#">' . $value . '</a></li>';
+	}
+	$html .= '</ul></div>';
+	return $html;
+});
+
+Form::macro('number', function($name, $value) {
+	return '<input type="number" name="'.$name.'" id="'.$name.'" value="'.$value.'" />';
+});
+
+Route::get('test/test', 'TestController@test');
+Route::get('test/amazon', 'TestController@amazon');

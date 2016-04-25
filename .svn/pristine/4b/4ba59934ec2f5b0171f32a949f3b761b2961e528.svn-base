@@ -1,0 +1,110 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">用户管理</h3></div>
+
+			<div class="panel-body">
+				<form name="editForm" class="">
+					
+					<div class="container-fluid">
+
+						<div class="row">
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.email.$invalid}">
+									<input type="email" name="email" ng-model="user.email" class="form-control input-sm" required placeholder="email">
+									<span ng-show="editForm.email.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.password.$invalid}">
+									<input type="password" name="password" ng-model="user.password" class="form-control input-sm" placeholder="password">
+									<span ng-show="editForm.password.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.group.$invalid}">
+									<input type="text" name="group" ng-model="user.groups" class="form-control input-sm" token-input input-suggest="groups" token-limit=10 required>
+									<span ng-show="editForm.group.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="row">
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.first_name.$invalid}">
+									<input type="text" name="first_name" ng-model="user.first_name" class="form-control input-sm" placeholder="first name">
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.last_name.$invalid}">
+									<input type="text" name="last_name" ng-model="user.last_name" class="form-control input-sm" placeholder="last name">
+								</div>
+							</div>
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.activated.$invalid}">
+									<div class="btn-group">
+										<button type="button" class="btn btn-sm" ng-class="{'btn-success': user.activated}" ng-model="user.activated" btn-radio="true"><span class="glyphicon glyphicon-check"></span> Actived</button>
+										<button type="button" class="btn btn-sm" ng-class="{'btn-danger': !user.activated}" ng-model="user.activated" btn-radio="false"><span class="glyphicon glyphicon-lock"></span> Locked</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-3">
+								<div class="form-group">
+									<input type="text" name="sku" ng-model="adding.id" class="form-control input-sm" typeahead="permission.id for permission in permissions | filter:{id: $viewValue} | limitTo: 10" placeholder="resources">
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="btn-group">
+									<button type="button" class="btn btn-sm" ng-class="{'btn-success': adding.permission == 1}" ng-model="adding.permission" btn-radio="1">Allow</button>
+									<button type="button" class="btn btn-sm" ng-class="{'btn-danger': adding.permission == -1}" ng-model="adding.permission" btn-radio="-1">Deny</button>
+								</div>
+								<button class="btn btn-default btn-sm" ng-click="addPermission()"><span class="glyphicon glyphicon-import"></span> 添加权限</button>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-6">
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th>Source</th>
+											<th>Permission</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="(id, permission) in user.permissions">
+											<td>{{id}}</td>
+											<td>
+												<div class="btn-group">
+													<button type="button" class="btn btn-xs" ng-class="{'btn-success': user.permissions[id] == 1}" ng-model="user.permissions[id]" btn-radio="1">Allow</button>
+													<button type="button" class="btn btn-xs" ng-class="{'btn-danger': user.permissions[id] == -1}" ng-model="user.permissions[id]" btn-radio="-1">Deny</button>
+													<button type="button" class="btn btn-xs" ng-class="{'btn-info': user.permissions[id] == 0}" ng-model="user.permissions[id]" btn-radio="0">Inherit</button>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								
+							</div>
+						</div>
+
+
+	
+						<a class="btn btn-default" href="#/system/users">Cancel</a>
+						<button type="button" class="btn btn-primary" ng-click="update()" ng-disabled="isClean() || editForm.$invalid">Save</button>
+						<button type="button" class="btn btn-danger" ng-click="destroy()" ng-show="user.$id">Delete</button>
+					</div>
+				</form>
+			</div>
+			
+		</div>
+	</div>
+</div>
+

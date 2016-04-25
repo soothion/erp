@@ -1,0 +1,28 @@
+<?php
+
+class TestController extends BaseController {
+
+	/*
+	|--------------------------------------------------------------------------
+	| 
+	|--------------------------------------------------------------------------
+	|
+	| You may wish to use controllers instead of, or in addition to, Closure
+	| based routes. That's great! Here is an example controller method to
+	| get you started. To route to this controller, just add the route:
+	|
+	|	Route::get('/', 'HomeController@showWelcome');
+	|
+	*/
+
+	public function test()
+	{
+
+		$service = new Bluebanner\Core\Order\NeweggService('/Users/vincent/Downloads/订单导入模板/newegg.csv');
+		
+		$orderList = $service->getOrderList();
+		echo '<pre>';
+		print_r($orderList);
+	}
+
+}

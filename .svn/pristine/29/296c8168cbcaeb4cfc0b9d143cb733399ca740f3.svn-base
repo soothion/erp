@@ -1,0 +1,805 @@
+<?php
+
+use Bluebanner\Core\Item\ItemServiceInterface;
+use Bluebanner\Core\Model\ItemQueue;
+use Bluebanner\Core\Model\ItemQueueError;
+use Bluebanner\Core\Item\UploadService;
+use Bluebanner\Core\Model\Item;
+use Bluebanner\Core\Model\ItemBom;
+use Bluebanner\Core\Model\VendorQuotation;
+use Bluebanner\Core\Model\ItemLanguage;
+use Bluebanner\Core\Model\PurchaseSkuDefault;
+
+class APIItemController extends \BaseController {
+
+	public function __construct(ItemServiceInterface $service, Item $modelItem, ItemBom $modelItemBom, VendorQuotation $modelVendorQuotation, PurchaseSkuDefault $modelPurchaseSkuDefault)
+	{
+		$this->service = $service;
+    $this->modelItem = $modelItem;
+    $this->modelItemBom = $modelItemBom;
+    $this->modelVendorQuotation = $modelVendorQuotation;
+    $this->modelPurchaseSkuDefault = $modelPurchaseSkuDefault;
+	}
+
+  public function hasChildren($id) {
+    return $this->modelItemBom->splitSku($id);
+  }
+
+  public function fetchChildren() {
+    $ids = Input::get();
+
+    // @todo
+    if (!$ids || !is_array($ids)) {
+      return Redirect::to('api/purchase/po/create');
+    }
+
+    foreach ($ids as $id) {
+      if (!is_numeric($id)) {
+        return Redirect::to('api/purchase/po/create');
+      }
+    }
+
+    $items = $this->modelItem->whereIn('id', $ids)->get();
+
+    return $items;
+  }
+
+  public function getSkuDefaultSPQ($itemId) {
+    return $this->modelPurchaseSkuDefault->where('item_id', (int)$itemId)->first(array('spq'));
+  }
+
+  public function getVendorItem() {
+    $getData = Input::get();
+
+    // @todo
+    if (!isset($getData['item_id']) || !$getData['item_id'] || !isset($getData['vendor_id']) || !$getData['vendor_id']) {
+      return Redirect::to('order/create');
+    }
+
+    return $this->modelVendorQuotation->where('item_id', $getData['item_id'])->where('vendor_id', $getData['vendor_id'])->first();
+  }
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index()
+	{
+		return $this->service->itemListByCategoryAndKw(Input::get('category'), Input::get('kw'))->forPage(Input::get('pn'))->get();
+	}
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create()
+	{
+		//
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function store()
+	{
+		return$this->service->itemCreate(array_add($this->convertInput(Input::get()), 'agent', Sentry::getUser()->id));
+	}
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		$obj=$this->service->itemFind($id);
+		$return=self::convertOutput($obj->toArray());
+		$hasLangId=$this->service->itemGetInstructionByItemId($id);
+		$langList=ItemLanguage::getListName();
+		$hasLangArray=array();
+		foreach ($hasLangId as $lang_id)
+		{
+		    if(isset($langList[$lang_id])) $langName=$langList[$lang_id];
+		    else continue;
+		    switch ($langName) {
+                case "中":
+                    $hasLangArray['zn'] = true;
+                    break;
+                case "英":
+                    $hasLangArray['en'] = true;
+                    break;
+                case "法":
+                    $hasLangArray['fr'] = true;
+                    break;
+                case "德":
+                    $hasLangArray['gm'] = true;
+                    break;
+                case "意":
+                    $hasLangArray['it'] = true;
+                    break;
+                case "葡":
+                    $hasLangArray['pt'] = true;
+                    break;
+                case "西":
+                    $hasLangArray['sp'] = true;
+                    break;
+                case "日":
+                    $hasLangArray['jp'] = true;
+                    break;
+            }
+		}
+		$return['instructions_languge']=$hasLangArray;
+		
+		if(isset($obj->Keyword) && $obj->Keyword!==array() && !empty($obj->Keyword))
+		{
+		    $return['keyword']=array();
+		    foreach($obj->Keyword as $keyword)
+		    {
+		       if(isset($langList[$keyword->lang_id])) $langName=$langList[$keyword->lang_id];
+		       else continue;
+		       $Lang_key=false;
+		       switch ($langName) {
+		           case "中":
+		               $Lang_key='zn';
+		               break;
+		           case "英":
+		                 $Lang_key='en';
+		               break;
+		           case "法":
+		               $Lang_key='fr';
+		               break;
+		           case "德":
+		               $Lang_key='gm';
+		               break;
+		           case "意":
+		               $Lang_key='it';
+		               break;
+		           case "葡":
+		               $Lang_key='pt';
+		               break;
+		           case "西":
+		               $Lang_key='sp';
+		               break;
+		           case "日":
+		               $Lang_key='jp';
+		               break;
+		       }
+		       if($Lang_key)
+		       {
+		           if(!isset($return['keyword'][$Lang_key])) $return['keyword'][$Lang_key]=$keyword->keyword;
+		           else 
+		               $return['keyword'][$Lang_key] .=";".$keyword->keyword;
+		       }		       
+		    }
+		}
+		
+		if(isset($obj->Feature) && $obj->Feature!==array() && !empty($obj->Feature))
+		{
+		    $return['feature']=array();
+		    foreach($obj->Feature as $feature)
+		    {
+		        if(isset($langList[$feature->lang_id])) $langName=$langList[$feature->lang_id];
+		        else continue;
+		        $Lang_key=false;
+		        switch ($langName) {
+		            case "中":
+		                $Lang_key='zn';
+		                break;
+		            case "英":
+		                $Lang_key='en';
+		                break;
+		            case "法":
+		                $Lang_key='fr';
+		                break;
+		            case "德":
+		                $Lang_key='gm';
+		                break;
+		            case "意":
+		                $Lang_key='it';
+		                break;
+		            case "葡":
+		                $Lang_key='pt';
+		                break;
+		            case "西":
+		                $Lang_key='sp';
+		                break;
+		            case "日":
+		                $Lang_key='jp';
+		                break;
+		        }
+		        if($Lang_key)
+		        {
+		            if(!isset($return['feature'][$Lang_key])) $return['feature'][$Lang_key]=$feature->feature;
+		            else
+		                $return['feature'][$Lang_key] .=";".$feature->feature;
+		        }
+		    }
+		}
+		
+		if(isset($obj->Attribute) && $obj->Attribute!==array() && !empty($obj->Attribute))
+		{
+		    $return['attribute']=array();
+		    foreach($obj->Attribute as $attribute)
+		    {
+		        if(isset($langList[$attribute->lang_id])) $langName=$langList[$attribute->lang_id];
+		        else continue;
+		        $Lang_key=false;
+		        switch ($langName) {
+		            case "中":
+		                $Lang_key='zn';
+		                break;
+		            case "英":
+		                $Lang_key='en';
+		                break;
+		            case "法":
+		                $Lang_key='fr';
+		                break;
+		            case "德":
+		                $Lang_key='gm';
+		                break;
+		            case "意":
+		                $Lang_key='it';
+		                break;
+		            case "葡":
+		                $Lang_key='pt';
+		                break;
+		            case "西":
+		                $Lang_key='sp';
+		                break;
+		            case "日":
+		                $Lang_key='jp';
+		                break;
+		        }
+		        
+		        if($Lang_key)
+		        {
+		            $title_key="title_".$Lang_key;
+		            $detail_key="detail_".$Lang_key;
+		            $detail_html_key="detail_html_".$Lang_key;
+		            $return['attribute'][$title_key]=$attribute->title;
+		            $return['attribute'][$detail_key]=$attribute->detail;
+		            $return['attribute'][$detail_html_key]=$attribute->detail_html;
+		        }
+		    }
+		}
+		
+		return $return;
+		
+	}
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		//
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update($id)
+	{
+	    //更新主属性
+		$model = $this->service->itemFind($id);
+		$attrs=self::convertInput(Input::get());		
+		$model->update($attrs);
+		
+		//更新说明书
+		$this->updateItemInstruction($id);
+		
+		//更新副属性 attribute
+		$this->updateItemAttribute($id);
+		
+		//更新Keyword
+		$this->updateItemKeyword($id);
+		
+		//更新Feature
+		$this->updateItemFeature($id);
+		
+		
+		return $model;
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+		$model = $this->service->itemFind($id);
+		$model->delete();
+	}
+
+	public function template()
+	{
+		return Response::download(storage_path() . '/templates/item.upload.template.xlsx');
+	}
+
+	/**
+	 * 产品批量上传，采用队列
+	 * 原始上传文件保留到storage_path()下的产品上传目录
+	 * message只包含路径信息
+	 */
+	public function upload()
+	{
+		$file = Input::file('file');
+		$path = storage_path() . '/upload/queues/uploaditem/' . Sentry::getUser()->id . '/' . date('Ymdhis');
+		$file->move($path, $file->getClientOriginalName());
+
+		$service = new UploadService();
+		$service->setUploadFilePath($path . '/' . $file->getClientOriginalName());
+
+		try {
+
+			$service->validate();
+
+		} catch (Exception $e) {
+
+			return $e->getMessage();
+
+		}
+
+
+		$queue = ItemQueue::create(array(
+			'filename'	=> $file->getClientOriginalName(),
+			'agent' => Sentry::getUser()->id,
+		));
+
+		$service->setQueueId($queue->id);
+
+		Queue::push('Bluebanner\Core\Item\Queue\UploadItem', serialize($service));
+	}
+
+	public function queues()
+	{
+		return ItemQueue::with('errors')->orderBy('created_at', 'desc')->limit(Input::get('limit'))->offset(Input::get('offset'))->get();
+	}
+	
+	
+	
+	public function upload_detail($id)
+	{
+	    $file = Input::file('file');
+    	if(empty($file))
+    	{
+    	    throw new Exception("未获取到文件!");
+    	} 
+	    //有type时  修改图片明细
+	    if(false!==($image_type=Input::get("isNew",false)))
+	    {
+	        $this->service->itemImageCreate(intval($id),$file,Sentry::getUser()->id);
+    		
+	    }
+	    else//无type时 添加新图
+	    {
+	      
+	        $filetype=$file->getClientOriginalExtension();
+	        if(!in_array(strtolower($filetype),array('jpg','jpeg','png','bmp','gif')))
+	        {
+	            throw new Exception("文件类型不允许  ".$filename);
+	        }
+	        else
+	        {
+	            $this->service->itemImageReplace(intval($id),$file);
+	        }
+	    }
+	}
+	
+	public function itemImage($id)
+	{
+	    
+	    return $this->service->itemImageList($id)->get();
+	   
+	}
+	
+	
+	public function upload_detail_instruction_lang($id)
+	{
+	    $file = Input::file('file');
+	    if(empty($file))
+	    {
+	        throw new Exception("未获取到文件!");
+	    }
+	    
+	    if( ($lang=Input::get('lang',false)) ===false)
+	    {
+	        throw new Exception("非法的参数!获取不到语言种类");
+	    }
+	    
+	    $langList=ItemLanguage::getListName();
+	    
+	    if(($lang_id=array_search($lang,$langList))===false)
+	    {
+	        throw new Exception("不支持的语言种类");
+	    }
+	    $user=Sentry::getUser()->id;
+	    return $this->service->ItemInstructionCreate($id,$lang_id,$user,$file);	    
+	}
+    
+	/**
+	 * 主要工作是过滤输入,并转化为供存储于更新对应的字段名
+	 * @param array $input
+	 * @return array $input
+	 */
+	private static function convertInput(array $input)
+	{
+	   $attributes=array();
+	   $key_maps=self::getInOutRelation();
+	   
+	   foreach($key_maps as $key =>$val)
+	   {
+	       if(is_array($val))
+	       {
+	           foreach($val as $k=>$v)
+	           {
+	               if(isset($input[$key])&& isset($input[$key][$k]))
+	               {
+	                   $attributes[$v]=$input[$key][$k];
+	               }
+	           }
+	       }
+	       else 
+	       {
+	           if(isset($input[$key]))
+	           {
+	               $attributes[$val]=$input[$key];
+	           }
+	       }
+	       
+	   }
+	   return $attributes;
+	   
+	   
+	   /* $sing_key=$key_maps['single'];
+	   $mutil_key=$key_maps['mutil'];
+	   $darty_key=array();
+	   unset($key_maps);	
+        foreach ($input as $attr => $value)
+        {
+            if(isset($darty_key[$attr])) continue;
+            if(isset($sing_key[$attr]))
+            {
+                unset($attributes[$attr]);
+                $darty_key[$attr]=true;
+                $key=$sing_key[$attr];
+            }
+            else if(is_array($value))
+            {
+                if(isset($mutil_key[$attr]))
+                {
+                    foreach ($value as $key_child => $real_value)
+                    {
+                        if(isset($mutil_key[$attr][$key_child]))
+                        {
+                            unset($attributes[$attr]);
+                            $darty_key[$attr]=true;
+                            $key=$mutil_key[$attr][$key_child];
+                            $value=$real_value;
+                        }
+                    }
+                }
+            }
+            else 
+            {
+                $key=$attr;
+            }
+            
+            if(is_bool($value)) $value=intval($value);
+            $attributes[$key]=$value;
+        }
+	     
+	    return $attributes; */
+	}
+	
+	/**
+	 * 主要工作是转化输出
+	 * @param array $output
+	 * @return array $output
+	 */
+	private static function convertOutput($output)
+	{
+	   $out=array();
+	   $key_maps=self::getInOutRelation();
+	   foreach($key_maps as $key => $value)
+	   {
+	       if(is_array($value))
+	       {
+	           foreach($value as $k =>$v)
+	           {
+	               if(isset($output[$v]))
+	               {
+	                   if(!isset($out[$key])) $out[$key]=array();
+	                   $out[$key][$k]=$output[$v];
+	               }
+	           }
+	       }
+	       else 
+	       {
+	           if(isset($output[$value]))
+	           {
+	               $out[$key]=$output[$value];
+	           }
+	       }
+	   }
+	   return $out;
+	}
+	
+	/**
+	 * @return array($show-key=>$save-key)
+	 */
+	private static function getInOutRelation()
+	{
+        return array(
+                
+                    'other'=>array(
+                            'dropship' => 'is_drop',
+                            'active' => 'is_active',
+                            'virtual' => 'is_virtual',
+                            'inventory' => 'is_hold_inv',                        
+                    ),
+                    'brand_other'=>array(
+                                'color_box' => 'packing_color_box',
+                                'screen' => 'silk_screen',
+                                'warranty_card' => 'warranty_card',
+                     ),
+                               
+                    'id'=>'id',
+                    'sku'=>'sku',
+                    'description'=>'description',
+                    'category_id'=>'category_id',
+                    'status' =>'status',
+                        
+                        
+                        
+                    'length' => 'product_length',
+                    'width' => 'product_width',
+                    'height' => 'product_height',
+                    'weight' => 'product_weight',
+                    
+                    'length_package' => 'packing_length',
+                    'width_package' => 'packing_width',
+                    'height_package' => 'packing_height',
+                    'weight_package' => 'packing_weight',
+                    'spq' => 'packing_quantity',
+                    
+                    'length_carton' => 'carton_length',
+                    'width_carton' => 'carton_width',
+                    'height_carton' => 'carton_height',
+                    'weight_carton' => 'carton_weight',
+                    
+                    'tray' => 'pallet_quantity',
+                    
+                    'hg_type' => 'hs_model',
+                    'description_hg_cn' => 'hs_desc_cn',
+                    'description_hg_en' => 'hs_desc_en',
+                    'custom_code_cn' => 'hs_code_cn',
+                    'custom_code_us' => 'hs_code_us',
+                    'custom_code_eu' => 'hs_code_eu',
+                    //这里两行 数据库漏了   需执行 ALTER TABLE `lv4_core_item_master` ADD `hs_code_uk` varchar(255) COLLATE utf8_unicode_ci NOT NULL AFTER `hs_code_eu` ,ADD `hs_code_jp` varchar(255) COLLATE utf8_unicode_ci NOT NULL AFTER `hs_code_uk` ;
+                    'custom_code_uk' => 'hs_code_uk',
+                    'custom_code_jp' => 'hs_code_jp',
+                    
+                    'reback_cn' => 'hs_drawback_cn',
+                    'tariff_us' => 'hs_tariff_us',
+                    'tariff_eu' => 'hs_tariff_eu',
+                    'tariff_en' => 'hs_tariff_uk',
+                    'tariff_jp' => 'hs_tariff_jp',
+                    
+                    'brand_type' => 'brand',
+                    'brand_auth' => 'certification',
+                    'brand_instructions' => 'instructions',
+                    
+                   
+                    'brand_remark' => 'remark',
+        );
+    }
+    
+    private function updateItemInstruction($id)
+    {
+        $langList=ItemLanguage::getListName();
+        $hasLang=Input::get("instructions_languge");
+        $lang_id_array=array();
+        foreach($hasLang as $k=> $lang)
+        {
+            if($lang!==true) continue;
+            switch($k)
+            {
+                case "zn":
+                    $key='中';
+                    break;
+                case "en":
+                    $key='英';
+                    break;
+                case "fr":
+                    $key='法';
+                    break;
+                case "gm":
+                    $key='德';
+                    break;
+                case "it":
+                    $key='意';
+                    break;
+                case "pt":
+                    $key='葡';
+                    break;
+                case "sp":
+                    $key='西';
+                    break;
+                case "jp":
+                    $key='日';
+                    break;
+            }
+            if(($lang_id=array_search($key,$langList))!==false)
+            {
+                $lang_id_array[]=$lang_id;
+            }
+        }        	
+        $this->service->ItemInstructionUpdateHeader($id,$lang_id_array,Sentry::getUser()->id);
+    }
+    
+    private function updateItemAttribute($id)
+    {
+        $attrs=Input::get("attribute");
+        if(empty($attrs)) return;
+        $langList=ItemLanguage::getListName();
+        $a_re=array();
+        foreach($attrs as $key =>$value)
+        {
+           if(($pos=strrpos($key,'_'))!==false)
+           {
+                $lang=substr($key,$pos+1);
+                $attr_key=substr($key,0,$pos);
+                switch($lang)
+                {
+                    case "zn":
+                        $k='中';
+                        break;
+                    case "en":
+                        $k='英';
+                        break;
+                    case "fr":
+                        $k='法';
+                        break;
+                    case "gm":
+                        $k='德';
+                        break;
+                    case "it":
+                        $k='意';
+                        break;
+                    case "pt":
+                        $k='葡';
+                        break;
+                    case "sp":
+                        $k='西';
+                        break;
+                    case "jp":
+                        $k='日';
+                        break;
+                }
+                if(($lang_id=array_search($k,$langList))!==false)
+                {                   
+                    if(!isset($a_re[$lang_id]))  $a_re[$lang_id]=array();
+                    $a_re[$lang_id][$attr_key]=$value;
+                }
+                else 
+                    continue;      
+           }
+        }
+        
+        $this->service->updateItemAttr($id,$a_re,Sentry::getUser()->id);
+    }
+    
+    private function updateItemKeyword($id)
+    {
+        $keywords=Input::get("keyword");
+        if(empty($keywords)) return;
+        $langList=ItemLanguage::getListName();
+        $a_re=array();
+        foreach($keywords as $key =>$value)
+        {
+            switch($key)
+            {
+                case "zn":
+                    $k='中';
+                    break;
+                case "en":
+                    $k='英';
+                    break;
+                case "fr":
+                    $k='法';
+                    break;
+                case "gm":
+                    $k='德';
+                    break;
+                case "it":
+                    $k='意';
+                    break;
+                case "pt":
+                    $k='葡';
+                    break;
+                case "sp":
+                    $k='西';
+                    break;
+                case "jp":
+                    $k='日';
+                    break;
+            }
+            
+            if(($lang_id=array_search($k,$langList))!==false)
+            {
+                 $keyStrList= explode(";", $value);
+                 if(count($keyStrList)>5) $keyStrList=array_slice($keyStrList,0,5);
+                 if(!isset($a_re[$lang_id]))  $a_re[$lang_id]=array();
+                 $a_re[$lang_id]=$keyStrList;
+            }
+            else
+                continue;
+        }
+        
+        $this->service->updateIteKeywords($id,$a_re,Sentry::getUser()->id);
+    }
+     
+    private function updateItemFeature($id)
+    {
+        $features=Input::get("feature");
+        if(empty($features)) return;
+        $langList=ItemLanguage::getListName();
+        $a_re=array();
+        foreach($features as $key =>$value)
+        {
+            switch($key)
+            {
+                case "zn":
+                    $k='中';
+                    break;
+                case "en":
+                    $k='英';
+                    break;
+                case "fr":
+                    $k='法';
+                    break;
+                case "gm":
+                    $k='德';
+                    break;
+                case "it":
+                    $k='意';
+                    break;
+                case "pt":
+                    $k='葡';
+                    break;
+                case "sp":
+                    $k='西';
+                    break;
+                case "jp":
+                    $k='日';
+                    break;
+            }
+        
+            if(($lang_id=array_search($k,$langList))!==false)
+            {
+                $feaStrList= explode(";", $value);
+                if(count($feaStrList)>5) $feaStrList=array_slice($feaStrList,0,5);
+                if(!isset($a_re[$lang_id]))  $a_re[$lang_id]=array();
+                $a_re[$lang_id]=$feaStrList;
+            }
+            else
+                continue;
+        }        
+        $this->service->updateIteFeatures($id,$a_re,Sentry::getUser()->id);
+    }
+	 
+}

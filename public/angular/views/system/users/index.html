@@ -1,0 +1,46 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">用户管理</h3></div>
+
+			<div class="panel-body">
+				<input type="search" class="form-control" ng-model="search" placeholder="Search">
+				<table class="table table-condensed table-hover">
+					<thead>
+						<tr>
+							<th><a href="#/system/users/edit/new"><i class="glyphicon glyphicon-plus"></i></a></th>
+							<th>账号</th>
+							<th>名</th>
+							<th>姓</th>
+							<th>最后登陆</th>
+							<th>创建日期</th>
+							<th>修改日期</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="user in users | filter: search" ng-class="{danger: ! user.activated}">
+							<td>
+								<a href="#/system/users/edit/{{user.id}}"><i class="glyphicon glyphicon-pencil"></i></a>
+							</td>
+							<td>{{user.email}}</td>
+							<td>{{user.first_name}}</td>
+							<td>{{user.last_name}}</td>
+							<td>{{user.last_login}}</td>
+							<td>{{user.created_at}}</td>
+							<td>{{user.updated_at}}</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="7">
+								<span class="label label-default">正常</span>
+								<span class="label label-danger">锁定</span>
+								<span class="label label-warning">过期</span>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

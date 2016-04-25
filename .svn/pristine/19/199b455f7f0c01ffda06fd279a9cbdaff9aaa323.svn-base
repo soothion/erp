@@ -1,0 +1,31 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">用户组管理</h3></div>
+
+			<div class="panel-body">
+				<input type="search" class="form-control" ng-model="search" placeholder="Search">
+				<table class="table table-condensed table-hover">
+					<thead>
+						<tr>
+							<th><a href="#/system/groups/edit/new"><i class="glyphicon glyphicon-plus"></i></a></th>
+							<th>组名称</th>
+							<th>创建日期</th>
+							<th>修改日期</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="group in groups | filter: search">
+							<td>
+								<a href="#/system/groups/edit/{{group.id}}"><i class="glyphicon glyphicon-pencil"></i></a>
+							</td>
+							<td>{{group.name}}</td>
+							<td>{{group.created_at}}</td>
+							<td>{{group.updated_at}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

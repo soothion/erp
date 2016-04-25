@@ -1,0 +1,242 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">申购单明细分配[汇总]至采购计划</h3>
+			</div>	
+			<div class="panel-body">
+				<div class="container-fluid">
+					<form name="editForm" >
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col col-sm-4">
+									<div class="form-group" ng-class="{'has-error': editForm.from_date.$invalid}">
+										<input type="text" datepicker-popup="yyyy-MM-dd HH:mm:ss" class="form-control" name="from_date" ng-model="seachform.from_date" placeholder="期望交货时间:from"  required>
+									</div>
+								</div>
+								<div class="col col-sm-4">
+									<div class="form-group" ng-class="{'has-error': editForm.to_date.$invalid}">
+										<input type="text" datepicker-popup="yyyy-MM-dd HH:mm:ss" class="form-control" name="to_date" ng-model="seachform.to_date" required  placeholder="期望交货时间:to" >
+									</div>
+								</div>
+								<div class="col col-sm-4">
+									<div class="form-group" ng-class="{'has-error': editForm.sku.$invalid}">
+										<input type="text" name="sku" ng-model="seachform.item" class="form-control" typeahead="sku as sku.sku for sku in skus | filter:{sku: $viewValue} | limitTo: 10" typeahead-editable='false' placeholder="SKU">
+									</div>
+								</div>
+							</div>
+
+							<div class="row">					
+								<div class="col col-sm-4">
+									<div class="form-group" ng-class="{'has-error': editForm.req_wh_id.$invalid}">
+										<select name="req_wh_id" ng-model="seachform.warehouse" class="form-control"  ng-options="wh.id as wh.name for wh in whs">
+											<option value="">--申请仓库--</option>
+										</select>
+									</div>
+								</div>
+
+								<div class="col col-sm-4">
+									<div class="form-group" ng-class="{'has-error': editForm.account.$invalid}">
+										<select name="account" ng-model="seachform.platform" class="form-control" ng-options="a.id as a.name for a in platforms" >
+											<option value="">--渠道--</option>
+										</select>
+									</div>
+								</div>
+
+
+								<div class="col col-sm-4">
+									<div class="form-group" ng-class="{'has-error': editForm.transportation.$invalid}">
+										<select name="transportation" ng-model="seachform.transport" class="form-control" ng-options="t.name as t.name for t in trans">
+											<option value="">--运输方式--</option>
+										</select>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col col-sm-12">									
+									<div class="btn-group">
+										<input type="button" name="export" id="export" ng-click="exportOfFilter()"   class="btn btn-primary" value="Export" />
+									</div>
+									<div class="btn-group">
+										<input type="reset" name="reset" id="reset" ng-click="resetFilter()" class="btn btn-danger" value="Reset"/>
+									</div>
+
+									<div class="btn-group">
+										<button type="button" class="btn btn-default dropdown-toggle" ng-show="1" data-toggle="dropdown">
+											选择分配到计划表(<span class="text text-danger">{{checkedIds.length}}</span>)
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu col-sm-1">
+											<li ><a  ng-click="addPlanShow('1')" style="color:red">New</a></li>
+											<li ng-repeat="plan in plans " ><a  ng-click="selectplan(plan.id);" >{{plan.name}}</a></li>
+										</ul>
+									</div>
+
+									<div class="btn-group">
+										<button type="button" class="btn btn-default dropdown-toggle" ng-show="1" data-toggle="dropdown">
+											所有明细添加到计划表(<span class="text text-danger">{{afterFilterDetails.length}}</span>)
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu col-sm-1">
+											<li ><a  ng-click="addPlanShow('all');" style="color:red">New</a></li>
+											<li ng-repeat="plan in plans " ><a  ng-click="selectplanall(plan.id);" >{{plan.name}}</a></li>
+										</ul>
+
+									</div>
+								</div>
+							</div>							
+						</div>
+					</form>
+				</div>
+			</div>
+			</div>
+		</div>
+	</div>
+</div>
+				
+<!--input type="search" class="form-control" ng-model="search" placeholder="Search"-->
+<!--有滚动条-->
+<div>
+	<ul class="nav nav-tabs">
+		<li ng-class="{'active':showtype=='pendingToAssign'}">
+			<a ng-click="showtype='pendingToAssign';">待分配明细</a>
+		</li>
+		<li ng-class="{'active':showtype=='hasAssigned'}">
+			<a ng-click="showtype='hasAssigned';">已分配明细</a>
+		</li>
+	</ul>
+	<div class="tab-content container-fluid">
+		<div class="tab-pane"
+			ng-class="{'active':showtype=='pendingToAssign'}">
+			<table class="table table-hover " style="width: 1280px;">
+				<thead>
+					<tr>
+						<th>
+							<input type="checkbox" name="all" id="all" ng-click="checkall()" />
+						</th>						
+						<th width="120px">SKU</th>
+						<th width="100px">申购单号(类型)</th>
+						<th width="100px">仓库</th>
+						<th width="80px">相关订单</th>
+						<th width="70px">渠道</th>
+						<th width="80px">需求数量</th>
+						<th width="150px">期望交货日期</th>
+						<th width="80px">运输方式</th>
+						<th width="150px">创建日期</th>
+						<th width="60px">创建者</th>
+						<th width="60px">备注</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="assign in afterFilterDetails" id="tr{{assign.id}}"
+						ng-style="trStyle(assign.item.line_state,assign.request_bom,assign.id);">
+						<!--申购单是pending,cancelled或者没有plan_id的时候，显示checkbox-->
+						<td>
+							<input type="checkbox" name="{{assign.id}}" value="{{assign.id}}"
+								ng-click="toggleAddToPlanList(assign.id)" />
+						</td>
+						<td>{{assign.item.sku}}</td>
+						<td>
+							<a target=_blank
+								href="#/purchase/request/edit/{{assign.request.id}}">{{assign.request.invoice}}</a>
+						</td>
+						<td>{{assign.request.warehouse.name}}</td>
+						<td>{{assign.request.relation_id}}</td>
+						<td>{{assign.platform.name}}</td>
+						<td>{{assign.qty}}</td>
+						<td>{{assign.end_date}}</td>
+						<td>{{assign.transportation}}</td>
+						<td>{{assign.created_at}}</td>
+						<td>{{assign.request.user.email}}</td>
+						<td>{{assign.note}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<div class="tab-pane"
+			ng-class="{'active':showtype=='hasAssigned'}">
+			<table class="table table-hover ">
+				<thead>
+					<tr>
+						<th>OP</th>
+						<th>SKU</th>
+						<th>仓库</th>
+						<th>相关订单</th>
+						<th>需求数量</th>
+						<th>ETA</th>
+						<th>所属渠道</th>
+						<th>对应计划表</th>
+						<th>运输方式</th>
+						<th>创建日期</th>
+						<th>创建者</th>
+						<th>备注</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="assignedDetail in hasAssignedDetails" id="tr{{assignedDetail.id}}"
+						ng-style="trStyle(assignedDetail.item.line_state,assignedDetail.request_bom,assignedDetail.id);">						
+						<td>
+							<div class="btn-group">								
+								<a ng-click="revertAssigned(assignedDetail.id)" type="button"
+									class="btn btn-xs btn-danger">
+									<i class="glyphicon glyphicon-remove"></i>
+									取消分配
+								</a>
+							</div>
+						</td>
+						<td>{{assignedDetail.item.sku}}</td>
+						<td>{{assignedDetail.warehouse.name}}</td>
+						<td>{{assignedDetail.request.relation_id}}</td>
+						<td>{{assignedDetail.request_qty}}</td>
+						<th>{{assignedDetail.end_date}}</th>
+						<th>{{assignedDetail.platform.name}}</th>
+						<td>
+							<a target=_blank href="#/purchase/plan/edit/{{assignedDetail.plan.id}}">{{assignedDetail.plan.name}}</a>
+						</td>
+						<td>{{assignedDetail.transportation}}</td>
+						<td>{{assignedDetail.created_at}}</td>
+						<td>{{assignedDetail.agent}}</td>
+						<td>{{assignedDetail.note}}</td>
+					</tr>
+		
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+</div>
+
+
+
+<!-- Model -->
+<div class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title"></h4>
+			</div>
+			<div class="modal-body" >
+				<form name="planForm" >
+				<div class="container-fluid">
+					<div class="row">
+						<input type="hidden" name="flag" ng-model="flag" class="form-control" >
+						<div class="form-group" class="col col-sm-6" ng-class="{'has-error': planForm.invoice.$invalid}">
+							<label class="control-label">name</label>
+							<input type="text" name="invoice" ng-model="plan.invoice" class="form-control" required>
+							<span ng-show="planForm.invoice.$error.required" class="help-inline"></span>
+						</div>
+					</div>
+				</div>	
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-danger" ng-click="addPlan()">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+

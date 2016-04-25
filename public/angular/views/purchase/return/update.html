@@ -1,0 +1,254 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">退货单</h3>
+			</div>
+			<div class="panel-body">
+				<div class="container-fluid">
+					<form name="editForm" class="">
+						<div class="row">
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error': editForm.invoice.$invalid}">
+									<label class="control-label">Invoice</label>
+									<input type="text" name="invoice" ng-model="_returns.invoice"
+										class="form-control" ng-disabled="_returns.status != 'pending'" required />
+									<span ng-show=" editForm.invoice.$error.required"
+										class="help-inline">Required</span>
+								</div>
+							</div>
+
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.status.$invalid}">
+									<label class="control-label">状态</label>
+									<input name="status" class="form-control"
+										ng-model="_returns.status" disabled ng-required/>
+									<span ng-show=" editForm.status.$error.required"
+										class="help-inline">Required</span>
+								</div>
+							</div>
+
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.warehouse_id.$invalid}">
+									<label class="control-label">出库仓库</label>
+									<select name="warehouse_id" class="form-control"
+										ng-model="_returns.warehouse_id"
+										ng-options="w.id as w.name for w in warehouses" ng-disabled="_returns.status != 'pending'" required>
+										<option value="">--请选择--</option>
+										<span ng-show="editForm.warehouse_id.$error.required"
+											class="help-inline">Required</span>
+									</select>
+								</div>
+							</div>
+
+							<div class="col col-sm-3">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.vendor_id.$invalid}">
+									<label class="control-label">供应商</label>
+									<select name="vendor_id" class="form-control"
+										ng-model="_returns.vendor_id"
+										ng-options="v.id as v.name for v in vendors" ng-disabled="_returns.status != 'pending'" required>
+										<option value="">--请选择--</option>
+										<span ng-show="editForm.warehouse_id.$error.required"
+											class="help-inline">Required</span>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col col-sm-6">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.note.$invalid}">
+									<label class="control-label">return at</label>
+									<input name="return_at" class="form-control"
+										ng-model="_returns.return_at" datepicker-popup="yyyy-MM-dd" ng-disabled="_returns.status != 'pending'"
+										required>
+									</textarea>
+								</div>
+							</div>
+							<div class="col col-sm-6">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.note.$invalid}">
+									<label class="control-label">address</label>
+									<input name="address" class="form-control"  ng-disabled="_returns.status != 'pending'"
+										ng-model="_returns.address" type="text">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col col-sm-12">
+								<div class="form-group"
+									ng-class="{'has-error':editForm.note.$invalid}">
+									<label class="control-label">备注</label>
+									<textarea name="note" class="form-control" ng-disabled="_returns.status != 'pending'"
+										ng-model="_returns.note" required></textarea>
+								</div>
+							</div>
+						</div>
+
+						<table class="table table-condensed table-hover">
+							<thead>
+								<tr>
+									<th ng-show="_returns.status == 'pending'">
+										<a ng-click="showAddDetailsFrom()">
+											<i class="glyphicon glyphicon-plus"></i>
+										</a>
+										<!-- 
+										<a ng-click="delete_details()">
+											<i class="glyphicon glyphicon-remove"></i>
+										</a>
+										 -->
+										<a ng-click="importDetail()">
+											<i class="glyphicon glyphicon-arrow-up"></i>
+										</a>
+
+									</th>
+									<th ng-show="_returns.status == 'pending'">OP</th>
+									<th>sku</th>
+									<th>描述</th>
+									<th>数量</th>
+									<th>原因</th>
+									<th>单位</th>
+									<th>备注</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="returnDetail in _returns.details">
+									<td ng-show="_returns.status == 'pending'">
+										<input type="checkbox" name="checkLists" value="{{index}}" />
+									</td>
+									<td ng-show="_returns.status == 'pending'">
+										<span ng-click="uploadDetail(returnDetail.id)">
+											<i class="glyphicon glyphicon-pencil"></i>
+										</span>
+										<span ng-click="deleteDetail(returnDetail.id)">
+											<i class="glyphicon glyphicon-remove"></i>
+										</span>
+									</td>
+									<td>{{returnDetail.sku}}</td>
+									<td>{{returnDetail.description}}</td>
+									<td>{{returnDetail.qty}}</td>
+									<td>{{returnDetail.reason}}</td>
+									<td>{{returnDetail.um}}</td>
+									<td>{{returnDetail.note}}</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<a class="btn btn-default" href="#/purchase/return/">Cancel</a>
+						<a class="btn btn-info" ng-show="_returns.status != 'pending'"
+							href="#/purchase/return/specail/{{_returns.id}}">Specail</a>
+						<button type="button" class="btn btn-warning" ng-click="update()" ng-show="_returns.status == 'pending'"
+							ng-disabled="isClean() || _returns.$invalid"
+							>Save</button>
+						<button type="button" class="btn btn-success" ng-click="confirm()" ng-show="_returns.status == 'pending'"
+							ng-disabled="isClean() || _returns.$invalid || _returns.details.length<1"
+							>Confirm</button>
+						<button type="button" class="btn btn-success"
+							ng-click="generate()" ng-show="canShowGenerateButton()">Generate</button>
+						<button type="button" class="btn btn-danger" ng-click="destroy()" ng-show="_returns.status == 'pending'">Delete</button>
+
+					</form>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+<!-- Model -->
+<div class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Add Purchase Return Detail</h4>
+			</div>
+			<div class="modal-body">
+				<form name="detailForm" class="">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col col-sm-4">
+								<div class="form-group"
+									ng-class="{'has-error': detailForm.sku.$invalid || ! newDetail.sku }">
+									<label class="control-label">SKU</label>
+									<input type="text" name="sku" ng-model="newDetail.sku"
+										class="form-control" required
+										typeahead="sku.sku for sku in skus | filter:{sku: $viewValue} | limitTo: 10" typeahead-editable="false">
+									<span ng-show="detailForm.sku.$error.required"
+										class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-4">
+								<div class="form-group"
+									ng-class="{'has-error': detailForm.qty.$invalid}">
+									<label class="control-label">qty</label>
+									<input name="qty" ng-model="newDetail.qty"
+										ng-pattern="/^[0-9]+$/" class="form-control" required />
+									<span ng-show="detailForm.qty.$error.required"
+										class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-4">
+								<div class="form-group"
+									ng-class="{'has-error': detailForm.um.$invalid}">
+									<label class="control-label">um</label>
+									<input type="text" name="um" ng-model="newDetail.um"
+										class="form-control" required>
+									<span ng-show="detailForm.um.$error.required"
+										class="help-inline">Required</span>
+								</div>
+							</div>
+						</div>
+						<div class="row"></div>
+						<div class="row">
+							<div class="col col-sm-12">
+								<div class="form-group"
+									ng-class="{'has-error': detailForm.reason.$invalid}">
+									<label class="control-label">reason</label>
+									<textarea name="reason" ng-model="newDetail.reason"
+										class="form-control" required></textarea>
+									<span ng-show="detailForm.reason.$error.required"
+										class="help-inline">Required</span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col col-sm-12">
+								<div class="form-group"
+									ng-class="{'has-error': detailForm.note.$invalid}">
+									<label class="control-label">note</label>
+									<textarea name="note" ng-model="newDetail.note"
+										class="form-control"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col col-sm-12">
+								<div class="form-group"
+									ng-class="{'has-error': detailForm.description.$invalid}">
+									<label class="control-label">description</label>
+									<textarea name="description" ng-model="newDetail.description"
+										class="form-control"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"
+					ng-click="closeAddDetailsFrom()">Close</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal"
+					ng-click="addReturnDetail()"
+					ng-disabled="isClean() || detailForm.$invalid">{{detailMethod}}</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Model End-->

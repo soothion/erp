@@ -1,0 +1,126 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">Other Inventory Manage</h3></div>
+
+			<div class="panel-body">
+				<div class="container-fluid">
+					<form name="editForm" class="">
+						<div class="row">
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.invoice.$invalid}">
+									<label class="control-label">invoice</label>
+									<input type="text" name="invoice" ng-model="otherIO.invoice" class="form-control" ng-disabled="otherIO.status != 'pending'" required>
+									
+									<span ng-show="editForm.invoice.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.status.$invalid}">
+									<label class="control-label">status</label>
+									<input type="text" name="status" ng-model="otherIO.status" class="form-control" disabled>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col col-sm-12">
+								<div class="form-group" ng-class="{'has-error': editForm.note.$invalid}">
+									<label class="control-label">备注</label>
+									<textarea name="note" class="form-control" ng-model="otherIO.note" ng-disabled="otherIO.status != 'pending'"></textarea>
+								</div>
+							</div>
+						</div>
+						<hr>
+
+						<div class="row">
+							<div class="col col-lg-12">
+								<table class="table table-striped table-hover">
+									<thead>
+										<tr>
+											<th ng-show="otherIO.status == 'pending'">
+												<a href="javascript:;" ng-click="details_new()" ng-show="otherIO.status=='pending'">
+													<i class="glyphicon glyphicon-plus"></i>
+												</a>
+											</th>
+											<th>SKU</th>
+											<th>描述</th>
+											<th>数量</th>
+											<th>出入库类型</th>
+											<th>reason</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="detail in otherIO.details">
+											<td ng-show="otherIO.status == 'pending'">
+												<a href="javascript:;" ng-click="details_remove($index)"  ng-show="otherIO.status=='pending'">
+													<i class="glyphicon glyphicon-remove"></i>
+												</a>				
+											</td>
+											<td ng-show="otherIO.status == 'pending'">
+												<ng-form name="nskuform">
+													<div class="form-group" ng-class="{'has-error': nskuform.sku.$invalid || ! detail.item }">
+														<input type="text" name="sku" ng-model="detail.item" typeahead="item as item.sku for item in skus | filter: {sku: $viewValue} | limitTo: 10"
+								data-placement="top" data-toggle="tooltip" href="#" data-original-title="{{detail.item.description}}" class="form-control" typeahead-editable="false" required>
+													</div>
+												</ng-form>
+											</td>
+											<td ng-show="otherIO.status != 'pending'">
+												{{detail.item.sku}}
+											</td>
+											
+											<td>{{detail.item.description}}</td>	
+																					
+											<td ng-show="otherIO.status == 'pending'">
+												<ng-form name="nqtyform">
+													<div class="form-group" ng-class="{'has-error': nqtyform.qty.$invalid}">														
+														<input type="text" name="qty" ng-model="detail.qty" ng-pattern="/^[0-9]+$/" class="form-control" required>
+													</div>
+												</ng-form>
+											</td>
+											<td ng-show="otherIO.status != 'pending'">
+												{{detail.qty}}
+											</td>
+											
+											<td ng-show="otherIO.status == 'pending'">
+												<ng-form name="typeform">
+													<div class="form-group" ng-class="{'has-error': typeform.type.$invalid}">
+														<select name="type" ng-model="detail.type"
+															class="form-control" required ng-options="s.id as s.name for s in types" >								
+														</select>
+													</div>
+												</ng-form>
+											</td>
+											<td ng-show="otherIO.status != 'pending'">
+												{{detail.type}}
+											</td>
+											
+											<td ng-show="otherIO.status == 'pending'">
+												<ng-form name="reasonform">
+													<div class="form-group" ng-class="{'has-error': reasonform.reason.$invalid}">
+														<input type="text" name="reason" ng-model="detail.reason" class="form-control" required>
+													</div>
+												</ng-form>
+											</td>
+											<td ng-show="otherIO.status != 'pending'">
+												{{detail.reason}}
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+						<a class="btn btn-default" href="#warehouse/otherIOInventory">取消</a>
+						<button type="button" class="btn btn-primary" ng-click="update()" ng-show="otherIO.status == 'pending'" ng-disabled="isClean() || editForm.$invalid || nskuform.$invalid || nqtyform.$invalid || typeform.$invalid || reasonform.$invalid">保存</button>
+						<button type="button" class="btn btn-info" ng-click="confirm()" ng-show="otherIO.status == 'pending'" ng-disabled="editForm.$invalid || nskuform.$invalid || nqtyform.$invalid || typeform.$invalid || reasonform.$invalid || otherIO.details.length<1">确认</button>
+						<button type="button" class="btn btn-info" ng-click="generate()" ng-show="otherIO.status == 'confirmed'">Generate</button>
+						<button type="button" class="btn btn-danger" ng-click="specailChange(otherIO.id)" ng-show="otherIO.status == 'confirmed' || otherIO.status == 'stocking' || otherIO.status == 'done'">特殊修改</button>	
+
+					</form>    
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+

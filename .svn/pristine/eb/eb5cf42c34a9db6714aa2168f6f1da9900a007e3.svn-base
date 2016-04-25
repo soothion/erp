@@ -1,0 +1,78 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">库存查询</h3></div>
+
+			<div class="panel-body">
+				<form name="searchForm">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col col-sm-2">
+							<div class="form-group" ng-class="{'has-error': searchForm.warehouse.$invalid}">
+								<select name="warehouse" ng-model="search.warehouse" class="form-control" ng-options="w.id as w.name for w in warehouse"></select>
+							</div>
+						</div>
+						<div class="col col-sm-2">
+							<div class="form-group" ng-class="{'has-error': searchForm.sku.$invalid}">
+								<input type="text" name="sku" ng-model="search.sku" class="form-control" typeahead="i as i.sku for i in items | filter:{sku: $viewValue} | limitTo:10" typeahead-editable='false' placeholder="SKU" >
+							</div>
+						</div>
+						<div class="col col-sm-2">
+							<div class="form-group" ng-class="{'has-error': searchForm.status.$invalid}">
+								<div class="btn-group ">
+									<button type="button" class="btn btn-default" ng-class="{'btn-success': search.status.stocked}" ng-model="search.status.stocked" btn-checkbox>Stocked</button>
+									<button type="button" class="btn btn-default" ng-class="{'btn-success': search.status.onroad}" ng-model="search.status.onroad" btn-checkbox>Onroad</button>
+								</div>
+							</div>
+						</div>
+						<div class="col col-sm-4">
+							<div class="form-group" ng-class="{'has-error': searchForm.condition.$invalid}">
+								<div class="btn-group ">
+									<button type="button" class="btn btn-default" ng-class="{'btn-success': search.condition.normal}" ng-model="search.condition.normal" btn-checkbox>Normal</button>
+									<button type="button" class="btn btn-default" ng-class="{'btn-success': search.condition.likenew}" ng-model="search.condition.likenew" btn-checkbox>Like New</button>
+									<button type="button" class="btn btn-default" ng-class="{'btn-success': search.condition.used}" ng-model="search.condition.used" btn-checkbox>Used</button>
+									<button type="button" class="btn btn-default" ng-class="{'btn-success': search.condition.defective}" ng-model="search.condition.defective" btn-checkbox>Defective</button>
+								</div>
+							</div>
+						</div>
+						<div class="col col-sm-2">
+							<div class="form-group" >
+								<button type="button" class="btn btn-primary" ng-click="searching()" ng-disabled="searchForm.$invalid">搜索</button>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				</form>
+
+				<table class="table table-condensed table-hover">
+					<thead>
+						<tr>
+							<th>SKU</th>
+							<th>实际数量</th>
+							<th>Book</th>
+							<th>可用数量</th>
+							<th>库存类型</th>
+							<th>库存状态</th>
+							<th>渠道</th>
+							<th>仓库</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="inventory in list | limitTo: 10">
+
+							<td>{{inventory.item.sku}} </td>
+							<td>{{inventory.qty}}</td>
+							<td>{{inventory.book_qty}}</td>
+							<td>{{inventory.qty - inventory.book_qty}}</td>
+							<td>{{inventory.condition}}</td>
+							<td>{{inventory.status | inventory_status}}</td>
+							<td>{{inventory.account.name}}</td>
+							<td>{{inventory.warehouse_id | warehouse}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

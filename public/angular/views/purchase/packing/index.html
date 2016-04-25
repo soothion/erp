@@ -1,0 +1,39 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">SKU的默认值设置</h3></div>
+			
+			<div class="panel-body">
+			<div class="container-fluid">
+				<input type="search" class="form-control" ng-model="search" placeholder="Search">
+				<table class="table table-condensed table-hover">
+					<thead>
+						<tr>
+							<th><a href="#/purchase/packing/new"><i class="glyphicon glyphicon-plus"></i></a></th>
+							<th>SKU</th>
+							<th>默认供应商</th>
+							<th>价格类型</th>
+							<th>SPQ</th>
+							<th>创建时间</th>
+							<th>最后更新时间</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="packing in packings | filter: search">
+							<td>
+								<a href="#/purchase/packing/edit/{{packing.id}}"><i class="glyphicon glyphicon-pencil"></i></a>
+							</td>
+							<td>{{packing.item.sku}}</td>
+							<td>{{packing.vendor.name}}</td>
+							<td>{{packing.price_type}}</td>
+							<td>{{packing.spq}}</td>
+							<td>{{packing.created_at}}</td>
+							<td>{{packing.updated_at}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,63 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">SKU的默认值设置</h3>
+			</div>
+			<div class="panel-body">
+				<div class="container-fluid">
+					<form name="editForm" class="">
+						<div class="row">
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.sku.$invalid}">
+									<label class="control-label">SKU</label>
+									<input type="text" name="sku" ng-model="packing.item" class="form-control" required typeahead="sku as sku.sku for sku in skus | filter:{sku: $viewValue} | limitTo: 10" typeahead-editable='false' placeholder="Type SKU">
+									<span ng-show="editForm.sku.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': packing.vendor.$invald}">
+									<label class="control-label">供应商</label>
+									<input type="text" name="vendor" ng-model="packing.vendor" class="form-control" typeahead="v as v.code+'('+v.name+')' for v in vendors  | filter:$viewValue | limitTo: 10" required placeholder="Type Name or Code">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.spq.$invalid}">
+									<label class="control-label">SPQ</label>
+									<input type="text" name="spq" ng-model="packing.spq" class="form-control" required>
+									<span ng-show="editForm.spq.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-6">
+								<label class="control-label">单价类型：&nbsp;&nbsp;</label>
+								<div class="title" id="title" name="title">
+									<input  type="radio" ng-model="packing.price_type" name="radiobutton"  value="normal" checked={{checked}}>
+
+									<label>不含税单价</label></input>
+									<input  type="radio" name="radiobutton"  ng-model="packing.price_type" value="tax">
+									<label>含税单价</label></input>
+									<input  type="radio" name="radiobutton" ng-model="packing.price_type" value="usd" >
+									<label>美元单价</label></input>
+								</div>
+							</div>
+
+						</div>
+
+						<a class="btn btn-default" href="#/purchase/packing">Cancel</a>
+						<button type="button" class="btn btn-primary" ng-click="update()" ng-disabled="isClean() || editForm.$invalid">
+							Save
+						</button>
+						<button type="button" class="btn btn-danger" ng-click="destroy()" ng-show="packing.$id">
+							Delete
+						</button>
+					</form>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+</div>

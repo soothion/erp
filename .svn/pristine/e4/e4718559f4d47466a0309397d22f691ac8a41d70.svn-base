@@ -1,0 +1,128 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">warehouse Manage</h3></div>
+
+			<div class="panel-body">
+				<div class="container-fluid">
+					<form name="editForm" class="">
+						<div class="row">
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.name.$invalid}">
+									<label class="control-label">仓库简称</label>
+									<input type="text" name="name" ng-model="warehouse.name" class="form-control" required>
+									<span ng-show="editForm.name.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.address.$invalid}">
+									<label class="control-label">仓库地址</label>
+									<input type="text" name="address" ng-model="warehouse.address" class="form-control" required>
+									<span ng-show="editForm.code.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.contact.$invalid}">
+									<label class="control-label">联系人</label>
+									<input type="text" name="contact" ng-model="warehouse.contact" class="form-control"  required>
+									
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.telephone.$invalid}">
+									<label class="control-label">电话</label>
+									<input type="text" name="telephone" ng-model="warehouse.telephone" class="form-control" >
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.country.$invalid}">
+									<label class="control-label">国家</label>
+									<input type="text" name="country" ng-model="warehouse.country" class="form-control" >
+								</div>
+							</div>
+						</div>
+
+						<hr>
+
+						<div class="row">
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.ship_company.$invalid}">
+									<label class="control-label">公司</label>
+									<input type="text" name="ship_company" ng-model="warehouse.ship_company" class="form-control" required>
+									<span ng-show="editForm.ship_company.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.ship_abbreviation.$invalid}">
+									<label class="control-label">公司简称</label>
+									<input type="text" name="ship_abbreviation" ng-model="warehouse.ship_abbreviation" class="form-control" required>
+									<span ng-show="editForm.ship_abbreviation.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.ship_city.$invalid}">
+									<label class="control-label">城市</label>
+									<input type="text" name="ship_city" ng-model="warehouse.ship_city" class="form-control" required>
+									<span ng-show="editForm.ship_city.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.ship_state.$invalid}">
+									<label class="control-label">洲</label>
+									<input type="text" name="ship_state" ng-model="warehouse.ship_state" class="form-control" required>
+									<span ng-show="editForm.ship_state.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.ship_address1.$invalid}">
+									<label class="control-label">发货地址1</label>
+									<input type="text" name="ship_address1" ng-model="warehouse.ship_address1" class="form-control" required>
+									<span ng-show="editForm.ship_address1.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.ship_zip.$invalid}">
+									<label class="control-label">邮编</label>
+									<input type="text" name="ship_zip" ng-model="warehouse.ship_zip" class="form-control" required>
+									<span ng-show="editForm.ship_zip.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-3">
+								<div class="form-group" ng-class="{'has-error': editForm.ship_country.$invalid}">
+									<label class="control-label">国家</label>
+									<input type="text" name="ship_country" ng-model="warehouse.ship_country" class="form-control" required>
+									<span ng-show="editForm.ship_country.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.ship_address2.$invalid}">
+									<label class="control-label">发货地址2</label>
+									<input type="text" name="ship_address2" ng-model="warehouse.ship_address2" class="form-control" required>
+									<span ng-show="editForm.ship_address2.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+						</div>
+
+						<a class="btn btn-default" href="#/warehouse/list">Cancel</a>
+						<button type="button" class="btn btn-primary" ng-click="update()" ng-disabled="isClean() || editForm.$invalid">Save</button>
+						<button type="button" class="btn btn-danger" ng-click="destroy()" ng-show="warehouse.$id">Delete</button>
+					</form>    
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+

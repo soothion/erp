@@ -1,0 +1,259 @@
+<?php
+
+use Bluebanner\Core\Inventory\InventoryServiceInterface;
+
+use Bluebanner\Core\Model\InventoryMaster;
+use Bluebanner\Core\Model\InvenItoryChange;
+
+class APIInventoryController extends \BaseController {
+
+	public function __construct(InventoryServiceInterface $service, InventoryMaster $modelInventory, InventoryChange $modelInventoryChange, InventoryForm $formInventory)
+	{
+		$this->service = $service;
+
+    $this->inventoryService = $this->service;
+    $this->modelInventory = $modelInventory;
+    $this->modelInventoryChange = $modelInventoryChange;
+    $this->formInventory = $formInventory;
+	}
+
+	public function query()
+	{
+		$warehouse_id = (int) Input::get('warehouse');
+		$item_id = (int) Input::get('sku');
+		$status = array_filter(explode(',', Input::get('status')), function($val) {return '' != $val;});
+		$condition = array_filter(explode(',', Input::get('condition')));
+
+		$list = $this->service->query($warehouse_id, $item_id, $status, $condition)->get();
+		foreach ($list as $inventory) {
+			$inventory->item;$inventory->account;
+		}
+
+		return $list;
+	}
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index()
+	{
+// 		$input = Input::get();
+// 		$condition = array(
+// 			'warehouse_id' => Input::get('warehouse'),
+// 			'item_id' => Input::get('sku'),
+// 			'status' => array_filter(explode(',', Input::get('status')), function($val) {return '' != $val;}),
+// 			'io_at' => (Input::get('from') || Input::get('to')) ? array(with(new DateTime(Input::get('from')))->setTime(0, 0), with(new DateTime(Input::get('to')))->add(new DateInterval('P1D'))->setTime(0, 0)) : null,
+// 			'condition' => array_filter(explode(',', Input::get('condition'))),
+// 		);
+
+// 		$list = $this->service->inventoryFindByCondition(array_filter($condition))->get();
+
+// 		foreach ($list as $inventory) {
+// 			$inventory->item;$inventory->account->name;$inventory->restock;
+// 		}
+// 		return $list;
+
+
+	    $condition=array();
+	    $i=0;
+	    
+	    if(($sku=Input::get("sku",false))!==false)
+	    {
+	        if(!empty($sku) && is_numeric($sku))
+	        {
+	            $condition[$i]['field'] ="item_id";
+	            $condition[$i]['opera']='=';
+	            $condition[$i]['value']=intval($sku);
+	            $i++;
+	        }
+	    }
+	    
+	    
+	    if(($fromwarehouse=Input::get("warehouse",false))!==false)
+	    {
+	        if(!empty($fromwarehouse) && is_numeric($fromwarehouse))
+	        {
+	            $condition[$i]['field'] ="warehouse_id";
+	            $condition[$i]['opera']='=';
+	            $condition[$i]['value']=intval($fromwarehouse);
+	            $i++;
+	        }
+	    }
+	    
+	    if(Input::get("status",false) || Input::get("condition",false))
+	    {	        
+    	    $inventory_ids=$this->getConditionInventoryIds();
+    	    if(count($inventory_ids)<1) return array();
+    	    $condition[$i]['field'] ="inventory_id";
+    	    $condition[$i]['opera']='in';
+    	    $condition[$i]['value']=$inventory_ids;
+    	    $i++;
+	    }
+	    
+	    if(($timeTo=Input::get("to",false))!==false)
+	    {
+	        if(!empty($timeTo) && $timeTo!="undefined")
+	        {
+	            //当天开始时间
+	            $condition[$i]['field'] ="updated_at";
+	            $condition[$i]['opera']='>=';
+	            $condition[$i]['value']=date("Y-m-d H:i:s",strtotime($timeTo));
+	            $i++;
+	            
+	            //当天结束时间
+	            $condition[$i]['field'] ="updated_at";
+	            $condition[$i]['opera']='<=';
+	            $condition[$i]['value']=date("Y-m-d H:i:s",strtotime($timeTo)+86400);
+	            $i++;
+	        }
+	    }
+	    
+		$list= $this->service->findAllChangesByConditions($condition)->get();
+		foreach ($list as $detail) {
+			$detail->warehouse;
+			$detail->item;
+			$detail->inventory;
+			$detail->inventory->restock;
+			$detail->relation;
+		}
+
+		return $list;
+	}
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create()
+	{
+		//
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function store()
+	{
+		//
+	}
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		//
+	}
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		//
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update($id)
+	{
+		//
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+		//
+	}
+	
+	protected function getConditionInventoryIds()
+	{
+	    $inventory_id_condition=array();
+	    $j=0;
+	    if(($status=Input::get("status",false))!==false)
+	    {
+	        $testStatus=trim($status," \t\n\r\0,");
+	        if(!empty($status) && $status!="undifined" && !empty($testStatus))
+	        {
+	            // $inventory_ids_status=$this->service->findMasterIdsByStatus(explode(',',$testStatus));
+	            $whereIn=explode(',',$testStatus);
+	            if(count($whereIn)<1) return array();
+	            $inventory_id_condition[$j]['field'] ="status";
+	            $inventory_id_condition[$j]['opera']='in';
+	            $inventory_id_condition[$j]['value']=$whereIn;
+	            $j++;
+	             
+	        }
+	    }
+	     
+	    if(($type=Input::get("condition",false))!==false)
+	    {
+	        $testType=trim($type," \t\n\r\0,");
+	        if(!empty($type) && $type!="undifined" && !empty($testType))
+	        {
+	            $whereIn=explode(',',$testType);
+	            if(count($whereIn)<1) return array();
+	            $inventory_id_condition[$j]['field'] ="condition";
+	            $inventory_id_condition[$j]['opera']='in';
+	            $inventory_id_condition[$j]['value']=$whereIn;
+	            $j++;
+	        }
+	    }
+	    
+	    return $this->service->findMasterIdsByCondition($inventory_id_condition);
+	}
+
+
+  public function lists() {
+    $pg = Input::get('pg', 1);
+    $getData = Input::get();
+
+    $formData = $this->formInventory->filterListsOpt($getData);
+    $inventories = $this->modelInventory->getInventoryByConds($formData, $pg, 16, 1);
+
+    return $inventories;
+  }
+
+  public function history() {
+    $pg = Input::get('pg', 1);
+    $getData = Input::get();
+
+    $formData = $this->formInventory->filterHistoryOpt($getData);
+    $inventories = $this->modelInventoryChange->getInventoryByConds($formData, $pg, 16, 1);
+
+    return $inventories;
+  }
+
+
+
+
+  /**
+   * Show the unlock inventory of all channel (include Free channel)
+   **/
+  public function index() {
+    $inputGet = Input::get('');
+
+    $inputGen = $this->formInventory->
+  }
+   
+}

@@ -1,0 +1,325 @@
+[2014-09-17 01:40:33] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'parse error' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:97
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 01:42:14] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'AmazonService' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:83
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 01:51:07] production.ERROR: exception 'MarketplaceWebService_Exception' with message 'Internal Error' in /Users/vincent/www/erp/vendor/soothion/amazon-mws-sdk/src/MarketplaceWebService/Client.php:798
+Stack trace:
+#0 /Users/vincent/www/erp/vendor/soothion/amazon-mws-sdk/src/MarketplaceWebService/Client.php(270): MarketplaceWebService_Client->invoke(Array, Resource id #246)
+#1 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AmazonService.php(80): MarketplaceWebService_Client->getReport(Object(MarketplaceWebService_Model_GetReportRequest))
+#2 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AmazonService.php(62): Bluebanner\Core\Order\AmazonService->getReport('19617492653')
+#3 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AmazonService.php(33): Bluebanner\Core\Order\AmazonService->getReportList()
+#4 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php(84): Bluebanner\Core\Order\AmazonService->getOrderList()
+#5 /Users/vincent/www/erp/app/controllers/TestController.php(31): Bluebanner\Core\Order\ImportService->getOrderList()
+#6 [internal function]: TestController->test()
+#7 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(231): call_user_func_array(Array, Array)
+#8 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(93): Illuminate\Routing\Controller->callAction('test', Array)
+#9 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(62): Illuminate\Routing\ControllerDispatcher->call(Object(TestController), Object(Illuminate\Routing\Route), 'test')
+#10 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Router.php(934): Illuminate\Routing\ControllerDispatcher->dispatch(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request), 'TestController', 'test')
+#11 [internal function]: Illuminate\Routing\Router->Illuminate\Routing\{closure}()
+#12 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Route.php(104): call_user_func_array(Object(Closure), Array)
+#13 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Router.php(1000): Illuminate\Routing\Route->run(Object(Illuminate\Http\Request))
+#14 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Router.php(968): Illuminate\Routing\Router->dispatchToRoute(Object(Illuminate\Http\Request))
+#15 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(738): Illuminate\Routing\Router->dispatch(Object(Illuminate\Http\Request))
+#16 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(708): Illuminate\Foundation\Application->dispatch(Object(Illuminate\Http\Request))
+#17 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Http/FrameGuard.php(38): Illuminate\Foundation\Application->handle(Object(Illuminate\Http\Request), 1, true)
+#18 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Session/Middleware.php(72): Illuminate\Http\FrameGuard->handle(Object(Illuminate\Http\Request), 1, true)
+#19 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Cookie/Queue.php(47): Illuminate\Session\Middleware->handle(Object(Illuminate\Http\Request), 1, true)
+#20 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Cookie/Guard.php(51): Illuminate\Cookie\Queue->handle(Object(Illuminate\Http\Request), 1, true)
+#21 /Users/vincent/www/erp/vendor/stack/builder/src/Stack/StackedHttpKernel.php(23): Illuminate\Cookie\Guard->handle(Object(Illuminate\Http\Request), 1, true)
+#22 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(606): Stack\StackedHttpKernel->handle(Object(Illuminate\Http\Request))
+#23 /Users/vincent/www/erp/public/index.php(49): Illuminate\Foundation\Application->run()
+#24 /Users/vincent/www/erp/server.php(19): require_once('/Users/vincent/...')
+#25 {main} [] []
+[2014-09-17 01:54:33] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'AmazonService' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:83
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 01:57:49] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Maximum execution time of 60 seconds exceeded' in /Users/vincent/www/erp/vendor/soothion/amazon-mws-sdk/src/MarketplaceWebService/Client.php:883
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 01:57:52] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'AmazonService' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:83
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 01:57:52] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'AmazonService' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:83
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 01:57:52] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'AmazonService' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:83
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 01:57:52] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'AmazonService' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:83
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 01:57:52] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'AmazonService' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:83
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 01:57:52] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'AmazonService' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:83
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 02:00:44] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'parse error, expecting `"identifier (T_STRING)"'' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:83
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 02:01:33] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'parse error' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:84
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 02:06:40] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'AmazonService' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:85
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 02:07:47] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'AmazonService' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:86
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 02:08:50] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'AmazonService' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:86
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 02:13:39] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'AmazonService' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:86
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 02:14:47] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'AmazonService' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:87
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 02:14:50] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'AmazonService' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:87
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 02:22:46] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Interface 'Bluebanner\Core\Model\ImportServiceInterface' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:5
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 02:23:17] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Interface 'Bluebanner\Core\Model\ImportServiceInterface' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:5
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 02:24:19] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Interface 'Bluebanner\Core\Model\ImportServiceInterface' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:5
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 02:25:12] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Interface 'Bluebanner\Core\Model\Item\ImportServiceInterface' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:5
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 02:27:06] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'ItemBom' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:89
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 02:29:56] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'InventoryMaster' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:89
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 02:30:23] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'Platform' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:89
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 02:34:02] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'AmazonService' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:90
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 02:34:54] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'aaa' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:90
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 02:53:11] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'AmazonService' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:83
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 02:59:53] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'AmazonService' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/ImportService.php:83
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 03:00:48] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'AmazonService' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/importService.php:83
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 03:02:19] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'AdapterService' not found' in /Users/vincent/www/erp/app/controllers/TestController.php:32
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 03:02:33] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'ImportService' not found' in /Users/vincent/www/erp/app/controllers/TestController.php:32
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 03:02:42] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'ImportService' not found' in /Users/vincent/www/erp/app/controllers/TestController.php:32
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 03:02:44] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'ImportService' not found' in /Users/vincent/www/erp/app/controllers/TestController.php:32
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 03:03:25] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Call to a member function getOrderList() on a non-object' in /Users/vincent/www/erp/app/controllers/TestController.php:32
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 03:03:42] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'AmazonService' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/ImportService.php:83
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 05:33:06] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'parse error' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/ImportService.php:83
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 05:33:24] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'AmazonService' not found' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/ImportService.php:83
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 22:22:49] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Call to undefined method Bluebanner\Core\Order\ImportService::parsetOrder()' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/ImportService.php:95
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 22:27:49] production.ERROR: exception 'MarketplaceWebService_Exception' with message 'Internal Error' in /Users/vincent/www/erp/vendor/soothion/amazon-mws-sdk/src/MarketplaceWebService/Client.php:798
+Stack trace:
+#0 /Users/vincent/www/erp/vendor/soothion/amazon-mws-sdk/src/MarketplaceWebService/Client.php(522): MarketplaceWebService_Client->invoke(Array)
+#1 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AmazonService.php(59): MarketplaceWebService_Client->getReportList(Object(MarketplaceWebService_Model_GetReportListRequest))
+#2 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AmazonService.php(33): Bluebanner\Core\Order\AmazonService->getReportList()
+#3 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/ImportService.php(94): Bluebanner\Core\Order\AmazonService->getOrderList()
+#4 /Users/vincent/www/erp/app/controllers/TestController.php(32): Bluebanner\Core\Order\ImportService->getOrderList()
+#5 [internal function]: TestController->test()
+#6 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(231): call_user_func_array(Array, Array)
+#7 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(93): Illuminate\Routing\Controller->callAction('test', Array)
+#8 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(62): Illuminate\Routing\ControllerDispatcher->call(Object(TestController), Object(Illuminate\Routing\Route), 'test')
+#9 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Router.php(934): Illuminate\Routing\ControllerDispatcher->dispatch(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request), 'TestController', 'test')
+#10 [internal function]: Illuminate\Routing\Router->Illuminate\Routing\{closure}()
+#11 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Route.php(104): call_user_func_array(Object(Closure), Array)
+#12 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Router.php(1000): Illuminate\Routing\Route->run(Object(Illuminate\Http\Request))
+#13 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Router.php(968): Illuminate\Routing\Router->dispatchToRoute(Object(Illuminate\Http\Request))
+#14 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(738): Illuminate\Routing\Router->dispatch(Object(Illuminate\Http\Request))
+#15 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(708): Illuminate\Foundation\Application->dispatch(Object(Illuminate\Http\Request))
+#16 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Http/FrameGuard.php(38): Illuminate\Foundation\Application->handle(Object(Illuminate\Http\Request), 1, true)
+#17 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Session/Middleware.php(72): Illuminate\Http\FrameGuard->handle(Object(Illuminate\Http\Request), 1, true)
+#18 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Cookie/Queue.php(47): Illuminate\Session\Middleware->handle(Object(Illuminate\Http\Request), 1, true)
+#19 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Cookie/Guard.php(51): Illuminate\Cookie\Queue->handle(Object(Illuminate\Http\Request), 1, true)
+#20 /Users/vincent/www/erp/vendor/stack/builder/src/Stack/StackedHttpKernel.php(23): Illuminate\Cookie\Guard->handle(Object(Illuminate\Http\Request), 1, true)
+#21 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(606): Stack\StackedHttpKernel->handle(Object(Illuminate\Http\Request))
+#22 /Users/vincent/www/erp/public/index.php(49): Illuminate\Foundation\Application->run()
+#23 /Users/vincent/www/erp/server.php(19): require_once('/Users/vincent/...')
+#24 {main} [] []
+[2014-09-17 23:06:15] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Call to undefined method Bluebanner\Core\Order\ImportService::parsetOrder()' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/ImportService.php:95
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 23:07:37] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'parse error, expecting `"identifier (T_STRING)"'' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AdapterService.php:5
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 23:08:28] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'parse error, expecting `')''' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AdapterService.php:70
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 23:09:06] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'parse error, expecting `')''' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AdapterService.php:70
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 23:09:27] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'parse error, expecting `')''' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AdapterService.php:69
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 23:09:43] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'parse error, expecting `')''' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AdapterService.php:100
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 23:10:04] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'parse error, expecting `')''' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AdapterService.php:139
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 23:10:05] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'parse error, expecting `')''' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AdapterService.php:139
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-09-17 23:10:18] production.ERROR: exception 'ErrorException' with message 'Undefined property: Bluebanner\Core\Order\AdapterService::$getMapping' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AdapterService.php:34
+Stack trace:
+#0 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AdapterService.php(34): Illuminate\Exception\Handler->handleError(8, 'Undefined prope...', '/Users/vincent/...', 34, Array)
+#1 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AdapterService.php(17): Bluebanner\Core\Order\AdapterService->mapping(Array)
+#2 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/ImportService.php(133): Bluebanner\Core\Order\AdapterService->parse(Array)
+#3 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/ImportService.php(95): Bluebanner\Core\Order\ImportService->parseOrder(Array)
+#4 /Users/vincent/www/erp/app/controllers/TestController.php(32): Bluebanner\Core\Order\ImportService->getOrderList()
+#5 [internal function]: TestController->test()
+#6 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(231): call_user_func_array(Array, Array)
+#7 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(93): Illuminate\Routing\Controller->callAction('test', Array)
+#8 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(62): Illuminate\Routing\ControllerDispatcher->call(Object(TestController), Object(Illuminate\Routing\Route), 'test')
+#9 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Router.php(934): Illuminate\Routing\ControllerDispatcher->dispatch(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request), 'TestController', 'test')
+#10 [internal function]: Illuminate\Routing\Router->Illuminate\Routing\{closure}()
+#11 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Route.php(104): call_user_func_array(Object(Closure), Array)
+#12 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Router.php(1000): Illuminate\Routing\Route->run(Object(Illuminate\Http\Request))
+#13 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Router.php(968): Illuminate\Routing\Router->dispatchToRoute(Object(Illuminate\Http\Request))
+#14 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(738): Illuminate\Routing\Router->dispatch(Object(Illuminate\Http\Request))
+#15 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(708): Illuminate\Foundation\Application->dispatch(Object(Illuminate\Http\Request))
+#16 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Http/FrameGuard.php(38): Illuminate\Foundation\Application->handle(Object(Illuminate\Http\Request), 1, true)
+#17 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Session/Middleware.php(72): Illuminate\Http\FrameGuard->handle(Object(Illuminate\Http\Request), 1, true)
+#18 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Cookie/Queue.php(47): Illuminate\Session\Middleware->handle(Object(Illuminate\Http\Request), 1, true)
+#19 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Cookie/Guard.php(51): Illuminate\Cookie\Queue->handle(Object(Illuminate\Http\Request), 1, true)
+#20 /Users/vincent/www/erp/vendor/stack/builder/src/Stack/StackedHttpKernel.php(23): Illuminate\Cookie\Guard->handle(Object(Illuminate\Http\Request), 1, true)
+#21 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(606): Stack\StackedHttpKernel->handle(Object(Illuminate\Http\Request))
+#22 /Users/vincent/www/erp/public/index.php(49): Illuminate\Foundation\Application->run()
+#23 /Users/vincent/www/erp/server.php(19): require_once('/Users/vincent/...')
+#24 {main} [] []
+[2014-09-17 23:10:44] production.ERROR: exception 'ErrorException' with message 'array_key_exists() expects parameter 2 to be array, null given' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AdapterService.php:38
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleError(2, 'array_key_exist...', '/Users/vincent/...', 38, Array)
+#1 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AdapterService.php(38): array_key_exists('order-id', NULL)
+#2 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AdapterService.php(17): Bluebanner\Core\Order\AdapterService->mapping(Array)
+#3 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/ImportService.php(133): Bluebanner\Core\Order\AdapterService->parse(Array)
+#4 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/ImportService.php(95): Bluebanner\Core\Order\ImportService->parseOrder(Array)
+#5 /Users/vincent/www/erp/app/controllers/TestController.php(32): Bluebanner\Core\Order\ImportService->getOrderList()
+#6 [internal function]: TestController->test()
+#7 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(231): call_user_func_array(Array, Array)
+#8 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(93): Illuminate\Routing\Controller->callAction('test', Array)
+#9 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(62): Illuminate\Routing\ControllerDispatcher->call(Object(TestController), Object(Illuminate\Routing\Route), 'test')
+#10 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Router.php(934): Illuminate\Routing\ControllerDispatcher->dispatch(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request), 'TestController', 'test')
+#11 [internal function]: Illuminate\Routing\Router->Illuminate\Routing\{closure}()
+#12 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Route.php(104): call_user_func_array(Object(Closure), Array)
+#13 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Router.php(1000): Illuminate\Routing\Route->run(Object(Illuminate\Http\Request))
+#14 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Router.php(968): Illuminate\Routing\Router->dispatchToRoute(Object(Illuminate\Http\Request))
+#15 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(738): Illuminate\Routing\Router->dispatch(Object(Illuminate\Http\Request))
+#16 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(708): Illuminate\Foundation\Application->dispatch(Object(Illuminate\Http\Request))
+#17 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Http/FrameGuard.php(38): Illuminate\Foundation\Application->handle(Object(Illuminate\Http\Request), 1, true)
+#18 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Session/Middleware.php(72): Illuminate\Http\FrameGuard->handle(Object(Illuminate\Http\Request), 1, true)
+#19 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Cookie/Queue.php(47): Illuminate\Session\Middleware->handle(Object(Illuminate\Http\Request), 1, true)
+#20 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Cookie/Guard.php(51): Illuminate\Cookie\Queue->handle(Object(Illuminate\Http\Request), 1, true)
+#21 /Users/vincent/www/erp/vendor/stack/builder/src/Stack/StackedHttpKernel.php(23): Illuminate\Cookie\Guard->handle(Object(Illuminate\Http\Request), 1, true)
+#22 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(606): Stack\StackedHttpKernel->handle(Object(Illuminate\Http\Request))
+#23 /Users/vincent/www/erp/public/index.php(49): Illuminate\Foundation\Application->run()
+#24 /Users/vincent/www/erp/server.php(19): require_once('/Users/vincent/...')
+#25 {main} [] []
+[2014-09-17 23:11:13] production.ERROR: exception 'ErrorException' with message 'Undefined index: channel_id' in /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AdapterService.php:85
+Stack trace:
+#0 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AdapterService.php(85): Illuminate\Exception\Handler->handleError(8, 'Undefined index...', '/Users/vincent/...', 85, Array)
+#1 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AdapterService.php(20): Bluebanner\Core\Order\AdapterService->getOrderInfo(Array)
+#2 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/ImportService.php(133): Bluebanner\Core\Order\AdapterService->parse(Array)
+#3 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/ImportService.php(95): Bluebanner\Core\Order\ImportService->parseOrder(Array)
+#4 /Users/vincent/www/erp/app/controllers/TestController.php(32): Bluebanner\Core\Order\ImportService->getOrderList()
+#5 [internal function]: TestController->test()
+#6 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(231): call_user_func_array(Array, Array)
+#7 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(93): Illuminate\Routing\Controller->callAction('test', Array)
+#8 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(62): Illuminate\Routing\ControllerDispatcher->call(Object(TestController), Object(Illuminate\Routing\Route), 'test')
+#9 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Router.php(934): Illuminate\Routing\ControllerDispatcher->dispatch(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request), 'TestController', 'test')
+#10 [internal function]: Illuminate\Routing\Router->Illuminate\Routing\{closure}()
+#11 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Route.php(104): call_user_func_array(Object(Closure), Array)
+#12 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Router.php(1000): Illuminate\Routing\Route->run(Object(Illuminate\Http\Request))
+#13 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Routing/Router.php(968): Illuminate\Routing\Router->dispatchToRoute(Object(Illuminate\Http\Request))
+#14 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(738): Illuminate\Routing\Router->dispatch(Object(Illuminate\Http\Request))
+#15 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(708): Illuminate\Foundation\Application->dispatch(Object(Illuminate\Http\Request))
+#16 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Http/FrameGuard.php(38): Illuminate\Foundation\Application->handle(Object(Illuminate\Http\Request), 1, true)
+#17 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Session/Middleware.php(72): Illuminate\Http\FrameGuard->handle(Object(Illuminate\Http\Request), 1, true)
+#18 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Cookie/Queue.php(47): Illuminate\Session\Middleware->handle(Object(Illuminate\Http\Request), 1, true)
+#19 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Cookie/Guard.php(51): Illuminate\Cookie\Queue->handle(Object(Illuminate\Http\Request), 1, true)
+#20 /Users/vincent/www/erp/vendor/stack/builder/src/Stack/StackedHttpKernel.php(23): Illuminate\Cookie\Guard->handle(Object(Illuminate\Http\Request), 1, true)
+#21 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(606): Stack\StackedHttpKernel->handle(Object(Illuminate\Http\Request))
+#22 /Users/vincent/www/erp/public/index.php(49): Illuminate\Foundation\Application->run()
+#23 /Users/vincent/www/erp/server.php(19): require_once('/Users/vincent/...')
+#24 {main} [] []

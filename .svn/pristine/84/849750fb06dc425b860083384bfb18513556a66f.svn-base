@@ -1,0 +1,1612 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					产品管理
+						<a class="text-info btn btn-default btn-xs pull-right" ng-click="accordion(true)">
+							全部展开
+						</a>
+						<a class="text-muted btn btn-default btn-xs pull-right" ng-click="accordion(false)">
+							全部折叠
+						</a>
+					
+				</h3>
+			</div>
+
+			<div class="panel-body">
+				<form name="editForm" class="">
+
+					<div class="container-fluid">
+						<div class="panel-group" id="accordion">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a class="accordion-toggle" data-toggle="collapse"
+											data-parent="#accordion" href="#collapseBase">基本信息</a>
+									</h4>
+								</div>
+								<div id="collapseBase" class="panel-collapse collapse in">
+									<div class="panel-body">
+
+										<div class="row"  ng-mouseenter="tips_sku=true;" ng-mouseleave="tips_sku=false;">
+											<div class="col col-sm-12">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.sku.$invalid}">
+													<label class="control-label">SKU
+														<span class="text-info" href="#" data-toggle="tooltip" data-delay="0" data-original-title="SKU:唯一，不能多于30位，不能用特殊字符（除去-，#）like:110-15232-51" ng-show="tips_sku">Tips</span>
+													</label>
+													<input type="text" name="sku" ng-model="item.sku"
+														class="form-control" ng-pattern="/^[0-9a-zA-Z\#\-]{10,30}$/" required>
+													<span ng-show="editForm.sku.$error.required"
+														class="help-inline">Required</span>
+												</div>
+											</div>
+										</div>
+
+										<div class="row" ng-init="tips_description=false;"  ng-mouseenter="tips_description=true;" ng-mouseleave="tips_description=false;">
+											<div class="col col-sm-12">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.description.$invalid}">
+													<label class="control-label">描述
+													<span class="text-info" href="#" data-toggle="tooltip" title="产品的简要描述" ng-show="tips_description">Tips</span>													
+													</label>
+													<textarea name="description" class="form-control"
+														ng-model="item.description" required></textarea>
+													<span ng-show="editForm.description.$error.required"
+														class="help-inline">Required</span>
+												</div>
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col col-sm-4" ng-init="tips_category=false;" ng-mouseenter="tips_category=true;" ng-mouseleave="tips_category=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.category.$invalid}">
+													<label class="control-label">产品类别
+													<span class="text-info" href="#" data-toggle="tooltip" title="产品的分类" ng-show="tips_category">Tips</span>	
+													</label>
+													<select name="category" class="form-control"
+														ng-model="item.category_id"
+														ng-options="c.id as c.name for c in categories" required></select>
+													<span ng-show="editForm.category.$error.required"
+														class="help-inline">Required</span>
+												</div>
+											</div>
+											<div class="col col-sm-4" ng-init="tips_status=false;" ng-mouseenter="tips_status=true;" ng-mouseleave="tips_status=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.status.$invalid}">
+													<label class="control-label">产品状态
+														<span class="text-info" href="#" data-toggle="tooltip" title="产品状态:新，比较新，正常，夕阳，停止" ng-show="tips_status">Tips</span>	
+													</label>
+													<select name="status" class="form-control"
+														ng-init="statuses=[{data:'新'},{data:'比较新'},{data:'正常'},{data:'夕阳'},{data:'停止'}];"
+														ng-model="item.status"
+														ng-options="s.data as s.data for s in statuses" required></select>
+												</div>
+											</div>
+											
+											<div class="col col-sm-4" ng-init="tips_other=false;" ng-mouseenter="tips_other=true;" ng-mouseleave="tips_other=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.other.$invalid}">
+													<label class="control-label">其他信息
+														<span class="text-info" href="#" data-toggle="tooltip" title="其他必备信息,绿色为是,白色为否" ng-show="tips_other">Tips</span>
+													</label>
+													<div class="btn-group ">
+														<button type="button" class="btn btn-default"
+															ng-class="{'btn-success': item.other.dropship}"
+															ng-model="item.other.dropship" btn-checkbox>Dropship</button>
+														<button type="button" class="btn btn-default"
+															ng-class="{'btn-success': item.other.active}"
+															ng-model="item.other.active" btn-checkbox>Active</button>
+														<button type="button" class="btn btn-default"
+															ng-class="{'btn-success': item.other.virtual}"
+															ng-model="item.other.virtual" btn-checkbox>Virtual</button>
+														<button type="button" class="btn btn-default"
+															ng-class="{'btn-success': item.other.inventory}"
+															ng-model="item.other.inventory" btn-checkbox>Inventory</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										
+
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a class="accordion-toggle" data-toggle="collapse"
+											data-parent="#accordion" href="#collapseShip">物流信息</a>
+									</h4>
+								</div>
+								<div id="collapseShip" class="panel-collapse collapse">
+									<div class="panel-body">
+										<div class="row">
+										
+											<div class="col col-sm-3" ng-init="tips_length=false;" ng-mouseenter="tips_length=true;" ng-mouseleave="tips_length=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.length.$invalid}">
+													<label class="control-label">
+													产品-长(mm)
+													<span class="text-info" href="#" data-toggle="tooltip" title="单位(mm) 正整数" ng-show="tips_length">Tips</span>													
+													</label>
+													<input type="text" ng-pattern="/^[0-9]+$/"
+														name="length" class="form-control" ng-model="item.length"
+														required>
+												</div>
+											</div>
+											
+											<div class="col col-sm-3" ng-init="tips_width=false;" ng-mouseenter="tips_width=true;" ng-mouseleave="tips_width=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.width.$invalid}">
+													<label class="control-label">产品-宽(mm)
+													<span class="text-info" href="#" data-toggle="tooltip" title="单位(mm) 正整数" ng-show="tips_width">Tips</span>	
+													</label>													
+													<input type="text" ng-pattern="/^[0-9]+$/"
+														name="width" class="form-control" ng-model="item.width"
+														required>
+												</div>
+											</div>
+											
+											<div class="col col-sm-3" ng-init="tips_height=false;" ng-mouseenter="tips_height=true;" ng-mouseleave="tips_height=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.height.$invalid}">
+													<label class="control-label">产品-高(mm)
+													<span class="text-info" href="#" data-toggle="tooltip" title="单位(mm) 正整数" ng-show="tips_height">Tips</span>	
+													</label>
+													<input type="text" ng-pattern="/^[0-9]+$/"
+														name="height" class="form-control" ng-model="item.height"
+														required>
+												</div>
+											</div>
+											
+											<div class="col col-sm-3" ng-init="tips_weight=false;" ng-mouseenter="tips_weight=true;" ng-mouseleave="tips_weight=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.weight.$invalid}">
+													<label class="control-label">产品-重量(g)
+													<span class="text-info" href="#" data-toggle="tooltip" title="单位(g) 正整数" ng-show="tips_weight">Tips</span>	
+													</label>
+													<input type="text" ng-pattern="/^[0-9]+$/"
+														name="weight" class="form-control" ng-model="item.weight"
+														required>
+												</div>
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col col-sm-3" ng-init="tips_length_p=false;" ng-mouseenter="tips_length_p=true;" ng-mouseleave="tips_length_p=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.length_package.$invalid}">
+													<label class="control-label">包装-长(mm)
+													<span class="text-info" href="#" data-toggle="tooltip" title="单位(mm) 正整数" ng-show="tips_length_p">Tips</span>	
+													</label>
+													<input type="text" ng-pattern="/^[0-9]+$/"
+														name="length_package" class="form-control"
+														ng-model="item.length_package" required>
+												</div>
+											</div>
+											
+											<div class="col col-sm-3" ng-init="tips_width_p=false;" ng-mouseenter="tips_width_p=true;" ng-mouseleave="tips_width_p=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.width_package.$invalid}">
+													<label class="control-label">包装-宽(mm)
+													<span class="text-info" href="#" data-toggle="tooltip" title="单位(mm) 正整数" ng-show="tips_width_p">Tips</span>	
+													</label>
+													<input type="text" ng-pattern="/^[0-9]+$/"
+														name="width_package" class="form-control"
+														ng-model="item.width_package" required>
+												</div>
+											</div>
+											
+											<div class="col col-sm-3" ng-init="tips_height_p=false;" ng-mouseenter="tips_height_p=true;" ng-mouseleave="tips_height_p=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.height_package.$invalid}">
+													<label class="control-label">包装-高(mm)
+													<span class="text-info" href="#" data-toggle="tooltip" title="单位(mm) 正整数" ng-show="tips_height_p">Tips</span>	
+													</label>
+													<input type="text" ng-pattern="/^[0-9]+$/"
+														name="height_package" class="form-control"
+														ng-model="item.height_package" required>
+												</div>
+											</div>
+											
+											<div class="col col-sm-3" ng-init="tips_weight_p=false;" ng-mouseenter="tips_weight_p=true;" ng-mouseleave="tips_weight_p=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.weight_package.$invalid}">
+													<label class="control-label">包装-重量(g)
+													<span class="text-info" href="#" data-toggle="tooltip" title="单位(g) 正整数" ng-show="tips_weight_p">Tips</span>	
+													</label>
+													<input type="text" ng-pattern="/^[0-9]+$/"
+														name="weight_package" class="form-control"
+														ng-model="item.weight_package" required>
+												</div>
+											</div>
+											
+										</div>
+
+										<div class="row">
+											<div class="col col-sm-3" ng-init="tips_length_c=false;"
+												ng-mouseenter="tips_length_c=true;"
+												ng-mouseleave="tips_length_c=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.length_carton.$invalid}">
+													<label class="control-label">
+														外箱-长(mm)
+														<span class="text-info" href="#" data-toggle="tooltip"
+															title="单位(cm) 正整数" ng-show="tips_length_c">Tips</span>
+													</label>
+													<input type="text" ng-pattern="/^[0-9]+$/"
+														name="length_carton" class="form-control"
+														ng-model="item.length_carton" required>
+												</div>
+											</div>
+
+											<div class="col col-sm-3" ng-init="tips_width_c=false;"
+												ng-mouseenter="tips_width_c=true;"
+												ng-mouseleave="tips_width_c=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.width_carton.$invalid}">
+													<label class="control-label">
+														外箱-宽(mm)
+														<span class="text-info" href="#" data-toggle="tooltip"
+															title="单位(cm) 正整数" ng-show="tips_width_c">Tips</span>
+													</label>
+													<input type="text" ng-pattern="/^[0-9]+$/"
+														name="width_carton" class="form-control"
+														ng-model="item.width_carton" required>
+												</div>
+											</div>
+
+											<div class="col col-sm-3" ng-init="tips_height_c=false;"
+												ng-mouseenter="tips_height_c=true;"
+												ng-mouseleave="tips_height_c=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.height_carton.$invalid}">
+													<label class="control-label">
+														外箱-高(mm)
+														<span class="text-info" href="#" data-toggle="tooltip"
+															title="单位(cm) 正整数" ng-show="tips_height_c">Tips</span>
+													</label>
+													<input type="text" ng-pattern="/^[0-9]+$/"
+														name="height_carton" class="form-control"
+														ng-model="item.height_carton" required>
+												</div>
+											</div>
+
+											<div class="col col-sm-3" ng-init="tips_weight_c=false;"
+												ng-mouseenter="tips_weight_c=true;"
+												ng-mouseleave="tips_weight_c=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.weight_carton.$invalid}">
+													<label class="control-label">
+														整箱-重量(KG)
+														<span class="text-info" href="#" data-toggle="tooltip"
+															title="单位(KG) 正数" ng-show="tips_weight_c">Tips</span>
+													</label>
+													<input type="text" ng-pattern="/^[0-9]+\.?[0-9]*$/"
+														name="weight_carton" class="form-control"
+														ng-model="item.weight_carton" required>
+												</div>
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="col col-sm-3" ng-init="tips_spq=false;"
+												ng-mouseenter="tips_spq=true;"
+												ng-mouseleave="tips_spq=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.spq.$invalid}">
+													<label class="control-label">
+														装箱数(个)
+														<span class="text-info" href="#" data-toggle="tooltip"
+															title="单位(个) 正整数" ng-show="tips_spq">Tips</span>
+													</label>
+													<input type="text" ng-pattern="/^[0-9]+$/"
+														name="spq" class="form-control"
+														ng-model="item.spq" required>
+												</div>
+											</div>
+
+											<div class="col col-sm-3" ng-init="tips_tray=false;"
+												ng-mouseenter="tips_tray=true;"
+												ng-mouseleave="tips_tray=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.tray.$invalid}">
+													<label class="control-label">
+														卡板数(个)
+														<span class="text-info" href="#" data-toggle="tooltip"
+															title="单位(个) 正整数" ng-show="tips_tray">Tips</span>
+													</label>
+													<input type="text" ng-pattern="/^[0-9]{0,9}$/"
+														name="tray" class="form-control"
+														ng-model="item.tray">
+												</div>
+											</div>
+
+											<div class="col col-sm-3" ng-init="tips_density=false;"
+												ng-mouseenter="tips_density=true;"
+												ng-mouseleave="tips_density=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.density.$invalid}">
+													<label class="control-label">
+														单个体积重(kg)
+														<span class="text-info" href="#" data-toggle="tooltip"
+															title="请填上外箱长宽高,系统会自动计算! (正数)" ng-show="tips_density">Tips</span>
+													</label>
+													<div class="control-label" >{{(item.length_carton * item.width_carton * item.height_carton / 5000) || "请正确填写外箱长宽高"}}</div>
+												</div>
+											</div>
+										</div>
+										
+										
+										
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a class="accordion-toggle" data-toggle="collapse"
+											data-parent="#accordion" href="#collapseCustom">海关信息</a>
+									</h4>
+								</div>
+								<div id="collapseCustom" class="panel-collapse collapse">
+									<div class="panel-body">
+										<div class="row" ng-init="tips_hg_type=false;"
+											ng-mouseenter="tips_hg_type=true;"
+											ng-mouseleave="tips_hg_type=false;">
+
+											<div class="col col-sm-12">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.hg_type.$invalid}">
+													<label class="control-label">
+														海关型号
+														<span class="text-info" href="#" data-toggle="tooltip"
+															title="海关型号" ng-show="tips_hg_type">Tips</span>
+													</label>
+													<input type="text" name="hg_type" ng-model="item.hg_type"
+														class="form-control">
+
+												</div>
+											</div>
+										</div>
+
+										<div class="row" ng-init="tips_description_hg_cn=false;"  ng-mouseenter="tips_description_hg_cn=true;" ng-mouseleave="tips_description_hg_cn=false;">
+											<div class="col col-sm-12">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.description_hg_cn.$invalid}">
+													<label class="control-label">中文海关描述
+													<span class="text-info" href="#" data-toggle="tooltip" title="中文海关描述" ng-show="tips_description_hg_cn">Tips</span>													
+													</label>
+													<textarea name="description_hg_cn" class="form-control"
+														ng-model="item.description_hg_cn" required></textarea>
+													<span ng-show="editForm.description_hg_cn.$error.required"
+														class="help-inline">Required</span>
+												</div>
+											</div>
+										</div>
+										
+										<div class="row" ng-init="tips_description_hg_en=false;"  ng-mouseenter="tips_description_hg_en=true;" ng-mouseleave="tips_description_hg_en=false;">
+											<div class="col col-sm-12">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.description_hg_en.$invalid}">
+													<label class="control-label">英文海关描述
+													<span class="text-info" href="#" data-toggle="tooltip" title="英文海关描述" ng-show="tips_description_hg_en">Tips</span>													
+													</label>
+													<textarea name="description_hg_en" class="form-control"
+														ng-model="item.description_hg_en" required></textarea>
+													<span ng-show="editForm.description_hg_en.$error.required"
+														class="help-inline">Required</span>
+												</div>
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="col col-sm-6" ng-init="tips_reback_cn=false;"
+												ng-mouseenter="tips_reback_cn=true;"
+												ng-mouseleave="tips_reback_cn=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.reback_cn.$invalid}">
+													<label class="control-label">
+														中国退税率
+														<span class="text-info" href="#" data-toggle="tooltip"
+															title="单位(个) 正整数" ng-show="tips_reback_cn">Tips</span>
+													</label>
+													<input type="text" ng-pattern="/^[0-9]*\.?[0-9]+$/"
+														name="reback_cn" class="form-control"
+														ng-model="item.reback_cn" required>
+												</div>
+											</div>
+											
+											<div class="col col-sm-6" ng-init="tips_custom_code_cn=false;"
+												ng-mouseenter="tips_custom_code_cn=true;"
+												ng-mouseleave="tips_custom_code_cn=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.custom_code_cn.$invalid}">
+													<label class="control-label">
+														中国海关编码
+														<span class="text-info" href="#" data-toggle="tooltip"
+															title="中国海关编码" ng-show="tips_custom_code_cn">Tips</span>
+													</label>
+													<input type="text" name="custom_code_cn" class="form-control"
+														ng-model="item.custom_code_cn">
+												</div>
+											</div>
+						
+											<div class="col col-sm-6" ng-init="tips_tariff_us=false;"
+												ng-mouseenter="tips_tariff_us=true;"
+												ng-mouseleave="tips_tariff_us=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.tariff_us.$invalid}">
+													<label class="control-label">
+														美国关税率
+														<span class="text-info" href="#" data-toggle="tooltip"
+															title="美国关税率" ng-show="tips_tariff_us">Tips</span>
+													</label>
+													<input type="text" ng-pattern="/^[0-9]*\.?[0-9]+$/"
+														name="tariff_us" class="form-control"
+														ng-model="item.tariff_us" required>
+												</div>
+											</div>
+											
+											<div class="col col-sm-6" ng-init="tips_custom_code_us=false;"
+												ng-mouseenter="tips_custom_code_us=true;"
+												ng-mouseleave="tips_custom_code_us=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.custom_code_us.$invalid}">
+													<label class="control-label">
+														美国海关编码
+														<span class="text-info" href="#" data-toggle="tooltip"
+															title="美国海关编码" ng-show="tips_custom_code_us">Tips</span>
+													</label>
+													<input type="text"
+														name="custom_code_us" class="form-control"
+														ng-model="item.custom_code_us">
+												</div>
+											</div>
+
+											<div class="col col-sm-6" ng-init="tips_tariff_eu=false;"
+												ng-mouseenter="tips_tariff_eu=true;"
+												ng-mouseleave="tips_tariff_eu=false;">
+												
+												<div class="form-group"
+													ng-class="{'has-error': editForm.tariff_eu.$invalid}">
+													<label class="control-label">
+															欧盟关税率
+														<span class="text-info" href="#" data-toggle="tooltip"
+															title="欧盟关税率" ng-show="tips_tariff_eu">Tips</span>
+													</label>
+													<input type="text" ng-pattern="/^[0-9]*\.?[0-9]+$/"
+														name="tariff_eu" class="form-control"
+														ng-model="item.tariff_eu" required>
+												</div>												
+											</div>
+											
+											<div class="col col-sm-6" ng-init="tips_custom_code_eu=false;"
+												ng-mouseenter="tips_custom_code_eu=true;"
+												ng-mouseleave="tips_custom_code_eu=false;">
+												
+												<div class="form-group"
+													ng-class="{'has-error': editForm.custom_code_eu.$invalid}">
+													<label class="control-label">
+															欧盟海关编码
+														<span class="text-info" href="#" data-toggle="tooltip"
+															title="欧盟海关编码" ng-show="tips_custom_code_eu">Tips</span>
+													</label>
+													<input type="text" 
+														name="custom_code_eu" class="form-control"
+														ng-model="item.custom_code_eu">
+												</div>												
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="col col-sm-6" ng-init="tips_tariff_en=false;"
+												ng-mouseenter="tips_tariff_en=true;"
+												ng-mouseleave="tips_tariff_en=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.tariff_en.$invalid}">
+													<label class="control-label">
+														英国关税率
+														<span class="text-info" href="#" data-toggle="tooltip"
+															title="单位(个) 正整数" ng-show="tips_tariff_en">Tips</span>
+													</label>
+													<input type="text" ng-pattern="/^[0-9]*\.?[0-9]+$/"
+														name="tariff_en" class="form-control"
+														ng-model="item.tariff_en" required>
+												</div>
+											</div>
+											
+											<div class="col col-sm-6" ng-init="tips_custom_code_uk=false;"
+												ng-mouseenter="tips_custom_code_uk=true;"
+												ng-mouseleave="tips_custom_code_uk=false;">
+												
+												<div class="form-group"
+													ng-class="{'has-error': editForm.custom_code_uk.$invalid}">
+													<label class="control-label">
+															英国海关编码
+														<span class="text-info" href="#" data-toggle="tooltip"
+															title="英国海关编码" ng-show="tips_custom_code_uk">Tips</span>
+													</label>
+													<input type="text" 
+														name="custom_code_uk" class="form-control"
+														ng-model="item.custom_code_uk">
+												</div>												
+											</div>
+
+											<div class="col col-sm-6" ng-init="tips_tariff_jp=false;"
+												ng-mouseenter="tips_tariff_jp=true;"
+												ng-mouseleave="tips_tariff_jp=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.tariff_jp.$invalid}">
+													<label class="control-label">
+														日本关税率
+														<span class="text-info" href="#" data-toggle="tooltip"
+															title="美国关税率" ng-show="tips_tariff_jp">Tips</span>
+													</label>
+													<input type="text" ng-pattern="/^[0-9]*\.?[0-9]+$/"
+														name="tariff_jp" class="form-control"
+														ng-model="item.tariff_jp" required>
+												</div>
+											</div>
+											<div class="col col-sm-6" ng-init="tips_custom_code_jp=false;"
+												ng-mouseenter="tips_custom_code_jp=true;"
+												ng-mouseleave="tips_custom_code_jp=false;">
+												
+												<div class="form-group"
+													ng-class="{'has-error': editForm.custom_code_jp.$invalid}">
+													<label class="control-label">
+															日本海关编码
+														<span class="text-info" href="#" data-toggle="tooltip"
+															title="英国海关编码" ng-show="tips_custom_code_jp">Tips</span>
+													</label>
+													<input type="text" 
+														name="custom_code_jp" class="form-control"
+														ng-model="item.custom_code_jp">
+												</div>												
+											</div>
+											
+										</div>
+										
+										<div class="row">
+											
+
+											
+										</div>
+										
+										
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a class="accordion-toggle" data-toggle="collapse"
+											data-parent="#accordion" href="#collapseBrand">品牌信息</a>
+									</h4>
+								</div>
+								<div id="collapseBrand" class="panel-collapse collapse">
+									<div class="panel-body">
+										<div class="row">
+											<div class="col col-sm-6" ng-init="tips_brand_type=false;"
+											ng-mouseenter="tips_brand_type=true;"
+											ng-mouseleave="tips_brand_type=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.brand_type.$invalid}">
+													<label class="control-label">
+														品牌
+														<span class="text-info" href="#" data-toggle="tooltip"
+															title="品牌" ng-show="tips_brand_type">Tips</span>
+													</label>
+													<input type="text" name="brand_type" ng-model="item.brand_type"
+														class="form-control">
+
+												</div>
+											</div>
+											
+											<div class="col col-sm-6" ng-init="tips_brand_auth=false;"
+											ng-mouseenter="tips_brand_auth=true;"
+											ng-mouseleave="tips_brand_auth=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.brand_auth.$invalid}">
+													<label class="control-label">
+														认证
+														<span class="text-info" href="#" data-toggle="tooltip"
+															title="认证" ng-show="tips_brand_auth">Tips</span>
+													</label>
+													<input type="text" name="brand_auth" ng-model="item.brand_auth"
+														class="form-control">
+
+												</div>
+											</div>											
+										</div>
+										
+										<div class="row">
+											<div class="col col-sm-6" ng-init="tips_brand_instruction=false;"
+											ng-mouseenter="tips_brand_instruction=true;"
+											ng-mouseleave="tips_brand_instruction=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.brand_instructions.$invalid}">
+													<label class="control-label">
+														说明书
+														<span class="text-info" href="#" data-toggle="tooltip"
+															title="说明书的来源" ng-show="tips_brand_instruction">Tips</span>
+													</label>
+													<select name="brand_instructions" class="form-control"
+														ng-init="brand_instructions=[{id:'bythousand',name:'千岸说明书'},{id:'bysupplier',name:'供应商说明书'},{id:'none',name:'无'}];"
+														ng-model="item.brand_instructions"
+														ng-options="c.name as c.name for c in brand_instructions"></select>
+
+												</div>
+											</div>
+											
+											
+										<div class="col col-sm-6" ng-init="tips_brand_other=false;"
+											ng-mouseenter="tips_brand_other=true;"
+											ng-mouseleave="tips_brand_other=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.brand_other.$invalid}">
+													
+														<label class="control-label" style="width:100%">
+															品牌其他信息
+															<span class="text-info" href="#" data-toggle="tooltip"
+																title="品牌的其他信息,绿色为是,白色为否" ng-show="tips_brand_other">Tips</span>
+														</label>
+													
+														<div class="btn-group" style="width:100%">
+															<button type="button" class="btn btn-default"
+																ng-class="{'btn-success': item.brand_other.color_box}"
+																ng-model="item.brand_other.color_box" btn-checkbox>彩盒</button>
+															<button type="button" class="btn btn-default"
+																ng-class="{'btn-success': item.brand_other.screen}"
+																ng-model="item.brand_other.screen" btn-checkbox>丝印</button>
+															<button type="button" class="btn btn-default"
+																ng-class="{'btn-success': item.brand_other.warranty_card}"
+																ng-model="item.brand_other.warranty_card" btn-checkbox>保修卡</button>														
+													</div>
+												</div>
+											</div>								
+										</div>
+										
+										<div class="row" ng-show="(item.brand_instructions!='无' && !isNew)">
+											<div class="col col-sm-12" ng-init="tips_instructions_languge=false;"
+											ng-mouseenter="tips_instructions_languge=true;"
+											ng-mouseleave="tips_instructions_languge=false;">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.instructions_languge.$invalid}">
+													
+														<label class="control-label" style="width:100%">
+															说明书语言
+															<span class="text-info" href="#" data-toggle="tooltip"
+																title="说明书包含哪些语言,绿色为是,白色为否" ng-show="tips_instructions_languge">Tips</span>
+														</label>
+													
+														<div class="btn-group" style="width:100%">
+															<button type="button" class="btn btn-default"
+																ng-class="{'btn-success': item.instructions_languge.zn}"
+																ng-model="item.instructions_languge.zn" btn-checkbox>中文</button>
+															<button type="button" class="btn btn-default"
+																ng-class="{'btn-success': item.instructions_languge.en}"
+																ng-model="item.instructions_languge.en" btn-checkbox>英文</button>
+															<button type="button" class="btn btn-default"
+																ng-class="{'btn-success': item.instructions_languge.fr}"
+																ng-model="item.instructions_languge.fr" btn-checkbox>法语</button>	
+																<button type="button" class="btn btn-default"
+																ng-class="{'btn-success': item.instructions_languge.gm}"
+																ng-model="item.instructions_languge.gm" btn-checkbox>德语</button>
+															<button type="button" class="btn btn-default"
+																ng-class="{'btn-success': item.instructions_languge.it}"
+																ng-model="item.instructions_languge.it" btn-checkbox>意大利</button>
+															<button type="button" class="btn btn-default"
+																ng-class="{'btn-success': item.instructions_languge.jp}"
+																ng-model="item.instructions_languge.jp" btn-checkbox>日语</button>	
+															<button type="button" class="btn btn-default"
+																ng-class="{'btn-success': item.instructions_languge.pt}"
+																ng-model="item.instructions_languge.pt" btn-checkbox>葡萄牙语</button>
+															<button type="button" class="btn btn-default"
+																ng-class="{'btn-success': item.instructions_languge.sp}"
+																ng-model="item.instructions_languge.sp" btn-checkbox>西班牙语</button>													
+													</div>
+												</div>
+											</div>	
+										
+										</div>
+										
+										<div class="row" ng-init="tips_brand_remark=false;"  ng-mouseenter="tips_brand_remark=true;" ng-mouseleave="tips_brand_remark=false;">
+											<div class="col col-sm-12">
+												<div class="form-group"
+													ng-class="{'has-error': editForm.brand_remark.$invalid}">
+													<label class="control-label">备注
+													<span class="text-info" href="#" data-toggle="tooltip" title="备注" ng-show="tips_brand_remark">Tips</span>													
+													</label>
+													<textarea name="brand_remark" class="form-control"
+														ng-model="item.brand_remark"></textarea>
+													
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									
+									
+								</div>
+								
+								
+							</div>
+
+							<div class="panel panel-default" ng-show="!isNew">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a class="accordion-toggle" data-toggle="collapse"
+											data-parent="#accordion" href="#collapseOther">其他信息</a>
+									</h4>
+								</div>
+								<div id="collapseOther" class="panel-collapse collapse">
+									<div class="panel-body">
+										<div class="row">
+											<ul class="nav nav-tabs">
+												<li class="active">
+													<a href="#info-zn" data-toggle="tab">中文</a>
+												</li>
+												<li>
+													<a href="#info-en" data-toggle="tab">英文</a>
+												</li>
+												<li>
+													<a href="#info-fr" data-toggle="tab">法文</a>
+												</li>
+												<li>
+													<a href="#info-gm" data-toggle="tab">德文</a>
+												</li>
+												<li>
+													<a href="#info-it" data-toggle="tab">意大利</a>
+												</li>
+												<li>
+													<a href="#info-sp" data-toggle="tab">西班牙</a>
+												</li>
+												<li>
+													<a href="#info-pt" data-toggle="tab">葡萄牙</a>
+												</li>
+												<li>
+													<a href="#info-jp" data-toggle="tab">日本</a>
+												</li>
+											</ul>
+											<div class="tab-content">
+												<div class="tab-pane active" id="info-zn">
+													<div class="panel-body">
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_title_zn=false;"
+																ng-mouseenter="tips_other_attribute_title_zn=true;"
+																ng-mouseleave="tips_other_attribute_title_zn=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_title_zn.$invalid}">
+																	<label class="control-label">
+																		标题
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="中文标题" ng-show="tips_other_attribute_title_zn">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_title_zn"
+																		ng-model="item.attribute.title_zn" />
+																</div>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_detail_zn=false;"
+																ng-mouseenter="tips_other_attribute_detail_zn=true;"
+																ng-mouseleave="tips_other_attribute_detail_zn=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_detail_zn.$invalid}">
+																	<label class="control-label">
+																		描述
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="中文描述" ng-show="tips_other_attribute_detail_zn">Tips</span>
+																	</label>
+																	<textarea type="text" class="form-control"
+																		name="other_attribute_detail_zn"
+																		ng-model="item.attribute.detail_zn"></textarea>
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_keyword_zn=false;"
+																ng-mouseenter="tips_other_attribute_keyword_zn=true;"
+																ng-mouseleave="tips_other_attribute_keyword_zn=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_keyword_zn.$invalid}">
+																	<label class="control-label">
+																		关键字(";"分隔,不得多于5个)
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="中文关键字  (';'分隔,不得多于5个)"
+																			ng-show="tips_other_attribute_keyword_zn">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_keyword_zn"
+																		ng-model="item.keyword.zn" />
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_feature_zn=false;"
+																ng-mouseenter="tips_other_attribute_feature_zn=true;"
+																ng-mouseleave="tips_other_attribute_feature_zn=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_feature_zn.$invalid}">
+																	<label class="control-label">
+																		feature(";"分隔,不得多于5个)
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="中文feature (';'分隔,不得多于5个)"
+																			ng-show="tips_other_attribute_feature_zn">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_feature_zn"
+																		ng-model="item.feature.zn" />
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_detail_html_zn=false;"
+																ng-mouseenter="tips_other_attribute_detail_html_zn=true;"
+																ng-mouseleave="tips_other_attribute_detail_html_zn=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_detail_html_zn.$invalid}">
+																	<label class="control-label">
+																		HTML描述
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="HTML描述"
+																			ng-show="tips_other_attribute_detail_html_zn">Tips</span>
+																	</label>
+																	<textarea class="form-control" type="text"
+																		name="other_attribute_detail_html_zn"
+																		ng-model="item.attribute.detail_html_zn"></textarea>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												
+												<div class="tab-pane" id="info-en">
+													<div class="panel-body">
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_title_en=false;"
+																ng-mouseenter="tips_other_attribute_title_en=true;"
+																ng-mouseleave="tips_other_attribute_title_en=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_title_en.$invalid}">
+																	<label class="control-label">
+																		标题
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="英文标题" ng-show="tips_other_attribute_title_en">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_title_en"
+																		ng-model="item.attribute.title_en" />
+																</div>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_detail_en=false;"
+																ng-mouseenter="tips_other_attribute_detail_en=true;"
+																ng-mouseleave="tips_other_attribute_detail_en=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_detail_en.$invalid}">
+																	<label class="control-label">
+																		描述
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="英文描述" ng-show="tips_other_attribute_detail_en">Tips</span>
+																	</label>
+																	<textarea type="text" class="form-control"
+																		name="other_attribute_detail_en"
+																		ng-model="item.attribute.detail_en" ></textarea>
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_keyword_en=false;"
+																ng-mouseenter="tips_other_attribute_keyword_en=true;"
+																ng-mouseleave="tips_other_attribute_keyword_en=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_keyword_en.$invalid}">
+																	<label class="control-label">
+																		关键字(";"分隔,不得多于5个)
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="英文关键字  (';'分隔,不得多于5个)"
+																			ng-show="tips_other_attribute_keyword_en">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_keyword_en"
+																		ng-model="item.keyword.en" />
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_feature_en=false;"
+																ng-mouseenter="tips_other_attribute_feature_en=true;"
+																ng-mouseleave="tips_other_attribute_feature_en=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_feature_en.$invalid}">
+																	<label class="control-label">
+																		feature(";"分隔,不得多于5个)
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="英文feature (';'分隔,不得多于5个)"
+																			ng-show="tips_other_attribute_feature_en">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_feature_en"
+																		ng-model="item.feature.en" />
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_detail_html_en=false;"
+																ng-mouseenter="tips_other_attribute_detail_html_en=true;"
+																ng-mouseleave="tips_other_attribute_detail_html_en=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_detail_html_en.$invalid}">
+																	<label class="control-label">
+																		HTML描述
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="HTML描述"
+																			ng-show="tips_other_attribute_detail_html_en">Tips</span>
+																	</label>
+																	<textarea class="form-control" type="text"
+																		name="other_attribute_detail_html_en"
+																		ng-model="item.attribute.detail_html_en"></textarea>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												
+												<div class="tab-pane" id="info-fr">
+													<div class="panel-body">
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_title_fr=false;"
+																ng-mouseenter="tips_other_attribute_title_fr=true;"
+																ng-mouseleave="tips_other_attribute_title_fr=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_title_fr.$invalid}">
+																	<label class="control-label">
+																		标题
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="法文标题" ng-show="tips_other_attribute_title_fr">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_title_fr"
+																		ng-model="item.attribute.title_fr" />
+																</div>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_detail_fr=false;"
+																ng-mouseenter="tips_other_attribute_detail_fr=true;"
+																ng-mouseleave="tips_other_attribute_detail_fr=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_detail_fr.$invalid}">
+																	<label class="control-label">
+																		描述
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="法文描述" ng-show="tips_other_attribute_detail_fr">Tips</span>
+																	</label>
+																	<textarea type="text" class="form-control"
+																		name="other_attribute_detail_fr"
+																		ng-model="item.attribute.detail_fr" ></textarea>
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_keyword_fr=false;"
+																ng-mouseenter="tips_other_attribute_keyword_fr=true;"
+																ng-mouseleave="tips_other_attribute_keyword_fr=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_keyword_fr.$invalid}">
+																	<label class="control-label">
+																		关键字(";"分隔,不得多于5个)
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="法文关键字  (';'分隔,不得多于5个)"
+																			ng-show="tips_other_attribute_keyword_fr">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_keyword_fr"
+																		ng-model="item.keyword.fr" />
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_feature_fr=false;"
+																ng-mouseenter="tips_other_attribute_feature_fr=true;"
+																ng-mouseleave="tips_other_attribute_feature_fr=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_feature_fr.$invalid}">
+																	<label class="control-label">
+																		feature(";"分隔,不得多于5个)
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="法文feature (';'分隔,不得多于5个)"
+																			ng-show="tips_other_attribute_feature_fr">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_feature_fr"
+																		ng-model="item.feature.fr" />
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_detail_html_fr=false;"
+																ng-mouseenter="tips_other_attribute_detail_html_fr=true;"
+																ng-mouseleave="tips_other_attribute_detail_html_fr=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_detail_html_fr.$invalid}">
+																	<label class="control-label">
+																		HTML描述
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="HTML描述"
+																			ng-show="tips_other_attribute_detail_html_fr">Tips</span>
+																	</label>
+																	<textarea class="form-control" type="text"
+																		name="other_attribute_detail_html_fr"
+																		ng-model="item.attribute.detail_html_fr"></textarea>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												
+												<div class="tab-pane" id="info-gm">
+													<div class="panel-body">
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_title_gm=false;"
+																ng-mouseenter="tips_other_attribute_title_gm=true;"
+																ng-mouseleave="tips_other_attribute_title_gm=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_title_gm.$invalid}">
+																	<label class="control-label">
+																		标题
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="德文标题" ng-show="tips_other_attribute_title_gm">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_title_gm"
+																		ng-model="item.attribute.title_gm" />
+																</div>
+															</div>
+															</div>
+														<div class="row">
+
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_detail_gm=false;"
+																ng-mouseenter="tips_other_attribute_detail_gm=true;"
+																ng-mouseleave="tips_other_attribute_detail_gm=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_detail_gm.$invalid}">
+																	<label class="control-label">
+																		描述
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="德文描述" ng-show="tips_other_attribute_detail_gm">Tips</span>
+																	</label>
+																	<textarea type="text" class="form-control"
+																		name="other_attribute_detail_gm"
+																		ng-model="item.attribute.detail_gm" ></textarea>
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_keyword_gm=false;"
+																ng-mouseenter="tips_other_attribute_keyword_gm=true;"
+																ng-mouseleave="tips_other_attribute_keyword_gm=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_keyword_gm.$invalid}">
+																	<label class="control-label">
+																		关键字(";"分隔,不得多于5个)
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="德文关键字  (';'分隔,不得多于5个)"
+																			ng-show="tips_other_attribute_keyword_gm">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_keyword_gm"
+																		ng-model="item.keyword.gm" />
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_feature_gm=false;"
+																ng-mouseenter="tips_other_attribute_feature_gm=true;"
+																ng-mouseleave="tips_other_attribute_feature_gm=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_feature_gm.$invalid}">
+																	<label class="control-label">
+																		feature(";"分隔,不得多于5个)
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="德文feature (';'分隔,不得多于5个)"
+																			ng-show="tips_other_attribute_feature_gm">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_feature_gm"
+																		ng-model="item.feature.gm" />
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_detail_html_gm=false;"
+																ng-mouseenter="tips_other_attribute_detail_html_gm=true;"
+																ng-mouseleave="tips_other_attribute_detail_html_gm=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_detail_html_gm.$invalid}">
+																	<label class="control-label">
+																		HTML描述
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="HTML描述"
+																			ng-show="tips_other_attribute_detail_html_gm">Tips</span>
+																	</label>
+																	<textarea class="form-control" type="text"
+																		name="other_attribute_detail_html_gm"
+																		ng-model="item.attribute.detail_html_gm"></textarea>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												
+												<div class="tab-pane" id="info-it">
+													<div class="panel-body">
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_title_it=false;"
+																ng-mouseenter="tips_other_attribute_title_it=true;"
+																ng-mouseleave="tips_other_attribute_title_it=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_title_it.$invalid}">
+																	<label class="control-label">
+																		标题
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="意大利文标题" ng-show="tips_other_attribute_title_it">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_title_it"
+																		ng-model="item.attribute.title_it" />
+																</div>
+															</div>
+															</div>
+														<div class="row">
+
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_detail_it=false;"
+																ng-mouseenter="tips_other_attribute_detail_it=true;"
+																ng-mouseleave="tips_other_attribute_detail_it=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_detail_it.$invalid}">
+																	<label class="control-label">
+																		描述
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="意大利文描述" ng-show="tips_other_attribute_detail_it">Tips</span>
+																	</label>
+																	<textarea type="text" class="form-control"
+																		name="other_attribute_detail_it"
+																		ng-model="item.attribute.detail_it" ></textarea>
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_keyword_it=false;"
+																ng-mouseenter="tips_other_attribute_keyword_it=true;"
+																ng-mouseleave="tips_other_attribute_keyword_it=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_keyword_it.$invalid}">
+																	<label class="control-label">
+																		关键字(";"分隔,不得多于5个)
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="意大利文关键字  (';'分隔,不得多于5个)"
+																			ng-show="tips_other_attribute_keyword_it">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_keyword_it"
+																		ng-model="item.keyword.it" />
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_feature_it=false;"
+																ng-mouseenter="tips_other_attribute_feature_it=true;"
+																ng-mouseleave="tips_other_attribute_feature_it=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_feature_it.$invalid}">
+																	<label class="control-label">
+																		feature(";"分隔,不得多于5个)
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="意大利文feature (';'分隔,不得多于5个)"
+																			ng-show="tips_other_attribute_feature_it">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_feature_it"
+																		ng-model="item.feature.it" />
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_detail_html_it=false;"
+																ng-mouseenter="tips_other_attribute_detail_html_it=true;"
+																ng-mouseleave="tips_other_attribute_detail_html_it=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_detail_html_it.$invalid}">
+																	<label class="control-label">
+																		HTML描述
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="HTML描述"
+																			ng-show="tips_other_attribute_detail_html_it">Tips</span>
+																	</label>
+																	<textarea class="form-control" type="text"
+																		name="other_attribute_detail_html_it"
+																		ng-model="item.attribute.detail_html_it"></textarea>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												
+												<div class="tab-pane" id="info-sp">
+													<div class="panel-body">
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_title_sp=false;"
+																ng-mouseenter="tips_other_attribute_title_sp=true;"
+																ng-mouseleave="tips_other_attribute_title_sp=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_title_sp.$invalid}">
+																	<label class="control-label">
+																		标题
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="西班牙文标题" ng-show="tips_other_attribute_title_sp">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_title_sp"
+																		ng-model="item.attribute.title_sp" />
+																</div>
+															</div>
+															</div>
+														<div class="row">
+
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_detail_sp=false;"
+																ng-mouseenter="tips_other_attribute_detail_sp=true;"
+																ng-mouseleave="tips_other_attribute_detail_sp=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_detail_sp.$invalid}">
+																	<label class="control-label">
+																		描述
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="西班牙文描述" ng-show="tips_other_attribute_detail_sp">Tips</span>
+																	</label>
+																	<textarea type="text" class="form-control"
+																		name="other_attribute_detail_sp"
+																		ng-model="item.attribute.detail_sp" ></textarea>
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_keyword_sp=false;"
+																ng-mouseenter="tips_other_attribute_keyword_sp=true;"
+																ng-mouseleave="tips_other_attribute_keyword_sp=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_keyword_sp.$invalid}">
+																	<label class="control-label">
+																		关键字(";"分隔,不得多于5个)
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="西班牙文关键字  (';'分隔,不得多于5个)"
+																			ng-show="tips_other_attribute_keyword_sp">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_keyword_sp"
+																		ng-model="item.keyword.sp" />
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_feature_sp=false;"
+																ng-mouseenter="tips_other_attribute_feature_sp=true;"
+																ng-mouseleave="tips_other_attribute_feature_sp=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_feature_sp.$invalid}">
+																	<label class="control-label">
+																		feature(";"分隔,不得多于5个)
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="西班牙文feature (';'分隔,不得多于5个)"
+																			ng-show="tips_other_attribute_feature_sp">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_feature_sp"
+																		ng-model="item.feature.sp" />
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_detail_html_sp=false;"
+																ng-mouseenter="tips_other_attribute_detail_html_sp=true;"
+																ng-mouseleave="tips_other_attribute_detail_html_sp=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_detail_html_sp.$invalid}">
+																	<label class="control-label">
+																		HTML描述
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="HTML描述"
+																			ng-show="tips_other_attribute_detail_html_sp">Tips</span>
+																	</label>
+																	<textarea class="form-control" type="text"
+																		name="other_attribute_detail_html_sp"
+																		ng-model="item.attribute.detail_html_sp"></textarea>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												
+												<div class="tab-pane" id="info-pt">
+													<div class="panel-body">
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_title_pt=false;"
+																ng-mouseenter="tips_other_attribute_title_pt=true;"
+																ng-mouseleave="tips_other_attribute_title_pt=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_title_pt.$invalid}">
+																	<label class="control-label">
+																		标题
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="葡萄文标题" ng-show="tips_other_attribute_title_pt">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_title_pt"
+																		ng-model="item.attribute.title_pt" />
+																</div>
+															</div>
+															</div>
+														<div class="row">
+
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_detail_pt=false;"
+																ng-mouseenter="tips_other_attribute_detail_pt=true;"
+																ng-mouseleave="tips_other_attribute_detail_pt=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_detail_pt.$invalid}">
+																	<label class="control-label">
+																		描述
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="葡萄文描述" ng-show="tips_other_attribute_detail_pt">Tips</span>
+																	</label>
+																	<textarea type="text" class="form-control"
+																		name="other_attribute_detail_pt"
+																		ng-model="item.attribute.detail_pt" ></textarea>
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_keyword_pt=false;"
+																ng-mouseenter="tips_other_attribute_keyword_pt=true;"
+																ng-mouseleave="tips_other_attribute_keyword_pt=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_keyword_pt.$invalid}">
+																	<label class="control-label">
+																		关键字(";"分隔,不得多于5个)
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="葡萄文关键字  (';'分隔,不得多于5个)"
+																			ng-show="tips_other_attribute_keyword_pt">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_keyword_pt"
+																		ng-model="item.keyword.pt" />
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_feature_pt=false;"
+																ng-mouseenter="tips_other_attribute_feature_pt=true;"
+																ng-mouseleave="tips_other_attribute_feature_pt=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_feature_pt.$invalid}">
+																	<label class="control-label">
+																		feature(";"分隔,不得多于5个)
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="葡萄文feature (';'分隔,不得多于5个)"
+																			ng-show="tips_other_attribute_feature_pt">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_feature_pt"
+																		ng-model="item.feature.pt" />
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_detail_html_pt=false;"
+																ng-mouseenter="tips_other_attribute_detail_html_pt=true;"
+																ng-mouseleave="tips_other_attribute_detail_html_pt=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_detail_html_pt.$invalid}">
+																	<label class="control-label">
+																		HTML描述
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="HTML描述"
+																			ng-show="tips_other_attribute_detail_html_pt">Tips</span>
+																	</label>
+																	<textarea class="form-control" type="text"
+																		name="other_attribute_detail_html_pt"
+																		ng-model="item.attribute.detail_html_pt"></textarea>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												
+												<div class="tab-pane" id="info-jp">
+													<div class="panel-body">
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_title_jp=false;"
+																ng-mouseenter="tips_other_attribute_title_jp=true;"
+																ng-mouseleave="tips_other_attribute_title_jp=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_title_jp.$invalid}">
+																	<label class="control-label">
+																		标题
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="日文标题" ng-show="tips_other_attribute_title_jp">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_title_jp"
+																		ng-model="item.attribute.title_jp" />
+																</div>
+															</div>
+															</div>
+														<div class="row">
+
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_detail_jp=false;"
+																ng-mouseenter="tips_other_attribute_detail_jp=true;"
+																ng-mouseleave="tips_other_attribute_detail_jp=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_detail_jp.$invalid}">
+																	<label class="control-label">
+																		描述
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="日文描述" ng-show="tips_other_attribute_detail_jp">Tips</span>
+																	</label>
+																	<textarea type="text" class="form-control"
+																		name="other_attribute_detail_jp"
+																		ng-model="item.attribute.detail_jp" ></textarea>
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_keyword_jp=false;"
+																ng-mouseenter="tips_other_attribute_keyword_jp=true;"
+																ng-mouseleave="tips_other_attribute_keyword_jp=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_keyword_jp.$invalid}">
+																	<label class="control-label">
+																		关键字(";"分隔,不得多于5个)
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="日文关键字  (';'分隔,不得多于5个)"
+																			ng-show="tips_other_attribute_keyword_jp">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_keyword_jp"
+																		ng-model="item.keyword.jp" />
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_feature_jp=false;"
+																ng-mouseenter="tips_other_attribute_feature_jp=true;"
+																ng-mouseleave="tips_other_attribute_feature_jp=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_feature_jp.$invalid}">
+																	<label class="control-label">
+																		feature(";"分隔,不得多于5个)
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="日文feature (';'分隔,不得多于5个)"
+																			ng-show="tips_other_attribute_feature_jp">Tips</span>
+																	</label>
+																	<input type="text" class="form-control"
+																		name="other_attribute_feature_jp"
+																		ng-model="item.feature.jp" />
+																</div>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col col-sm-12"
+																ng-init="tips_other_attribute_detail_html_jp=false;"
+																ng-mouseenter="tips_other_attribute_detail_html_jp=true;"
+																ng-mouseleave="tips_other_attribute_detail_html_jp=false;">
+																<div class="form-group"
+																	ng-class="{'has-error': editForm.other_attribute_detail_html_jp.$invalid}">
+																	<label class="control-label">
+																		HTML描述
+																		<span class="text-info" href="#" data-toggle="tooltip"
+																			title="HTML描述"
+																			ng-show="tips_other_attribute_detail_html_jp">Tips</span>
+																	</label>
+																	<textarea class="form-control" type="text"
+																		name="other_attribute_detail_html_jp"
+																		ng-model="item.attribute.detail_html_jp"></textarea>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+			</div>
+			<div class="panel-body">
+				<div class="container-fluid">
+						<div class="panel-body">
+							<div class="row">
+								<a class="btn btn-default" href="#/item">Cancel</a>
+								<button type="button" class="btn btn-primary" ng-click="update()"
+									ng-disabled="isClean() || editForm.$invalid">Save</button>
+								<button type="button" class="btn btn-danger" ng-click="destroy()"
+									ng-show="item.$id">Delete</button>
+							</div>
+						</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

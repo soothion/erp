@@ -1,0 +1,22 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">Language Manage</h3></div>
+
+			<div class="panel-body">
+				<form name="editForm" class="">
+					<div class="form-group" ng-class="{'has-error': editForm.name.$invalid}">
+						<label class="control-label">Name</label>
+						<input type="text" name="name" ng-model="language.name" class="form-control" required>
+						<span ng-show="editForm.name.$error.required" class="help-inline">Required</span>
+					</div>
+
+					<a class="btn btn-default" href="#/item/language">Cancel</a>
+					<button type="button" class="btn btn-primary" ng-click="update()" ng-disabled="isClean() || editForm.$invalid">Save</button>
+					<button type="button" class="btn btn-danger" ng-click="destroy()" ng-show="language.$id">Delete</button>
+				</form>    
+			</div>
+
+		</div>
+	</div>
+</div>

@@ -1,0 +1,386 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">申购单审核</h3>
+			</div>
+
+			<div class="panel-body">
+				<input type="search" class="form-control" ng-model="search"
+					placeholder="Search" style="margin-bottom: 10px">
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a href="#pending_check" data-toggle="tab">待审核</a>
+					</li>
+					<li>
+						<a href="#approved_check" data-toggle="tab">通过审核</a>
+					</li>
+					<li>
+						<a href="#reject_check" data-toggle="tab">拒绝审核</a>
+					</li>
+					<li>
+						<a href="#expired_check" data-toggle="tab">过期审核</a>
+					</li>
+					<li>
+						<a href="#change_check" data-toggle="tab">特殊修改</a>
+					</li>
+
+				</ul>
+				
+				<!-- 待审核 -->
+				<div class="tab-content">
+					<div class="tab-pane active" id="pending_check">
+						<table class="table table-condensed table-hover">
+							<thead>
+								<tr>
+									<th>查看</th>
+									<th>Invoice</th>
+									<th>目的仓</th>
+									<th>类型</th>
+									<th>提单者</th>
+									<th>距审核日期</th>
+									<th>状态</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="request in requests | filter: search"
+									ng-show="request.status=='confirmed'">
+									<td>
+										<a ng-click="showDetail(request.id,'all')" data-original-title="查看"
+											data-toggle="tooltip" title="">
+											<i class="glyphicon glyphicon-eye-open"></i>
+										</a>
+									</td>
+									<td>{{request.invoice}}</td>
+									<td>{{request.warehouse_id | warehouse}}</td>
+									<td>{{request.type}}</td>
+									<td>{{request.agent | user}}</td>
+									<td>
+										尚余
+										<font color="#f00">{{check_time(request.expired_at)}}</font>
+										天
+									</td>
+									<td>{{request.status}}</td>
+									<td>
+										<div class="btn-group">
+											<button type="button" class="btn btn-xs btn-success"
+												id="dsafsd" ng-click="stepToCheck(request.id,'approve')">
+												<i class="glyphicon glyphicon-ok"></i>
+												通过
+											</button>
+											<button type="button" class="btn btn-xs btn-danger"
+												ng-click="stepToCheck(request.id,'reject')">
+												<i class="glyphicon glyphicon-remove"></i>
+												拒绝
+											</button>
+
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					
+					<!-- 已通过 -->
+					<div class="tab-pane" id="approved_check">
+						<table class="table table-condensed table-hover">
+							<thead>
+								<tr>
+									<th>查看</th>
+									<th>Invoice</th>
+									<th>目的仓</th>
+									<th>类型</th>
+									<th>提单者</th>
+									<th>审核备注</th>
+									<th>审核时间</th>
+									<th>审核人</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="request in requests | filter: search"
+									ng-show="request.status=='verified'">
+
+									<td>
+										<a ng-click="showDetail(request.id,'readonly')" data-original-title="查看"
+											data-toggle="tooltip" title="">
+											<i class="glyphicon glyphicon-eye-open"></i>
+										</a>
+									</td>
+									<td>{{request.invoice}}</td>
+									<td>{{request.warehouse_id | warehouse}}</td>
+									<td>{{request.type}}</td>
+									<td>{{request.agent | user}}</td>
+									<td>{{cutStr(request.verified_note,12,'....')}}</td>
+									<td>{{request.verified_at}}</td>
+									<td>{{request.verified_agent | user}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					
+					<!-- 已拒绝 -->
+					<div class="tab-pane" id="reject_check">
+						<table class="table table-condensed table-hover">
+							<thead>
+								<tr>
+									<th>查看</th>
+									<th>Invoice</th>
+									<th>目的仓</th>
+									<th>类型</th>
+									<th>提单者</th>
+									<th>审核备注</th>
+									<th>审核时间</th>
+									<th>审核人</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="request in requests | filter: search"
+									ng-show="request.status=='rejected'">
+
+									<td>
+										<a ng-click="showDetail(request.id,'readonly')" data-original-title="查看"
+											data-toggle="tooltip" title="">
+											<i class="glyphicon glyphicon-eye-open"></i>
+										</a>
+									</td>
+									<td>{{request.invoice}}</td>
+									<td>{{request.warehouse_id | warehouse}}</td>
+									<td>{{request.type}}</td>
+									<td>{{request.agent | user}}</td>
+									<td>{{cutStr(request.verified_note,12,'....')}}</td>
+									<td>{{request.verified_at}}</td>
+									<td>{{request.verified_agent| user}}</td>
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
+					
+					<!-- 已过期 -->
+					<div class="tab-pane" id="expired_check">
+
+						<table class="table table-condensed table-hover">
+							<thead>
+								<tr>
+									<th>查看</th>
+									<th>Invoice</th>
+									<th>目的仓</th>
+									<th>类型</th>
+									<th>提单者</th>
+									<th>过期审核</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="request in requests | filter: search"
+									ng-show="!flag">
+									<td>
+										<a ng-click="showDetail(request.id,'readonly')" data-original-title="查看"
+											data-toggle="tooltip" title="">
+											<i class="glyphicon glyphicon-eye-open"></i>
+										</a>
+									</td>
+									<td>{{request.invoice}}</td>
+									<td>{{request.warehouse_id | warehouse}}</td>
+									<td>{{request.type}}</td>
+									<td>{{request.agent | user}}</td>
+									<td>
+										<font>已过期</font>
+										<span style="color: #f00">{{check_time(request.expired_at)}}</span>
+										<font>天</font>
+									</td>
+									<td>
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
+					
+					<!-- 特殊修改 -->
+					<div class="tab-pane" id="change_check">
+						<table class="table table-condensed table-hover">
+							<thead>
+								<tr>
+									<th>查看</th>
+									<th>Invoice</th>
+									<th>目的仓</th>
+									<th>类型</th>
+									<th>提单者</th>
+									<th>审核备注</th>
+									<th>审核时间</th>
+									<th>审核人</th>
+									<th>操作</th>
+
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="request in requests | filter: search"
+									ng-show="request.status=='rejected'|| request.status=='verified'">
+									<td>
+									<!--  改别人的  不知道是否有什么特殊意义 保留
+										<a href="#/audit/pr/view_spe/{{request.id}}"
+											data-original-title="查看" data-toggle="tooltip" title="">
+											<i class="glyphicon glyphicon-eye-open"></i>
+										</a>
+									 -->
+									 <a 
+									 	ng-click="showDetail(request.id,request.status)"
+											data-original-title="查看" data-toggle="tooltip" title="">
+											<i class="glyphicon glyphicon-eye-open"></i>
+										</a>
+									</td>
+									<td>{{request.invoice}}</td>
+									<td>{{request.warehouse_id | warehouse}}</td>
+									<td>{{request.type}}</td>
+									<td>{{request.agent | user}}</td>
+									<td>{{cutStr(request.verified_note,12,'....')}}</td>
+
+									<td>{{request.verified_at}}</td>
+									<td>{{request.verified_agent | user}}</td>
+									<td>
+										<button ng-show="request.status=='rejected'" type="button"
+											class="btn btn-xs btn-success" id="dsafsd"
+											ng-click="stepToCheck(request.id,'approve')">
+											<i class="glyphicon glyphicon-ok"></i>
+											通过
+										</button>
+										<button ng-show="request.status=='verified'" type="button"
+											class="btn btn-xs btn-danger"
+											ng-click="stepToCheck(request.id,'reject')">
+											<i class="glyphicon glyphicon-remove"></i>
+											拒绝
+										</button>
+
+									</td>
+									<td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 提示 -->
+<div class="modal fade" id="warning">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true" ng-click="reflushAfterUpload();">&times;</button>
+				<h4 class="modal-title">提示信息</h4>
+			</div>
+			<div class="modal-body">
+				<!-- <p>One fine body&hellip;</p> -->
+
+				<p style="color: #f00; text-align: center">{{warning}}</p>
+
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-xs btn-default"
+					data-dismiss="modal" ng-click="reflushAfterUpload();">确定并刷新</button>
+				<!-- <button type="button" class="btn btn-xs btn-primary">Save changes</button> -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 审核批注 -->
+<div class="modal fade" id="addNote">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">添加批注:</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form">
+					<div class="row">
+						<label>批注:</label>
+						<textarea ng-model="checkNote" class="form-control">
+						</textarea>
+					</div>
+				</form>
+
+			</div>
+			<div class="modal-footer" ng-show="operaType!='readonly'">
+				<button type="button" class="btn btn-success" data-dismiss="modal"  ng-show="operaType!='reject'"
+					ng-click="toCheck();">确认通过</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal" ng-show="operaType!='approve'"
+					ng-click="toCheck();">确认拒绝</button>
+				<!-- <button type="button" class="btn btn-xs btn-primary">Save changes</button> -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 明细查看 -->
+<div class="modal fade" id="requestDetails">
+	<div class="modal-dialog" style="width: 900px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">查看明细:</h4>
+			</div>
+			<div class="modal-body">
+				<div class="panel panel-default">
+
+					<div class="panel-body">
+						<input type="search" class="form-control" ng-model="searchText"
+							placeholder="Search">
+						<table class="table table-condensed table-hover">
+							<thead>
+								<tr>
+									<th>SKU</th>
+									<th>渠道</th>
+									<th>需求数量</th>
+									<th>ETA</th>
+									<th>运费方式</th>
+									<th>估算运费</th>
+
+
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="detail in auditList.details | filter:searchText">
+									<td>{{detail.item.sku}}</td>
+									<td>{{detail.platform.name}}</td>
+									<td>{{detail.qty}}</td>
+									<td>{{detail.end_date}}</td>
+									<td>{{detail.transportation}}</td>
+									<td>
+										<label>
+											<b class="text-info">{{ detail.item.fee.sea_cost |
+												floatNum}}</b>
+											/
+											<b class="text-danger">{{ detail.item.fee.air_cost |
+												floatNum}}</b>
+										</label>
+									</td>
+
+
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer" ng-show="operaType!='readonly'">
+				<button type="button" class="btn btn-success" data-dismiss="modal"  ng-show="operaType!='reject'"
+					ng-click="showNote('approve');">确认通过</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal" ng-show="operaType!='approve'"
+					ng-click="showNote('reject');">确认拒绝</button>
+				<!-- <button type="button" class="btn btn-xs btn-primary">Save changes</button> -->
+			</div>
+		</div>
+	</div>
+</div>
+

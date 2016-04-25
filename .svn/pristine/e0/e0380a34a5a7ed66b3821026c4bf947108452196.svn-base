@@ -1,0 +1,501 @@
+<style>
+  td span.check{
+  	 margin-right:10px; 
+  }
+  td.ng-binding{
+  	 color:#1A93EF;
+  }
+	span.alt {
+		color: blue;
+	}
+	table {
+		width: 100%;
+	}
+	table td {
+		border: 1px solid #ccc;
+		border-collapse: collapse;
+		text-align: center;
+		line-height: 32px;
+		font-size: 12px;
+	}
+	ul.sc_menu a span {
+		color: #000;
+	}
+	table td.title {
+		background-color: #E5E5E5;
+		width: 100px;
+	}
+
+	div.sc_menu {
+		position: relative;
+		height: 145px;
+		width: 1100px;
+		overflow: auto;
+		margin: 0px auto
+	}
+	ul.sc_menu {
+		display: block;
+		height: 110px;
+		width: 1500px;
+		padding: 15px 0 0 15px;
+	}
+	.sc_menu li {
+		display: block;
+		float: left;
+		padding: 0 4px;
+	}
+	.sc_menu a {
+		display: block;
+		text-decoration: none;
+	}
+	.sc_menu span {
+		display: block;
+		margin-top: 3px;
+		text-align: center;
+		font-size: 12px;
+		color: #fff;
+	}
+	.sc_menu a:hover span {
+		display: block;
+	}
+	.sc_menu img {
+		border: 3px #fff solid;
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+	}
+	.sc_menu a:hover img {
+		filter: alpha(opacity=50);
+		opacity: 0.5;
+	}
+</style>
+<script type="text/javascript">
+	(function($) {
+		var div = $('div.sc_menu'), ul = $('ul.sc_menu'), ulPadding = 15;
+
+		var divWidth = div.width();
+
+		div.css({
+			overflow : 'hidden'
+		});
+
+		var lastLi = ul.find('li:last-child');
+
+		div.mousemove(function(e) {
+			var ulWidth = lastLi[0].offsetLeft + lastLi.outerWidth() + ulPadding;
+			var left = (e.pageX - div.offset().left) * (ulWidth - divWidth) / divWidth;
+
+			div.scrollLeft(left * -1);
+		});
+
+	})(jQuery);
+
+</script>
+
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+
+			<div class="panel-body">
+				<form name="editForm" class="">
+
+					<div class="container-fluid">
+						<div class="panel-group" id="accordion">
+							<div class="panel panel-default">
+								<div class="panel-heading" style="position: relative">
+									<h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse"
+									data-parent="#accordion" href="#collapseBase">基本信息</a></h4>
+									<a class="btn btn-default" href="#/item" style="position: absolute;right:10px;top:2px">Cancel</a>
+								</div>
+								<div id="collapseBase" class="panel-collapse collapse in">
+									<div class="panel-body">
+
+										<div class="sc_menu">
+											<ul class="sc_menu" >
+												<li ng-repeat="image in images">
+													<a href="javascript:void(0)"><img ng-src="/images/item/{{image.id}}/thumb" alt="{{image.desc}}" width="113px" height="75px"></br><span class="alt">{{image.desc}}</span></a>
+												</li>
+
+											</ul>
+										</div>
+										<p class="split_up_4">
+											<table width="100%">
+												<tr>
+													<td class="title">SKU:</td>
+													<td>{{item.sku}}</td>
+													<td class="title">描述:</td>
+													<td>{{item.description}}</td>
+													<td class="title">产品类别:</td>
+													<td>{{item.category_id|item_category}}</td>
+													<td class="title">产品状态 :</td>
+													<td>{{item.status}}</td>
+
+												</tr>
+												<tr>
+													<td class="title">产品-长(mm):</td>
+													<td>{{item.length}}mm</td>
+													<td class="title">产品-宽(mm):</td>
+													<td>{{item.width}}mm</td>
+													<td class="title">产品-高(mm):</td>
+													<td>{{item.height}}mm</td>
+													<td class="title">产品-重量(g):</td>
+													<td>{{item.weight}}g</td>
+
+												</tr>
+
+												</tr>
+												<tr>
+													<td class="title">包装-长(mm):</td>
+													<td>{{item.length_package}}mm</td>
+													<td class="title">包装-宽(mm):</td>
+													<td>{{item.width_package}}mm</td>
+													<td class="title">包装-高(mm) :</td>
+													<td>{{item.height_package}}mm</td>
+													<td class="title">包装-重量(g) :</td>
+													<td>{{item.weight_package}}g</td>
+
+												</tr>
+												<tr>
+													<td class="title"> 外箱-长(mm) :</td>
+													<td>{{item.length_carton}}mm</td>
+													<td class="title">外箱-宽(mm) :</td>
+													<td>{{item.width_carton}}mm</td>
+													<td class="title">外箱-高(mm) :</td>
+													<td>{{item.height_carton}}mm</td>
+													<td class="title">整箱-重量(kg):</td>
+													<td>{{item.weight_carton}}kg</td>
+
+												</tr>
+												</tr>
+												<tr>
+													<td class="title"> 装箱数(个) :</td>
+													<td>{{item.spq}}个</td>
+													<td class="title"> 卡板数(个)  :</td>
+													<td>{{item.tray}}个</td>
+													<td class="title">整箱体积重</td>
+													<td>{{(item.length_carton * item.width_carton * item.height_carton / 5000) || "请正确填写外箱长宽高"}}</td>
+													<td class="title"></td>
+													<td></td>
+
+												</tr>
+											</table>
+
+									</div>
+								</div>
+							</div>
+
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse"
+									data-parent="#accordion" href="#collapseCustom">海关信息</a></h4>
+								</div>
+								<div id="collapseCustom" class="panel-collapse collapse">
+									<div class="panel-body">
+										<table>
+
+											<tr>
+												<td class="title">中文海关描述 :</td><td>{{item.description_hg_cn}}</td>
+												<td class="title"> 英文海关描述 :</td><td>{{item.description_hg_en}}</td>
+											</tr>
+											<tr>
+												<td class="title">中国退税率 :</td><td>{{item.reback_cn}}</td><td class="title">中国海关编码 :</td><td>{{item.custom_code_cn}}</td>
+											</tr>
+											<tr>
+												<td class="title">美国关税率 :</td><td>{{item.tariff_us}}</td><td class="title">美国海关编码 :</td><td>{{item.custom_code_us}}</td>
+											</tr>
+											<tr>
+												<td class="title">欧盟关税率 :</td><td>{{item.tariff_eu}}</td><td class="title"> 欧盟海关编码 :</td><td>{{item.custom_code_eu}}</td>
+											</tr>
+											<tr>
+												<td class="title">英国关税率 :</td><td>{{item.tariff_en}}</td><td class="title"> 英国海关编码 :</td><td>{{item.custom_code_en}}</td>
+											</tr>
+											<tr>
+												<td class="title">日本关税率 :</td><td>{{item.tariff_jp}}</td><td class="title">日本海关编码 :</td><td>{{item.custom_code_jp}}</td>
+											</tr>
+											<tr>
+												<td class="title"> 海关型号 :</td><td >{{item.hg_type}}fasdfa</td>
+											</tr>
+
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse"
+									data-parent="#accordion" href="#collapseBrand">品牌信息</a></h4>
+								</div>
+								<div id="collapseBrand" class="panel-collapse collapse">
+									<div class="panel-body">
+
+										<table>
+											<tr>
+												<td class="title">品牌 :</td><td>{{item.brand_type}}</td>
+												<td class="title">认证 :</td><td>{{item.brand_auth}}</td>
+											</tr>
+											<tr>
+												<td class="title">说明书 :</td><td>{{item.brand_instructions}}</td>
+												<td class="title">备注 :</td><td>{{item.brand_remark}}</td>
+											</tr>
+											<tr>
+												<td class="title">品牌其他信息:</td><td>
+													<span class="check"><input type="checkbox" ng-checked="item.brand_other.color_box" disabled> 
+													<lable>彩盒</lable></span>
+													<span class="check"><input type="checkbox"  ng-checked="item.brand_other.screen" disabled> 
+													<lable>丝印</lable></span>
+													<span class="check"><input type="checkbox" ng-checked="item.brand_other.warranty_card" disabled> 
+													<lable>保修卡</lable></span>
+													
+												</td>
+												<td class="title">其他信息:</td><td>
+												   <span class="check"> <input type="checkbox" ng-checked="item.other.dropship" disabled> 
+													<lable>Dropship</lable></span>
+													<span class="check"><input type="checkbox"  ng-checked=" item.other.active" disabled> 
+													<lable>Active</lable></span>
+													<span class="check"><input type="checkbox" ng-checked="item.item.other.virtual" disabled> 
+													<lable>Virtual</lable></span>
+													<span class="check"><input type="checkbox" ng-checked="item.item.other.inventory" disabled> 
+													<lable>Inventory</lable></span>
+												</td>
+											</tr>
+										</table>
+
+									</div>
+
+								</div>
+
+							</div>
+
+							<div class="panel panel-default" ng-show="!isNew">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse"
+									data-parent="#accordion" href="#collapseOther">其他信息</a></h4>
+								</div>
+								<div id="collapseOther" class="panel-collapse collapse">
+									<div class="panel-body">
+										<div class="row">
+											<ul class="nav nav-tabs">
+												<li class="active">
+													<a href="#info-zn" data-toggle="tab">中文</a>
+												</li>
+												<li>
+													<a href="#info-en" data-toggle="tab">英文</a>
+												</li>
+												<li>
+													<a href="#info-fr" data-toggle="tab">法文</a>
+												</li>
+												<li>
+													<a href="#info-gm" data-toggle="tab">德文</a>
+												</li>
+												<li>
+													<a href="#info-it" data-toggle="tab">意大利</a>
+												</li>
+												<li>
+													<a href="#info-sp" data-toggle="tab">西班牙</a>
+												</li>
+												<li>
+													<a href="#info-pt" data-toggle="tab">葡萄牙</a>
+												</li>
+												<li>
+													<a href="#info-jp" data-toggle="tab">日本</a>
+												</li>
+											</ul>
+											<div class="tab-content">
+												<div class="tab-pane active" id="info-zn">
+													<div class="panel-body">
+														<table>
+															<tr>
+																<td class="title">标题:</td><td>{{item.attribute.title_zn}}</td>
+															</tr>
+															<tr>
+																<td class="title">描述:</td><td>{{item.attribute.detail_zn}}</td>
+															</tr>
+															<tr>
+																<td class="title">关键字:</td><td>{{item.keyword.zn}}</td>
+															</tr>
+															<tr>
+																<td class="title">feature:</td><td>{{item.feature.zn}}</td>
+															</tr>
+															<tr>
+																<td class="title">HTML描述:</td><td>{{item.attribute.detail_html_zn}}</td>
+															</tr>
+
+														</table>
+
+													</div>
+												</div>
+
+												<div class="tab-pane" id="info-en">
+													<div class="panel-body">
+														<table>
+															<tr>
+																<td class="title">标题:</td><td>{{item.attribute.title_en}}</td>
+															</tr>
+															<tr>
+																<td class="title">描述:</td><td>{{item.attribute.detail_en}}</td>
+															</tr>
+															<tr>
+																<td class="title">关键字:</td><td>{{item.keyword.en}}</td>
+															</tr>
+															<tr>
+																<td class="title">feature:</td><td>{{item.feature.en}}</td>
+															</tr>
+															<tr>
+																<td class="title">HTML描述:</td><td>{{item.attribute.detail_html_en}}</td>
+															</tr>
+
+														</table>
+
+													</div>
+												</div>
+
+												<div class="tab-pane" id="info-fr">
+													<div class="panel-body">
+
+														<table>
+															<tr>
+																<td class="title">标题:</td><td>{{item.attribute.title_fr}}</td>
+															</tr>
+															<tr>
+																<td class="title">描述:</td><td>{{item.attribute.detail_fr}}</td>
+															</tr>
+															<tr>
+																<td class="title">关键字:</td><td>{{item.keyword.fr}}</td>
+															</tr>
+															<tr>
+																<td class="title">feature:</td><td>{{item.feature.fr}}</td>
+															</tr>
+															<tr>
+																<td class="title">HTML描述:</td><td>{{item.attribute.detail_html_fr}}</td>
+															</tr>
+
+														</table>
+													</div>
+												</div>
+
+												<div class="tab-pane" id="info-gm">
+													<div class="panel-body">
+
+														<table>
+															<tr>
+																<td class="title">标题:</td><td>{{item.attribute.title_gm}}</td>
+															</tr>
+															<tr>
+																<td class="title">描述:</td><td>{{item.attribute.detail_gm}}</td>
+															</tr>
+															<tr>
+																<td class="title">关键字:</td><td>{{item.keyword.gm}}</td>
+															</tr>
+															<tr>
+																<td class="title">feature:</td><td>{{item.feature.gm}}</td>
+															</tr>
+															<tr>
+																<td class="title">HTML描述:</td><td>{{item.attribute.detail_html_gm}}</td>
+															</tr>
+
+														</table>
+													</div>
+												</div>
+
+												<div class="tab-pane" id="info-it">
+													<div class="panel-body">
+														<table>
+															<tr>
+																<td class="title">标题:</td><td>{{item.attribute.title_it}}</td>
+															</tr>
+															<tr>
+																<td class="title">描述:</td><td>{{item.attribute.detail_it}}</td>
+															</tr>
+															<tr>
+																<td class="title">关键字:</td><td>{{item.keyword.it}}</td>
+															</tr>
+															<tr>
+																<td class="title">feature:</td><td>{{item.feature.it}}</td>
+															</tr>
+															<tr>
+																<td class="title">HTML描述:</td><td>{{item.attribute.detail_html_it}}</td>
+															</tr>
+
+														</table>
+													</div>
+												</div>
+
+												<div class="tab-pane" id="info-sp">
+													<div class="panel-body">
+														<table>
+															<tr>
+																<td class="title">标题:</td><td>{{item.attribute.title_sp}}</td>
+															</tr>
+															<tr>
+																<td class="title">描述:</td><td>{{item.attribute.detail_sp}}</td>
+															</tr>
+															<tr>
+																<td class="title">关键字:</td><td>{{item.keyword.sp}}</td>
+															</tr>
+															<tr>
+																<td class="title">feature:</td><td>{{item.feature.sp}}</td>
+															</tr>
+															<tr>
+																<td class="title">HTML描述:</td><td>{{item.attribute.detail_html_sp}}</td>
+															</tr>
+
+														</table>
+													</div>
+												</div>
+
+												<div class="tab-pane" id="info-pt">
+													<div class="panel-body">
+														<table>
+															<tr>
+																<td class="title">标题:</td><td>{{item.attribute.title_pt}}</td>
+															</tr>
+															<tr>
+																<td class="title">描述:</td><td>{{item.attribute.detail_pt}}</td>
+															</tr>
+															<tr>
+																<td class="title">关键字:</td><td>{{item.keyword.pt}}</td>
+															</tr>
+															<tr>
+																<td class="title">feature:</td><td>{{item.feature.pt}}</td>
+															</tr>
+															<tr>
+																<td class="title">HTML描述:</td><td>{{item.attribute.detail_html_pt}}</td>
+															</tr>
+
+														</table>
+													</div>
+												</div>
+
+												<div class="tab-pane" id="info-jp">
+													<div class="panel-body">
+														<table>
+															<tr>
+																<td class="title">标题:</td><td>{{item.attribute.title_jp}}</td>
+															</tr>
+															<tr>
+																<td class="title">描述:</td><td>{{item.attribute.detail_jp}}</td>
+															</tr>
+															<tr>
+																<td class="title">关键字:</td><td>{{item.keyword.jp}}</td>
+															</tr>
+															<tr>
+																<td class="title">feature:</td><td>{{item.feature.jp}}</td>
+															</tr>
+															<tr>
+																<td class="title">HTML描述:</td><td>{{item.attribute.detail_html_jp}}</td>
+															</tr>
+
+														</table>
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+				</form>
+			</div>
+
+		</div>
+	</div>
+</div>

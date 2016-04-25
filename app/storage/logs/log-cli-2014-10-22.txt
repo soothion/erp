@@ -1,0 +1,48 @@
+[2014-10-22 19:23:23] production.ERROR: exception 'MarketplaceWebService_Exception' with message 'Internal Error' in /Users/vincent/www/erp/vendor/soothion/amazon-mws-sdk/src/MarketplaceWebService/Client.php:798
+Stack trace:
+#0 /Users/vincent/www/erp/vendor/soothion/amazon-mws-sdk/src/MarketplaceWebService/Client.php(522): MarketplaceWebService_Client->invoke(Array)
+#1 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AmazonService.php(67): MarketplaceWebService_Client->getReportList(Object(MarketplaceWebService_Model_GetReportListRequest))
+#2 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AmazonService.php(36): Bluebanner\Core\Order\AmazonService->getReportList()
+#3 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/ImportService.php(120): Bluebanner\Core\Order\AmazonService->getOrderList()
+#4 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/ImportService.php(21): Bluebanner\Core\Order\ImportService->getOrderList()
+#5 /Users/vincent/www/erp/app/commands/ImportOrerCommand.php(49): Bluebanner\Core\Order\ImportService->run()
+#6 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(108): ImportOrerCommand->fire()
+#7 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Command/Command.php(241): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#8 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(96): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#9 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(887): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#10 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(191): Symfony\Component\Console\Application->doRunCommand(Object(ImportOrerCommand), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#11 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(121): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#12 /Users/vincent/www/erp/artisan(59): Symfony\Component\Console\Application->run()
+#13 {main} [] []
+[2014-10-22 19:24:16] production.ERROR: exception 'MarketplaceWebService_Exception' with message 'Internal Error' in /Users/vincent/www/erp/vendor/soothion/amazon-mws-sdk/src/MarketplaceWebService/Client.php:798
+Stack trace:
+#0 /Users/vincent/www/erp/vendor/soothion/amazon-mws-sdk/src/MarketplaceWebService/Client.php(522): MarketplaceWebService_Client->invoke(Array)
+#1 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AmazonService.php(67): MarketplaceWebService_Client->getReportList(Object(MarketplaceWebService_Model_GetReportListRequest))
+#2 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AmazonService.php(36): Bluebanner\Core\Order\AmazonService->getReportList()
+#3 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/ImportService.php(120): Bluebanner\Core\Order\AmazonService->getOrderList()
+#4 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/ImportService.php(21): Bluebanner\Core\Order\ImportService->getOrderList()
+#5 /Users/vincent/www/erp/app/commands/ImportOrerCommand.php(49): Bluebanner\Core\Order\ImportService->run()
+#6 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(108): ImportOrerCommand->fire()
+#7 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Command/Command.php(241): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#8 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(96): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#9 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(887): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#10 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(191): Symfony\Component\Console\Application->doRunCommand(Object(ImportOrerCommand), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#11 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(121): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#12 /Users/vincent/www/erp/artisan(59): Symfony\Component\Console\Application->run()
+#13 {main} [] []
+[2014-10-22 19:24:31] production.ERROR: exception 'MarketplaceWebService_Exception' with message 'Internal Error' in /Users/vincent/www/erp/vendor/soothion/amazon-mws-sdk/src/MarketplaceWebService/Client.php:798
+Stack trace:
+#0 /Users/vincent/www/erp/vendor/soothion/amazon-mws-sdk/src/MarketplaceWebService/Client.php(522): MarketplaceWebService_Client->invoke(Array)
+#1 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AmazonService.php(67): MarketplaceWebService_Client->getReportList(Object(MarketplaceWebService_Model_GetReportListRequest))
+#2 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AmazonService.php(36): Bluebanner\Core\Order\AmazonService->getReportList()
+#3 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/ImportService.php(120): Bluebanner\Core\Order\AmazonService->getOrderList()
+#4 /Users/vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/ImportService.php(21): Bluebanner\Core\Order\ImportService->getOrderList()
+#5 /Users/vincent/www/erp/app/commands/ImportOrerCommand.php(49): Bluebanner\Core\Order\ImportService->run()
+#6 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(108): ImportOrerCommand->fire()
+#7 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Command/Command.php(241): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#8 /Users/vincent/www/erp/vendor/laravel/framework/src/Illuminate/Console/Command.php(96): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#9 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(887): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#10 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(191): Symfony\Component\Console\Application->doRunCommand(Object(ImportOrerCommand), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#11 /Users/vincent/www/erp/vendor/symfony/console/Symfony/Component/Console/Application.php(121): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#12 /Users/vincent/www/erp/artisan(59): Symfony\Component\Console\Application->run()
+#13 {main} [] []

@@ -1,0 +1,12 @@
+[2014-11-19 18:09:40] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Allowed memory size of 134217728 bytes exhausted (tried to allocate 108 bytes)' in /Users/Vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AmazonService.php:162
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-11-19 18:21:54] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Allowed memory size of 134217728 bytes exhausted (tried to allocate 108 bytes)' in /Users/Vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AmazonService.php:162
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []
+[2014-11-19 18:26:08] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Allowed memory size of 134217728 bytes exhausted (tried to allocate 108 bytes)' in /Users/Vincent/www/erp/workbench/bluebanner/core/src/Bluebanner/Core/Order/AmazonService.php:162
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []

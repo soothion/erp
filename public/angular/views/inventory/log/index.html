@@ -1,0 +1,100 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">库存日志</h3></div>
+
+			<div class="panel-body">
+				<form name="searchForm">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col col-sm-2">
+							<div class="form-group" ng-class="{'has-error': searchForm.warehouse.$invalid}">
+								<select name="warehouse" ng-model="search.warehouse" class="form-control" ng-options="w.id as w.name for w in warehouse"></select>
+							</div>
+						</div>
+						<div class="col col-sm-2">
+							<div class="form-group" ng-class="{'has-error': searchForm.type.$invalid}">
+								<select name="type" ng-model="search.type" class="form-control" ng-options="t.id as t.name group by t.dr for t in types"></select>
+							</div>
+						</div>
+						<div class="col col-sm-2">
+							<div class="form-group" ng-class="{'has-error': searchForm.from.$invalid}">
+								<input type="text" name="from" ng-model="search.from" class="form-control" datepicker-popup="yyyy-MM-dd" placeholder="From">
+							</div>
+						</div>
+						<div class="col col-sm-2">
+							<div class="form-group" ng-class="{'has-error': searchForm.to.$invalid}">
+								<input type="text" name="to" ng-model="search.to" class="form-control" datepicker-popup="yyyy-MM-dd" placeholder="To">
+							</div>
+						</div>
+						
+					</div>
+
+					<div class="row">
+						<div class="col col-sm-2">
+							<div class="form-group" ng-class="{'has-error': searchForm.sku.$invalid}">
+								<input type="text" name="sku" ng-model="search.sku" class="form-control" typeahead="i as i.sku for i in items | filter:{sku: $viewValue} | limitTo:10" placeholder="SKU">
+							</div>
+						</div>						
+						<div class="col col-sm-2">
+							<div class="form-group" ng-class="{'has-error': searchForm.related.$invalid}">
+								<input type="text" name="desc" ng-model="search.related" class="form-control" placeholder="关联ID">
+							</div>
+						</div>
+						<div class="col col-sm-2">
+							<div class="form-group" ng-class="{'has-error': searchForm.desc.$invalid}">
+								<input type="text" name="desc" ng-model="search.desc" class="form-control" placeholder="描述">
+							</div>
+						</div>
+						<div class="col col-sm-2">
+							<div class="form-group" ng-class="{'has-error': searchForm.agent.$invalid}">
+								<input type="text" name="agent" ng-model="search.agent" class="form-control" typeahead="a as a.name for a in agents | filter:{name: $viewValue} | limitTo:10" placeholder="操作人">
+							</div>
+						</div>
+						<div class="col col-sm-4">
+							<div class="form-group" >
+								<button type="button" class="btn btn-primary" ng-click="searching()">搜索</button>
+								<button type="button" class="btn btn-default" ng-click="reset()">重置</button>
+								<button type="button" class="btn btn-success" ng-click="export()">导出</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				</form>
+
+				<table class="table table-condensed table-hover">
+					<thead>
+						<tr>
+							<th>SKU</th>
+							<th>仓库</th>
+							<th>数量</th>
+							<th>采购价</th>
+							<th>PI价</th>
+							<th>时间</th>
+							<th>操作人</th>
+							<th>类别</th>
+							<th>关联ID</th>
+							<th>关联编号</th>
+							<th>描述</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="log in list | limitTo: 10">
+							<td>{{log.item.sku}}</td>
+							<td>{{log.warehouse.name}}</td>
+							<td>{{log.qty}}</td>
+							<td>{{log.inventory.rmbprice}}</td>
+							<td>{{log.inventory.pi_price}}</td>
+							<td>{{log.created_at}}</td>
+							<td>{{log.agent | user}}</td>
+							<td>{{log.type | inv_type}}</td>
+							<td>{{log.relation.invoice}}</td>
+							<td>{{log.relation.relation_invoice}}</td>
+							<td>{{log.description}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

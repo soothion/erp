@@ -1,0 +1,35 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">渠道管理</h3></div>
+
+			<div class="panel-body">
+				<input type="search" class="form-control" ng-model="search" placeholder="Search">
+				<table class="table table-condensed table-hover">
+					<thead>
+						<tr>
+							<th><a href="#/system/channel/edit/new"><i class="glyphicon glyphicon-plus"></i></a></th>
+							<th>账号</th>
+							<th>简称</th>
+							<th>平台</th>
+							<th>创建日期</th>
+							<th>修改日期</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="channel in channels | filter: search">
+							<td>
+								<a href="#/system/channel/edit/{{channel.id}}"><i class="glyphicon glyphicon-pencil"></i></a>
+							</td>
+							<td>{{channel.name}}</td>
+							<td>{{channel.abbreviation}}</td>
+							<td>{{channel.platform.name}}</td>
+							<td>{{channel.created_at}}</td>
+							<td>{{channel.updated_at}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

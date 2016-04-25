@@ -1,0 +1,29 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">Language Manage</h3></div>
+
+			<div class="panel-body">
+				<input type="search" class="form-control" ng-model="search" placeholder="Search">
+				<table class="table table-hover table-striped">
+					<thead>
+						<tr>
+							<th><a href="#/item/language/new"><i class="glyphicon glyphicon-plus"></i></a></th>
+							<th>Name</th>
+							<th>Created</th>
+							<th>Updated</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="item in languages | filter: search">
+							<td><a href="#/item/language/edit/{{item.id}}"><i class="glyphicon glyphicon-pencil"></i></a></td>
+							<td>{{item.name}}</td>
+							<td>{{item.created_at}}</td>
+							<td>{{item.updated_at}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

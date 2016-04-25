@@ -1,0 +1,32 @@
+
+<div class="panel panel-default">
+	<div class="panel-heading"><h3 class="panel-title">平台管理</h3></div>
+
+	<div class="panel-body">
+		<input type="search" ng-model="search" class="form-control" placeholder="Search">
+		<table class="table table-hover table-striped">
+			<thead>
+				<tr>
+					<th>
+						<a href="#/platform/new"><i class="glyphicon glyphicon-plus"></i></a>
+					</th>
+					<th>Name</th>
+					<th>abbr</th>
+					<th>Created</th>
+					<th>Updated</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="platform in platforms | filter: search | orderBy: 'name'">
+					<td>
+						<a href="#/platform/edit/{{platform.id}}"><i class="glyphicon glyphicon-pencil"></i></a>
+					</td>
+					<td>{{platform.name}}</td>
+					<td>{{platform.abbreviation}}</td>
+					<td>{{platform.created_at}}</td>
+					<td>{{platform.updated_at}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

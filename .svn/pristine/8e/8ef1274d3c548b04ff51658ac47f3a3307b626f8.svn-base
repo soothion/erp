@@ -1,0 +1,138 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">其他出入库单列表</h3>
+			</div>
+			<div class="panel-body">
+				
+					<div class="container-fluid">
+
+						<form name="searchForm">
+							<div class="container-fluid">
+								<div class="row">
+									<div class="col col-sm-2">
+										<div class="form-group"
+											ng-class="{'has-error': searchModel.invoice.$invalid}">
+											<input type="text" ng-model="searchModel.invoice"
+												class="form-control" placeholder="编号">
+										</div>
+									</div>
+
+									<div class="col col-sm-2">
+										<div class="form-group"
+											ng-class="{'has-error': searchModel.sku.$invalid}">
+											<input type="text" name="sku" ng-model="searchModel.sku" id="sku"
+												class="form-control"
+												typeahead="i as i.sku for i in skus | filter:{sku: $viewValue} | limitTo:10"
+												placeholder="SKU">
+										</div>
+									</div>
+
+									<div class="col col-sm-8">
+										<div class="form-group"
+											ng-class="{'has-error': searchModel.status.$invalid}">											
+											<div class="btn-group ">
+
+												<button type="button" class="btn btn-default"
+													ng-model="searchModel.status.pending" btn-checkbox>Pending</button>
+												<button type="button" class="btn btn-default"
+													ng-model="searchModel.status.confirmed" btn-checkbox>Confirmed</button>
+												<button type="button" class="btn btn-default"
+													ng-model="searchModel.status.stocking" btn-checkbox>Stocking</button>
+												<button type="button" class="btn btn-default"
+													ng-model="searchModel.status.done" btn-checkbox>Done</button>
+
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col col-sm-2">
+										<div class="form-group"
+											ng-class="{'has-error': searchModel.warehouse.$invalid}">
+											<select name="warehouse" class="form-control"
+												ng-model="searchModel.warehouse"
+												ng-options="w as w.name for w in warehouses" required>
+												<option value="">--请选择--</option>
+											</select>
+										</div>
+									</div>
+
+									<div class="col col-sm-2">
+										<div class="form-group"
+											ng-class="{'has-error': searchModel.timeStart.$invalid}">
+											<input type="text" ng-model="searchModel.timeStart"
+												class="form-control" placeholder=""
+												datepicker-popup="yyyy-MM-dd">
+										</div>
+									</div>
+
+									<div class="col col-sm-2">
+										<div class="form-group"
+											ng-class="{'has-error': searchModel.timeEnd.$invalid}">
+											<input type="text" ng-model="searchModel.timeEnd"
+												class="form-control" placeholder=""
+												datepicker-popup="yyyy-MM-dd">
+										</div>
+									</div>
+
+								</div>
+								<div class="row">
+									<div class="col col-sm-4">
+										<div class="form-group">
+											<button type="button" class="btn btn-primary"
+												ng-click="toFilter()">搜索</button>
+											<button type="button" class="btn btn-primary"
+												ng-click="toExport()">导出</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				<hr>
+				
+				<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th>
+							<a href="#/warehouse/otherIOInventory/create">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</th>
+						<th>OP</th>
+						<th>编号</th>
+						<th>仓库</th>
+						<th>状态</th>
+						<th>创建人</th>
+						<th>创建日期</th>
+						<th>出入库时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="io in iolist | filter: search">
+						<td>
+							<input type="checkbox" name="return-list" value="{{io.id}}" />
+						</td>
+						<td>							
+							<a href="#/warehouse/otherIOInventory/update/{{io.id}}">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>							
+							<a href="javascript:;" ng-click="deleteInventory(io.id)" ng-show="io.status =='pending'">
+								<i class="glyphicon glyphicon-remove"></i>
+							</a>
+						</td>
+						<td>{{io.invoice}}</td>
+						<td>{{io.warehouse.name}}</td>
+						<td>{{io.status}}</td>
+						<td>{{io.user.email}}</td>
+						<td>{{io.created_at}}</td>
+						<td>{{io.exec_at}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+	</div>
+</div>

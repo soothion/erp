@@ -1,0 +1,109 @@
+<div class="row">
+	<div class="col col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">Vendor Quotation Manage</h3></div>
+
+			<div class="panel-body">
+				<form name="editForm" class="">
+					
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col col-sm-6">
+								<div class="form-group" ng-class="{'has-error': editForm.vendor.$invalid}">
+									<label class="control-label">vendor</label>
+									<input type="text" name="vendor" ng-model="quotation.vendor" class="form-control" typeahead="v as v.code+'('+v.name+')' for v in vendors  | filter:$viewValue | limitTo: 10" required placeholder="Type Name or Code">
+									<span ng-show="editForm.vendor.$error.required" class="help-inline">Required</span>
+								</div>
+							</div>
+							<div class="col col-sm-5">
+								<div class="form-group" ng-class="{'has-error': editForm.item.$invalid}">
+									<label class="control-label">item</label>
+									<input type="text" name="item" ng-model="quotation.item" class="form-control" typeahead="i as i.sku for i in items | filter:{sku: $viewValue} | limitTo: 10" required placeholder="Type sku">
+									<span ng-show="editForm.item.$error.required" class="help-inline">Required</span>
+									<span class="help-inline">{{quotation.item.description}}</span>
+								</div>
+							</div>
+							<div class="col col-sm-1">
+								<div class="form-group" ng-class="{'has-error': editForm.lead_time.$invalid}">
+									<label class="control-label" title="lead time">L/T</label>
+									<input type="text" name="lead_time" ng-model="quotation.lead_time" class="form-control"  placeholder="Type Lead Time">
+								</div>
+							</div>
+
+						</div>
+
+						<div class="row">
+
+							<div class="col col-sm-2">
+								<div class="form-group" ng-class="{'has-error': editForm.unit_price.$invalid}">
+									<label class="control-label">unit_price</label>
+									<input type="text" name="unit_price" ng-model="quotation.unit_price" class="form-control" ng-pattern="/^\d+\.?\d*$/">
+								</div>
+							</div>
+							<div class="col col-sm-2">
+								<div class="form-group" ng-class="{'has-error': editForm.tax_unit_price.$invalid}">
+									<label class="control-label">tax_unit_price</label>
+									<input type="text" name="tax_unit_price" ng-model="quotation.tax_unit_price" class="form-control" ng-pattern="/^\d+\.?\d*$/">
+								</div>
+							</div>
+							<div class="col col-sm-2">
+								<div class="form-group" ng-class="{'has-error': editForm.usd_unit_price.$invalid}">
+									<label class="control-label">usd_unit_price</label>
+									<input type="text" name="usd_unit_price" ng-model="quotation.usd_unit_price" class="form-control" ng-pattern="/^\d+\.?\d*$/">
+								</div>
+							</div>
+
+							<div class="col col-sm-2">
+								<div class="form-group" ng-class="{'has-error': editForm.tax_rate.$invalid}">
+									<label class="control-label">tax_rate</label>
+									<input type="text" name="tax_rate" ng-model="quotation.tax_rate" class="form-control" ng-pattern="/^\d+\.?\d*$/">
+								</div>
+							</div>
+							<div class="col col-sm-2">
+								<div class="form-group" ng-class="{'has-error': editForm.invoice_rate.$invalid}">
+									<label class="control-label">invoice_rate</label>
+									<input type="text" name="tax_rate" ng-model="quotation.invoice_rate" class="form-control" ng-pattern="/^\d+\.?\d*$/">
+								</div>
+							</div>
+							<div class="col col-sm-2">
+								<div class="form-group" ng-class="{'has-error': editForm.price_type.$invalid}">
+									<label class="control-label">Price Type</label>
+									<select name="price_type" ng-model="quotation.price_type" class="form-control" 
+									ng-options="x.name as x.name for x in taxs"></select>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col col-sm-2">
+								<div class="form-group" ng-class="{'has-error': editForm.spq.$invalid}">
+									<label class="control-label">spq</label>
+									<input type="text" name="spq" ng-model="quotation.spq" class="form-control" ng-pattern="/^\d+\.?\d*$/">
+								</div>
+							</div>
+							<div class="col col-sm-2">
+								<div class="form-group" ng-class="{'has-error': editForm.moq.$invalid}">
+									<label class="control-label">moq</label>
+									<input type="text" name="moq" ng-model="quotation.moq" class="form-control" ng-pattern="/^\d+\.?\d*$/">
+								</div>
+							</div>
+							<div class="col col-sm-2">
+								<div class="form-group" ng-class="{'has-error': editForm.um.$invalid}">
+									<label class="control-label">um</label>
+									<input type="text" name="um" ng-model="quotation.um" class="form-control" >
+								</div>
+							</div>
+						</div>
+
+
+						<a class="btn btn-default" href="#/purchase/quotation">Cancel</a>
+						<button type="button" class="btn btn-primary" ng-click="update()" ng-disabled="isClean() || editForm.$invalid">Save</button>
+						<button type="button" class="btn btn-danger" ng-click="destroy()" ng-show="quotation.$id">Delete</button>
+						
+					</div>
+
+				</form>
+			</div>
+			
+		</div>
+	</div>
+</div>
